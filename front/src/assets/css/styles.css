@@ -1,0 +1,199 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.form-background {
+  margin: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid white;
+  border-radius: 20px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.form {
+  padding: 30px 30px 5px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-back {
+  display: flex;
+  color: white;
+  font-size: 0.9em;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+}
+
+.form-input-label {
+  align-self: center;
+  color: #fff;
+  display: flex;
+  margin: 0px 15px 0px 0px;
+}
+
+/* TODO: when the autocomplete fills the input the background collor gets broken */
+.form-input-single-line {
+  background-color: rgba(0, 0, 0, 0);
+  padding-left: 10px;
+  color: #fff;
+  display: flex;
+  margin-left: auto;
+  border-radius: 20px;
+  border: 2px solid #fff;
+  width: 20vw;
+  height: 30px;
+  font-size: 0.9em;
+}
+
+.form-input-multiline {
+  background-color: rgba(0, 0, 0, 0);
+  
+  padding: 10px 10px;
+  color: #fff;
+  display: flex;
+  margin-left: auto;
+  border-radius: 20px;
+  border: 2px solid #fff;
+  width: 20vw;
+  height: 30px;
+  font-size: 0.9em;
+  height: 20vh;
+}
+
+.confirmation-button {
+  margin: 20px auto;
+  padding: 5px 20px;
+  background: none;
+  color: white;
+  border: 2px solid lightgreen;
+  border-radius: 20px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.confirmation-button:hover {
+  color: lightgreen;
+}
+
+.confirmation-button:active {
+  background: lightgreen;
+  color: black;
+}
+
+.dangerous-button {
+  margin: 20px auto;
+  padding: 5px 5px;
+  background: none;
+  color: white;
+  border: 2px solid lightcoral;
+  border-radius: 20px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.dangerous-button:hover {
+  color:lightcoral;
+}
+
+.dangerous-button:active {
+  background: lightcoral;
+  color: black;
+}
+
+.back-button {
+  padding: 5px 10px;
+  background: none;
+  color: lightgray;
+  border: 2px solid lightgray;
+  border-radius: 20px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.back-button:hover {
+  color:White;
+}
+
+.back-button:active {
+  background: lightgray;
+  color: black;
+}
+
+.combo-box {
+  display: flex;
+  margin-left: auto;
+  border-radius: 20px;
+  border: 2px solid #fff;
+  width: 20vw;
+  height: 30px;
+
+}
+
+.combo-box select {
+  background: url('../images/down-arrow.png') no-repeat 90% 50%;
+  border-radius: 20px;
+  border: 0px solid #fff;
+  font-size: 0.9em;
+  padding: 5px 8px;
+  width: 130%;
+  background-color: rgba(0, 0, 0);
+  -webkit-appearance: none;
+  color: #fff;
+}
+
+.combo-box select:focus {
+  outline: none;
+}
+
+.category-pic {
+  display: flex;
+  margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  height: 26vh;
+  border-radius: 20px;
+  border: 3px solid white;
+  width: 30vw;
+  height: 30vh;
+}
+
+.back {
+  color: white;
+}
+
+.back:visited{
+  color: white;
+}
