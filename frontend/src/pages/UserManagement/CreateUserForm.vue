@@ -2,8 +2,7 @@
   <form>
     <md-card>
       <md-card-header :data-background-color="dataBackgroundColor">
-        <h4 class="title">Create User</h4>
-        <p class="category">Complete your profile</p>
+        <h4 class="title">Create user</h4>
       </md-card-header>
 
       <md-card-content>
@@ -84,4 +83,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

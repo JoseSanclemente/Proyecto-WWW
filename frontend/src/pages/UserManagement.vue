@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <div class="form">
-      <div>
+    <div class="user-management">
+      <div class="management-form">
         <create-user-form data-background-color="purple"></create-user-form>
         <search-user-form data-background-color="purple"></search-user-form>
       </div>
@@ -21,7 +21,9 @@ export default {
 </script>
 
 <style scoped>
-.form {
-  width: 100%;
+.management-form {
+  display: block;
+  margin: 0 auto;
+  width: 90%;
 }
 </style>

@@ -8,17 +8,11 @@
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
-          <img :src="imgLogo" alt="" />
+          <img :src="imgLogo" alt />
         </div>
       </a>
 
-      <a
-        href="https://www.creative-tim.com/product/vue-material-dashboard"
-        target="_blank"
-        class="simple-text logo-normal"
-      >
-        {{ title }}
-      </a>
+      <a href="#/" target="_blank" class="simple-text logo-normal">{{ title }}</a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -30,8 +24,7 @@
             :key="link.name + index"
             :to="link.path"
             :link="link"
-          >
-          </sidebar-link>
+          ></sidebar-link>
         </slot>
       </md-list>
     </div>
@@ -47,7 +40,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Vue MD"
+      default: "Electricaribe"
     },
     backgroundImage: {
       type: String,

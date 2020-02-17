@@ -2,15 +2,17 @@
   <div>
     <md-table v-model="userList" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <div v-if="showNotFound">No users found.</div>
+
         <md-table-cell md-label="ID">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="Username">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
         <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
-        <md-table-cell md-label="Country">{{ item.country }}</md-table-cell>
-        <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
-        <md-table-cell md-label>
-          <md-button class="md-danger" @click="deleteUser(item.id)"
-            >Delete</md-button
-          >
+        <md-table-cell class="icon">
+          <md-button class="md-just-icon md-simple md-danger" @click="deleteUser(item.id)">
+            <md-icon>clear</md-icon>
+            <md-tooltip md-direction="top">Delete</md-tooltip>
+          </md-button>
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -30,6 +32,11 @@ export default {
       default: null
     }
   },
+  data() {
+    return {
+      showNotFound: false
+    };
+  },
   methods: {
     deleteUser(id) {
       console.log("Hola:", id);
@@ -45,3 +52,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.icon {
+  font-size: 36px;
+}
+</style>

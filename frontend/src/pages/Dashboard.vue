@@ -13,8 +13,8 @@
           <template slot="content">
             <h4 class="title">Daily Sales</h4>
             <p class="category">
-              <span class="text-success"
-                ><i class="fas fa-long-arrow-alt-up"></i> 55%
+              <span class="text-success">
+                <i class="fas fa-long-arrow-alt-up"></i> 55%
               </span>
               increase in today sales.
             </p>
@@ -22,8 +22,7 @@
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 4 minutes ago
+              <md-icon>access_time</md-icon>updated 4 minutes ago
             </div>
           </template>
         </chart-card>
@@ -40,15 +39,12 @@
         >
           <template slot="content">
             <h4 class="title">Email Subscription</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
+            <p class="category">Last Campaign Performance</p>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 10 days ago
+              <md-icon>access_time</md-icon>updated 10 days ago
             </div>
           </template>
         </chart-card>
@@ -64,15 +60,12 @@
         >
           <template slot="content">
             <h4 class="title">Completed Tasks</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
+            <p class="category">Last Campaign Performance</p>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              campaign sent 26 minutes ago
+              <md-icon>access_time</md-icon>campaign sent 26 minutes ago
             </div>
           </template>
         </chart-card>
@@ -91,10 +84,7 @@
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>date_range</md-icon>
-              Last 24 Hours
-            </div>
+            <div class="stats"><md-icon>date_range</md-icon>Last 24 Hours</div>
           </template>
         </stats-card>
       </div>
@@ -137,8 +127,7 @@
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>local_offer</md-icon>
-              Tracked from Github
+              <md-icon>local_offer</md-icon>Tracked from Github
             </div>
           </template>
         </stats-card>
@@ -157,25 +146,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>update</md-icon>
-              Just Updated
-            </div>
+            <div class="stats"><md-icon>update</md-icon>Just Updated</div>
           </template>
         </stats-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <md-card>
-          <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
-          </md-card-header>
-          <md-card-content>
-            <ordered-table table-header-color="orange"></ordered-table>
-          </md-card-content>
-        </md-card>
       </div>
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
@@ -217,8 +190,7 @@ export default {
     StatsCard,
     ChartCard,
     NavTabsCard,
-    NavTabsTable,
-    OrderedTable
+    NavTabsTable
   },
   data() {
     return {

@@ -8,20 +8,16 @@
         <p>Dashboard</p>
       </sidebar-link>
       <sidebar-link to="/user-management">
-        <md-icon>person</md-icon>
+        <md-icon>supervisor_account</md-icon>
         <p>User Management</p>
-      </sidebar-link>
-      <sidebar-link to="/user">
-        <md-icon>person</md-icon>
-        <p>User Profile</p>
-      </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
       </sidebar-link>
       <sidebar-link to="/maps">
         <md-icon>location_on</md-icon>
         <p>Maps</p>
+      </sidebar-link>
+      <sidebar-link to="/user">
+        <md-icon>person</md-icon>
+        <p>User Profile</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">
