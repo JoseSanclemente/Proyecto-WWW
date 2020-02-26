@@ -10,12 +10,18 @@
           <md-input v-model="username" type="text"></md-input>
         </md-field>
 
-        <md-button class="md-just-icon md-raised md-primary search-button" @click="searchUser">
+        <md-button
+          class="md-just-icon md-raised md-primary search-button"
+          @click="searchUser"
+        >
           <md-icon class="md-size-3x">search</md-icon>
         </md-button>
       </div>
       <md-card-content>
-        <ordered-table :userList="users" table-header-color="purple"></ordered-table>
+        <ordered-table
+          :userList="users"
+          table-header-color="purple"
+        ></ordered-table>
       </md-card-content>
     </md-card>
   </div>
@@ -23,6 +29,7 @@
 
 <script>
 import { OrderedTable } from "@/components";
+import axios from "axios";
 
 export default {
   name: "search-user-form",
@@ -38,31 +45,23 @@ export default {
   data() {
     return {
       username: null,
-      users: [
-        {
-          id: 1,
-          name: "Jose Manuel",
-          role: "Administrator",
-          salary: "$36,738"
-        },
-        {
-          id: 2,
-          name: "Camilo",
-          role: "Administrator",
-          salary: "$36,738"
-        },
-        {
-          id: 3,
-          name: "Sofía",
-          role: "Operator",
-          salary: "$36,738"
-        }
-      ],
-      // TODO: Implement a way to reset table's rows
-      searchedUsers: []
+      users: []
     };
   },
   methods: {
+    getDummy() {
+      const url = "http://127.0.0.1:8000/api/v1.0/dummy/";
+
+      axios
+        .get(url)
+        .then(response => {
+          console.log(response.data);
+          this.user = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     searchUser() {
       let newUserList = [];
       for (let i = 0; i < this.users.length; i++) {
@@ -75,6 +74,10 @@ export default {
         }
       }
     }
+  },
+
+  created() {
+    this.getDummy();
   }
 };
 </script>

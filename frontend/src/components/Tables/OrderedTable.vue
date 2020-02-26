@@ -9,7 +9,10 @@
         <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
         <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
         <md-table-cell class="icon">
-          <md-button class="md-just-icon md-simple md-danger" @click="deleteUser(item.id)">
+          <md-button
+            class="md-just-icon md-simple md-danger"
+            @click="deleteUser(item.id)"
+          >
             <md-icon>clear</md-icon>
             <md-tooltip md-direction="top">Delete</md-tooltip>
           </md-button>
