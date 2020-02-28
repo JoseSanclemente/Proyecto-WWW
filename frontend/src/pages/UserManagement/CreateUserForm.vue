@@ -34,7 +34,6 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field>
               <label>Adress</label>
-              {{ address }}
               <md-input v-model="address" type="text"></md-input>
             </md-field>
           </div>
@@ -52,7 +51,9 @@
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised md-primary" @click="createUser">Create User</md-button>
+            <md-button class="md-raised md-primary" @click="createUser"
+              >Create User</md-button
+            >
           </div>
         </div>
       </md-card-content>
@@ -61,7 +62,7 @@
 </template>
 <script>
 import axios from "axios";
-
+import { USER_CREATE } from "@/store/user";
 export default {
   name: "create-user-form",
   props: {
@@ -72,19 +73,18 @@ export default {
   },
   data() {
     return {
-      nationalID: "",
-      name: "",
-      dateOfBirth: "",
-      email: "",
-      address: "",
+      nationalID: "121212",
+      name: "luis",
+      dateOfBirth: "1988-01-01",
+      email: "lamnrique@truora.com",
+      address: "f",
       active: false,
-      role: ""
+      role: "f"
     };
   },
   methods: {
     createUser() {
-      const url = "http://127.0.0.1:8000/user/";
-      let payload = {
+      let user = {
         national_id: this.nationalID,
         name: this.name,
         date_of_birth: this.dateOfBirth,
@@ -94,14 +94,7 @@ export default {
         role: this.role
       };
 
-      axios
-        .post(url, payload)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error.response.data);
-        });
+      this.$store.dispatch(USER_CREATE, user);
     }
   }
 };

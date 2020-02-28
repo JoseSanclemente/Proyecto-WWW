@@ -9,7 +9,10 @@
         <md-table-cell md-label="Role">{{ item.date_of_birth }}</md-table-cell>
         <md-table-cell md-label="Salary">{{ item.email }}</md-table-cell>
         <md-table-cell class="icon">
-          <md-button class="md-just-icon md-simple md-danger" @click="deleteUser(item.id)">
+          <md-button
+            class="md-just-icon md-simple md-danger"
+            @click="deleteUser(item.user_id)"
+          >
             <md-icon>clear</md-icon>
             <md-tooltip md-direction="top">Delete</md-tooltip>
           </md-button>
@@ -22,7 +25,8 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-
+import { mapActions } from "vuex";
+import { USER_DELETE } from "@/store/user";
 export default {
   name: "ordered-table",
   props: {
@@ -41,19 +45,7 @@ export default {
     };
   },
   methods: {
-    deleteUser(id) {
-      const url = "http://127.0.0.1:8000/user/" + id + "/";
-
-      axios
-        .delete(url)
-        .then(response => {
-          console.log(response.data);
-          this.userList = this.userList.filter(user => user.id != id);
-        })
-        .catch(error => {
-          console.log(error.response.data);
-        });
-    }
+    ...mapActions([USER_DELETE])
   }
 };
 </script>

@@ -10,12 +10,18 @@
           <md-input v-model="username" type="text"></md-input>
         </md-field>
 
-        <md-button class="md-just-icon md-raised md-primary search-button" @click="searchUser">
+        <md-button
+          class="md-just-icon md-raised md-primary search-button"
+          @click="searchUser"
+        >
           <md-icon class="md-size-3x">search</md-icon>
         </md-button>
       </div>
       <md-card-content>
-        <ordered-table :userList="users" table-header-color="purple"></ordered-table>
+        <ordered-table
+          :userList="users"
+          table-header-color="purple"
+        ></ordered-table>
       </md-card-content>
     </md-card>
   </div>
@@ -24,7 +30,8 @@
 <script>
 import { OrderedTable } from "@/components";
 import axios from "axios";
-
+import { USERS_FETCH } from "@/store/user";
+import { mapGetters } from "vuex";
 export default {
   name: "search-user-form",
   props: {
@@ -33,28 +40,20 @@ export default {
       default: ""
     }
   },
+  computed: {
+    ...mapGetters(["users"])
+  },
   components: {
     OrderedTable
   },
   data() {
     return {
-      username: null,
-      users: []
+      username: null
     };
   },
   methods: {
     getUser() {
-      const url = "http://127.0.0.1:8000/user/";
-
-      axios
-        .get(url)
-        .then(response => {
-          console.log(response.data);
-          this.users = response.data;
-        })
-        .catch(error => {
-          console.log(error.response.data);
-        });
+      this.$store.dispatch(USERS_FETCH);
     },
 
     searchUser() {
