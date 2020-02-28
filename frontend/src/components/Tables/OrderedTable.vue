@@ -6,13 +6,10 @@
 
         <md-table-cell md-label="ID">{{ item.id }}</md-table-cell>
         <md-table-cell md-label="Username">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
-        <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+        <md-table-cell md-label="Role">{{ item.date_of_birth }}</md-table-cell>
+        <md-table-cell md-label="Salary">{{ item.email }}</md-table-cell>
         <md-table-cell class="icon">
-          <md-button
-            class="md-just-icon md-simple md-danger"
-            @click="deleteUser(item.id)"
-          >
+          <md-button class="md-just-icon md-simple md-danger" @click="deleteUser(item.id)">
             <md-icon>clear</md-icon>
             <md-tooltip md-direction="top">Delete</md-tooltip>
           </md-button>
@@ -23,6 +20,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import Vue from "vue";
+
 export default {
   name: "ordered-table",
   props: {
@@ -42,15 +42,17 @@ export default {
   },
   methods: {
     deleteUser(id) {
-      console.log("Hola:", id);
-      for (let i = 0; i < this.userList.length; i++) {
-        let user = this.userList[i];
+      const url = "http://127.0.0.1:8000/api/v1.0/user/" + id + "/";
 
-        if (user.id === id) {
-          this.userList.splice(this.userList.indexOf(user), 1);
-          return;
-        }
-      }
+      axios
+        .delete(url)
+        .then(response => {
+          console.log(response.data);
+          this.userList = this.userList.filter(user => user.id != id);
+        })
+        .catch(error => {
+          console.log(error.response.data);
+        });
     }
   }
 };
