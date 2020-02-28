@@ -1,6 +1,7 @@
 .DS_Store
-db.sqlite3
+www/db.sqlite3
 __pycache__/
 env
 .vscode
 migrations
+node_modules

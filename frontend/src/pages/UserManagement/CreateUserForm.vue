@@ -13,42 +13,41 @@
               <md-input v-model="nationalID" type="text"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-field>
-              <label>Name</label>
-              <md-input v-model="name" type="email"></md-input>
-            </md-field>
-          </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
-              <label>Date of birth</label>
-              <md-input v-model="dateOfBirth" type="text"></md-input>
+              <label>Name</label>
+              <md-input v-model="name" type="text"></md-input>
             </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-33">
+            <md-datepicker v-model="dateOfBirth">
+              <label>Select date</label>
+            </md-datepicker>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Email</label>
-              <md-input v-model="email" type="text"></md-input>
+              <md-input v-model="email" type="email"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-100">
+          <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
               <label>Adress</label>
               <md-input v-model="address" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-checkbox v-model="active">Active</md-checkbox>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
               <label for="userType">Role</label>
               <md-select v-model="role" name="movie" id="movie">
-                <md-option value="admin">Administrator</md-option>
-                <md-option value="manager">Manager</md-option>
-                <md-option value="operator">Operator</md-option>
+                <md-option value="Administrator">Administrator</md-option>
+                <md-option value="Manager">Manager</md-option>
+                <md-option value="Operator">Operator</md-option>
               </md-select>
             </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-50">
+            <md-checkbox v-model="active">Active</md-checkbox>
           </div>
           <div class="md-layout-item md-size-100 text-right">
             <md-button class="md-raised md-primary" @click="createUser"
@@ -62,6 +61,7 @@
 </template>
 <script>
 import axios from "axios";
+import moment from "moment";
 import { USER_CREATE } from "@/store/user";
 export default {
   name: "create-user-form",
@@ -75,26 +75,57 @@ export default {
     return {
       nationalID: "121212",
       name: "luis",
-      dateOfBirth: "1988-01-01",
+      dateOfBirth: "1988-12-10",
       email: "lamnrique@truora.com",
       address: "f",
       active: false,
       role: "f"
     };
   },
+
+  // TODO: Create a function to validate and notiy events
   methods: {
+    reset() {
+      this.nationalID = "";
+      this.name = "";
+      this.dateOfBirth = new Date().toString();
+      this.email = "";
+      this.address = "";
+      this.active = "";
+      this.role = "";
+    },
     createUser() {
       let user = {
         national_id: this.nationalID,
         name: this.name,
-        date_of_birth: this.dateOfBirth,
+        date_of_birth: moment(this.dateOfBirth).format("YYYY-MM-DD"),
         email: this.email,
         address: this.address,
         active: this.active,
         role: this.role
       };
-
-      this.$store.dispatch(USER_CREATE, user);
+      this.$store
+        .dispatch(USER_CREATE, user)
+        .then(response => {
+          this.reset();
+          this.$notify({
+            message: "User created",
+            icon: "add_alert",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "success"
+          });
+        })
+        .catch(error => {
+          console.log(error.response);
+          this.$notify({
+            message: "Please enter all fields",
+            icon: "error_outline",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
+        });
     }
   }
 };

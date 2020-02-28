@@ -78,7 +78,7 @@ export default {
 <style scoped>
 .search-card {
   display: flex;
-  margin: 0 0 2rem 1rem;
+  margin: 2rem 0 2rem 1rem;
 }
 
 .search-button {

@@ -3,11 +3,13 @@
     <md-table v-model="userList" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <div v-if="showNotFound">No users found.</div>
-
-        <md-table-cell md-label="ID">{{ item.id }}</md-table-cell>
+        <md-table-cell md-label="ID">{{ item.national_id }}</md-table-cell>
         <md-table-cell md-label="Username">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Role">{{ item.date_of_birth }}</md-table-cell>
-        <md-table-cell md-label="Salary">{{ item.email }}</md-table-cell>
+        <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
+        <md-table-cell md-label="Date of birth">{{
+          item.date_of_birth
+        }}</md-table-cell>
+        <md-table-cell md-label="Email">{{ item.email }}</md-table-cell>
         <md-table-cell class="icon">
           <md-button
             class="md-just-icon md-simple md-danger"
@@ -25,7 +27,6 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-import { mapActions } from "vuex";
 import { USER_DELETE } from "@/store/user";
 export default {
   name: "ordered-table",
@@ -45,7 +46,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions([USER_DELETE])
+    deleteUser(id) {
+      this.$store.dispatch(USER_DELETE, id);
+    }
   }
 };
 </script>
