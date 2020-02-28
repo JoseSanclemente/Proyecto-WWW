@@ -10,6 +10,10 @@
           item.date_of_birth
         }}</md-table-cell>
         <md-table-cell md-label="Email">{{ item.email }}</md-table-cell>
+        <md-table-cell md-label="Adress">{{ item.address }}</md-table-cell>
+        <md-table-cell md-label="Active">{{
+          item.active ? "yes" : "no"
+        }}</md-table-cell>
         <md-table-cell class="icon">
           <md-button
             class="md-just-icon md-simple md-danger"

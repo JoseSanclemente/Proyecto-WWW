@@ -5,17 +5,10 @@
         <h4 class="title">Search user</h4>
       </md-card-header>
       <div class="md-layout-item md-small-size-100 md-size-33 search-card">
-        <md-field>
-          <label>Username</label>
-          <md-input v-model="username" type="text"></md-input>
+        <md-field md-clearable>
+          <label>Filter</label>
+          <md-input v-model="filter" type="text"></md-input>
         </md-field>
-
-        <md-button
-          class="md-just-icon md-raised md-primary search-button"
-          @click="searchUser"
-        >
-          <md-icon class="md-size-3x">search</md-icon>
-        </md-button>
       </div>
       <md-card-content>
         <ordered-table
@@ -30,7 +23,7 @@
 <script>
 import { OrderedTable } from "@/components";
 import axios from "axios";
-import { USERS_FETCH } from "@/store/user";
+import { USERS_FETCH, USER_SET_FILTER } from "@/store/user";
 import { mapGetters } from "vuex";
 export default {
   name: "search-user-form",
@@ -43,30 +36,22 @@ export default {
   computed: {
     ...mapGetters(["users"])
   },
+  watch: {
+    filter: function(val) {
+      this.$store.commit(USER_SET_FILTER, val);
+    }
+  },
   components: {
     OrderedTable
   },
   data() {
     return {
-      username: null
+      filter: ""
     };
   },
   methods: {
     getUser() {
       this.$store.dispatch(USERS_FETCH);
-    },
-
-    searchUser() {
-      let newUserList = [];
-      for (let i = 0; i < this.users.length; i++) {
-        let user = this.users[i];
-
-        if (user.name === this.username) {
-          newUserList.push(user);
-          this.users = newUserList;
-          return;
-        }
-      }
     }
   },
   created() {

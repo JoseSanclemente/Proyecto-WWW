@@ -4,6 +4,7 @@ export const USER_SET = "setUser";
 export const USER_REMOVE = "deleteUser";
 export const USERS_SET = "setUsers";
 export const USER_ADD = "addUser";
+export const USER_SET_FILTER = "userSetFilter";
 
 const mutations = {
   [USER_ADD]: (state, user) => {
@@ -21,6 +22,9 @@ const mutations = {
     for (let user of users) {
       Vue.set(state.users, user.user_id, user);
     }
+  },
+  [USER_SET_FILTER]: (state, filter) => {
+    state.filter = filter;
   }
 };
 

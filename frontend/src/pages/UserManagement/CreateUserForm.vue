@@ -63,6 +63,8 @@
 import axios from "axios";
 import moment from "moment";
 import { USER_CREATE } from "@/store/user";
+
+const DATE_FORMAT = "YYYY-MM-DD";
 export default {
   name: "create-user-form",
   props: {
@@ -88,17 +90,18 @@ export default {
     reset() {
       this.nationalID = "";
       this.name = "";
-      this.dateOfBirth = new Date().toString();
+      this.dateOfBirth = moment().format(DATE_FORMAT);
       this.email = "";
       this.address = "";
       this.active = "";
       this.role = "";
     },
+
     createUser() {
       let user = {
         national_id: this.nationalID,
         name: this.name,
-        date_of_birth: moment(this.dateOfBirth).format("YYYY-MM-DD"),
+        date_of_birth: moment(this.dateOfBirth).format(DATE_FORMAT),
         email: this.email,
         address: this.address,
         active: this.active,

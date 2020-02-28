@@ -1,6 +1,7 @@
 const initialState = {
   users: {},
-  user: {}
+  user: {},
+  filter: ""
 };
 
 const state = { ...initialState };
