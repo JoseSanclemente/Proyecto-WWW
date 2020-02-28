@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'transformer',
+    'transmodel',
     'subestation',
     'client',
     'rest_framework',
