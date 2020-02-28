@@ -32,7 +32,7 @@
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
-              <label>Adress</label>
+              <label>Address</label>
               <md-input v-model="address" type="text"></md-input>
             </md-field>
           </div>
@@ -74,9 +74,9 @@ export default {
   data() {
     return {
       nationalID: "121212",
-      name: "luis",
+      name: "John Doe",
       dateOfBirth: "1988-12-10",
-      email: "lamnrique@truora.com",
+      email: "john@doe.com",
       address: "f",
       active: false,
       role: "f"
