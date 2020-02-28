@@ -1,8 +1,8 @@
 from rest_framework import routers
 
-from .viewsets import ElectricaribeViewSets
+from .viewsets import UserViewSets
 
 router = routers.SimpleRouter()
-router.register('dummy', ElectricaribeViewSets)
+router.register('user', UserViewSets)
 
 urlpatterns = router.urls

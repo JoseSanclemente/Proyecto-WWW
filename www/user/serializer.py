@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Electricaribe
+from .models import User
 
 
 # This class is used to transport this model through HTTP
-class ElectricaribeSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Electricaribe
+        model = User
         fields = '__all__'

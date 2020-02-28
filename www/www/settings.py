@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'electricaribe',
+    'user',
     'rest_framework',
     'corsheaders',
 ]
