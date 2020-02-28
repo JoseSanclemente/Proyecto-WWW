@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'subestation',
     'client',
     'contract',
+    'period',
     'rest_framework',
     'corsheaders',
 ]

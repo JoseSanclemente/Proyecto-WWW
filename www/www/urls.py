@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include('transmodel.urls')),
     path('', include('client.urls')),
     path('', include('client.urls')),
-    path('', include('contract.urls'))
+    path('', include('contract.urls')),
+    path('', include('period.urls'))
 ]
