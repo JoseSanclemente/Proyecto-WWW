@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user.urls')),
     path('', include('subestation.urls')),
-    path('', include('transformer.urls'))
+    path('', include('transformer.urls')),
+    path('', include('client.urls'))
 ]

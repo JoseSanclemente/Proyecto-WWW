@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user',
     'transformer',
     'subestation',
+    'client',
     'rest_framework',
     'corsheaders',
 ]
