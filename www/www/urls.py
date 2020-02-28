@@ -22,5 +22,7 @@ urlpatterns = [
     path('', include('subestation.urls')),
     path('', include('transformer.urls')),
     path('', include('transmodel.urls')),
-    path('', include('client.urls'))
+    path('', include('client.urls')),
+    path('', include('client.urls')),
+    path('', include('contract.urls'))
 ]

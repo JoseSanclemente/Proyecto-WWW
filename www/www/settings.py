@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'transmodel',
     'subestation',
     'client',
+    'contract',
     'rest_framework',
     'corsheaders',
 ]
