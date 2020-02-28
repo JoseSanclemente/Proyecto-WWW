@@ -2,7 +2,6 @@
   <div>
     <md-table v-model="userList" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <div v-if="showNotFound">No users found.</div>
         <md-table-cell md-label="ID">{{ item.national_id }}</md-table-cell>
         <md-table-cell md-label="Username">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
@@ -25,6 +24,9 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+    <md-label>
+      <div v-show="userList.length === 0">No users found.</div>
+    </md-label>
   </div>
 </template>
 
@@ -43,11 +45,6 @@ export default {
       type: Array,
       default: null
     }
-  },
-  data() {
-    return {
-      showNotFound: false
-    };
   },
   methods: {
     deleteUser(id) {
