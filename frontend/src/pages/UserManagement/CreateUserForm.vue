@@ -9,25 +9,25 @@
         <div class="md-layout">
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
-              <label>User Name</label>
+              <label>National ID</label>
               <md-input v-model="username" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
-              <label>Email Address</label>
+              <label>Name</label>
               <md-input v-model="emailadress" type="email"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
-              <label>First Name</label>
+              <label>Date of birth</label>
               <md-input v-model="firstname" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
-              <label>Last Name</label>
+              <label>Email</label>
               <md-input v-model="lastname" type="text"></md-input>
             </md-field>
           </div>
@@ -39,9 +39,12 @@
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
-              <label>City</label>
+              <label>Role</label>
               <md-input v-model="city" type="text"></md-input>
             </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-33">
+            <md-checkbox v-model="boolean">Boolean</md-checkbox>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
@@ -80,6 +83,12 @@ export default {
       city: null,
       userType: null
     };
+  },
+
+  filters: {
+    jsonStringify(val) {
+      return JSON.stringify(val);
+    }
   }
 };
 </script>
