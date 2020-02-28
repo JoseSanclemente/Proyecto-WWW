@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     deleteUser(id) {
-      const url = "http://127.0.0.1:8000/api/v1.0/user/" + id + "/";
+      const url = "http://127.0.0.1:8000/user/" + id + "/";
 
       axios
         .delete(url)
