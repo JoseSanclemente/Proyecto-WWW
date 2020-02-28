@@ -1,8 +1,8 @@
 from rest_framework import routers
 
-from .viewsets import ContractViewSets
+from .viewsets import PeriodViewSets
 
 router = routers.SimpleRouter()
-router.register('contract', ContractViewSets)
+router.register('contract', PeriodViewSets)
 
 urlpatterns = router.urls

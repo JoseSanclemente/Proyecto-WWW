@@ -13,43 +13,41 @@
               <md-input v-model="nationalID" type="text"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-field>
-              <label>Name</label>
-              <md-input v-model="name" type="email"></md-input>
-            </md-field>
-          </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
-              <label>Date of birth</label>
-              <md-input v-model="dateOfBirth" type="text"></md-input>
+              <label>Name</label>
+              <md-input v-model="name" type="text"></md-input>
             </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-33">
+            <md-datepicker v-model="dateOfBirth">
+              <label>Select date</label>
+            </md-datepicker>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Email</label>
-              <md-input v-model="email" type="text"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field>
-              <label>Adress</label>
-              {{ address }}
-              <md-input v-model="address" type="text"></md-input>
+              <md-input v-model="email" type="email"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-checkbox v-model="active">Active</md-checkbox>
+            <md-field>
+              <label>Address</label>
+              <md-input v-model="address" type="text"></md-input>
+            </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
               <label for="userType">Role</label>
               <md-select v-model="role" name="movie" id="movie">
-                <md-option value="admin">Administrator</md-option>
-                <md-option value="manager">Manager</md-option>
-                <md-option value="operator">Operator</md-option>
+                <md-option value="Administrator">Administrator</md-option>
+                <md-option value="Manager">Manager</md-option>
+                <md-option value="Operator">Operator</md-option>
               </md-select>
             </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-50">
+            <md-checkbox v-model="active">Active</md-checkbox>
           </div>
           <div class="md-layout-item md-size-100 text-right">
             <md-button class="md-raised md-primary" @click="createUser">Create User</md-button>
@@ -81,6 +79,8 @@ export default {
       role: ""
     };
   },
+
+  // TODO: Create a function to validate and notiy events
   methods: {
     createUser() {
       const url = "http://127.0.0.1:8000/user/";
@@ -94,13 +94,34 @@ export default {
         role: this.role
       };
 
-      axios
+      axios // TODO: Move this to a separate file
         .post(url, payload)
         .then(response => {
-          console.log(response.data);
+          this.nationalID = "";
+          this.name = "";
+          this.dateOfBirth = "";
+          this.email = "";
+          this.address = "";
+          this.active = "";
+          this.role = "";
+
+          this.$notify({
+            message: "User created",
+            icon: "add_alert",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "success"
+          });
         })
         .catch(error => {
           console.log(error.response.data);
+          this.$notify({
+            message: "Please enter all fields",
+            icon: "error_outline",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
         });
     }
   }

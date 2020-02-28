@@ -12,9 +12,11 @@
         </div>
       </a>
 
-      <a href="#/" target="_blank" class="simple-text logo-normal">{{
+      <a href="#/" target="_blank" class="simple-text logo-normal">
+        {{
         title
-      }}</a>
+        }}
+      </a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -54,7 +56,7 @@ export default {
     },
     activeColor: {
       type: String,
-      default: "green",
+      default: "purple",
       validator: value => {
         let acceptedValues = ["", "purple", "blue", "green", "orange", "red"];
         return acceptedValues.indexOf(value) !== -1;

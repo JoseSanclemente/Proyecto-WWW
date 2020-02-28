@@ -3,10 +3,6 @@
     <notifications></notifications>
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/dashboard">
-        <md-icon>dashboard</md-icon>
-        <p>Dashboard</p>
-      </sidebar-link>
       <sidebar-link to="/user-management">
         <md-icon>supervisor_account</md-icon>
         <p>User Management</p>
