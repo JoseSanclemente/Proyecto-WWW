@@ -53,6 +53,12 @@ INSTALLED_APPS = [
     'period',
     'rest_framework',
     'corsheaders',
+    'invoice'
+]
+
+CORS_ALLOW_HEADERS = [
+    'bearer-token',
+    'content-type'
 ]
 
 MIDDLEWARE = [
