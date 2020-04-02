@@ -50,7 +50,9 @@
             <md-checkbox v-model="active">Active</md-checkbox>
           </div>
           <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised md-primary" @click="createUser">Create User</md-button>
+            <md-button class="md-raised md-primary" @click="createUser"
+              >Create User</md-button
+            >
           </div>
         </div>
       </md-card-content>

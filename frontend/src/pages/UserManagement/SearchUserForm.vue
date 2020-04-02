@@ -10,12 +10,18 @@
           <md-input v-model="username" type="text"></md-input>
         </md-field>
 
-        <md-button class="md-just-icon md-raised md-primary search-button" @click="searchUser">
+        <md-button
+          class="md-just-icon md-raised md-primary search-button"
+          @click="searchUser"
+        >
           <md-icon class="md-size-3x">search</md-icon>
         </md-button>
       </div>
       <md-card-content>
-        <ordered-table :userList="users" table-header-color="purple"></ordered-table>
+        <ordered-table
+          :userList="users"
+          table-header-color="purple"
+        ></ordered-table>
       </md-card-content>
     </md-card>
   </div>
