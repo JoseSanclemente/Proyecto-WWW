@@ -1,18 +1,20 @@
-import * as api from './api'
+import api from "./api";
 
-export const create = user => {
-    return api.post('user', user)
-}
+const create = user => {
+  return api.post("user", user);
+};
 
 // todo: add pagination
-export const list = (page=0) => {
-    return Api.get('user')
-}
+const list = (page = 0) => {
+  return api.get("user");
+};
 
-export const del = id =>  {
-    return Api.del(`user/${id}`)
-}
+const del = id => {
+  return api.del(`user/${id}`);
+};
 
-export const  get = id => {
-    return api.get(`user/${id}`)
-}
+const get = id => {
+  return api.get(`user/${id}`);
+};
+
+export default { list, del, get, create };

@@ -8,6 +8,7 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UserManagement from "@/pages/UserManagement.vue";
+import AssetsManagement from "@/pages/AssetsManagement.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
         path: "user-management",
         name: "User Management",
         component: UserManagement
+      },
+      {
+        path: "assets-management",
+        name: "Assets Management",
+        component: AssetsManagement
       },
       {
         path: "user",

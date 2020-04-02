@@ -6,10 +6,15 @@
         <md-table-cell md-label="ID">{{ item.national_id }}</md-table-cell>
         <md-table-cell md-label="Username">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Role">{{ item.role }}</md-table-cell>
-        <md-table-cell md-label="Date of birth">{{ item.date_of_birth }}</md-table-cell>
+        <md-table-cell md-label="Date of birth">{{
+          item.date_of_birth
+        }}</md-table-cell>
         <md-table-cell md-label="Email">{{ item.email }}</md-table-cell>
         <md-table-cell class="icon">
-          <md-button class="md-just-icon md-simple md-danger" @click="deleteUser(item.user_id)">
+          <md-button
+            class="md-just-icon md-simple md-danger"
+            @click="deleteUser(item.user_id)"
+          >
             <md-icon>clear</md-icon>
             <md-tooltip md-direction="top">Delete</md-tooltip>
           </md-button>

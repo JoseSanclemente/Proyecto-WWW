@@ -13,9 +13,7 @@
       </a>
 
       <a href="#/" target="_blank" class="simple-text logo-normal">
-        {{
-        title
-        }}
+        {{ title }}
       </a>
     </div>
     <div class="sidebar-wrapper">
