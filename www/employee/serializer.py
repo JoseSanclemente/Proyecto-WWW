@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import User
+from .models import Employee
 
 
 # This class is used to transport this model through HTTP
-class UserSerializer(serializers.ModelSerializer):
+class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Employee
         fields = '__all__'
 
         
