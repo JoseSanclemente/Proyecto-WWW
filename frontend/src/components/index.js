@@ -8,6 +8,7 @@ import NavTabsTable from "./Tables/NavTabsTable.vue";
 import OrderedTable from "./Tables/OrderedTable.vue";
 import SimpleTable from "./Tables/SimpleTable.vue";
 import SubstationsTable from "./Tables/SubstationsTable.vue";
+import TransformersTable from "./Tables/TransformersTable.vue";
 
 export {
   ChartCard,
@@ -16,5 +17,6 @@ export {
   NavTabsTable,
   OrderedTable,
   SimpleTable,
-  SubstationsTable
+  SubstationsTable,
+  TransformersTable
 };

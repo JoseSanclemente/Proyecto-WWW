@@ -1,16 +1,19 @@
 <template>
   <div>
-    <md-table v-model="substationsList" :table-header-color="tableHeaderColor">
+    <md-table v-model="transformersList" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <div v-if="showNotFound">No substations found</div>
-        <md-table-cell md-label="ID">{{ item.sub_id }}</md-table-cell>
+        <div v-if="transformersList.length <= 0">No transformers found</div>
+        <md-table-cell md-label="ID">{{ item.trans_id }}</md-table-cell>
         <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Addres">{{ item.address }}</md-table-cell>
-        <md-table-cell md-label="Active">{{ item.active }}</md-table-cell>
+        <md-table-cell md-label="Longitude">{{ item.longitude }}</md-table-cell>
+        <md-table-cell md-label="Latitude">{{ item.latitude }}</md-table-cell>
+        <md-table-cell md-label="Transformer model">{{
+          item.transmodel
+        }}</md-table-cell>
         <md-table-cell class="icon">
           <md-button
             class="md-just-icon md-simple md-info"
-            @click="$emit('substation-details', item.sub_id)"
+            @click="$emit('transformer-details', item.trans_id)"
           >
             <md-icon>visibility</md-icon>
             <md-tooltip md-direction="top">Details</md-tooltip>
@@ -32,13 +35,14 @@ import axios from "axios";
 import Vue from "vue";
 
 export default {
-  name: "substations-table",
+  name: "transformers-table",
   props: {
     tableHeaderColor: {
       type: String,
       default: ""
     },
-    substationsList: {
+
+    transformersList: {
       type: Array,
       default: () => [{ name: "default" }]
     }
