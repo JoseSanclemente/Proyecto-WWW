@@ -14,6 +14,9 @@
         <substations-table
           :substationsList="substationsFiltered"
           table-header-color="purple"
+          v-on:substation-details="
+            substationID => $emit('substation-details', substationID)
+          "
         ></substations-table>
       </md-card-content>
     </md-card>

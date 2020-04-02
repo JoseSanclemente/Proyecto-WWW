@@ -1,8 +1,10 @@
 import subestation from "@/core/services/substation.js";
+import transformer from "@/core/services/transformer.js";
 
 // initial state
 const state = {
-  substations: []
+  substations: [],
+  transformers: []
 };
 
 // getters
@@ -14,6 +16,12 @@ const actions = {
     subestation.list().then(response => {
       commit("setSubstations", response.data);
     });
+  },
+
+  loadAllTransformers({ commit }) {
+    transformer.list().then(response => {
+      commit("setTransformers", response.data);
+    });
   }
 };
 
@@ -21,6 +29,10 @@ const actions = {
 const mutations = {
   setSubstations(state, subestations) {
     state.substations = subestations;
+  },
+
+  setTransformers(state, transformers) {
+    state.transformers = transformers;
   }
 };
 
