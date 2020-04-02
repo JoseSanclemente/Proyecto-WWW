@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     'period',
     'rest_framework',
     'corsheaders',
-    'invoice'
+    'invoice',
+    'meter',
+    'metmodel',
+    'reads'
 ]
 
 CORS_ALLOW_HEADERS = [
