@@ -10,6 +10,7 @@ import SimpleTable from "./Tables/SimpleTable.vue";
 import SubstationsTable from "./Tables/SubstationsTable.vue";
 import TransformersTable from "./Tables/TransformersTable.vue";
 import ClientsTable from "./Tables/ClientsTable.vue";
+import ContractsTable from "./Tables/ContractsTable.vue";
 
 export {
   ChartCard,
@@ -20,5 +21,6 @@ export {
   SimpleTable,
   SubstationsTable,
   TransformersTable,
-  ClientsTable
+  ClientsTable,
+  ContractsTable
 };
