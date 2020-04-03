@@ -2,33 +2,41 @@
   <div>
     <md-card>
       <md-card-header :data-background-color="dataBackgroundColor">
-        <h4 class="title">Search transformer</h4>
+        <h4 class="title">Search Contract</h4>
       </md-card-header>
       <div class="md-layout-item md-small-size-100 md-size-33 search-card">
         <md-field>
-          <label>Transformer name</label>
-          <md-input v-model="transformerName" type="text"></md-input>
+          <label>Predial</label>
+          <md-input v-model="predialNumber" type="text"></md-input>
         </md-field>
       </div>
       <md-card-content>
-        <transformers-table
-          :transformersList="transformersFiltered"
+        <contracts-table
+          :contractsList="contractsFiltered"
           table-header-color="purple"
-          v-on:transformer-details="
-            transformerID => $emit('transformer-details', transformerID)
+          v-on:contract-details="
+            contractID => $emit('transformer-details', contractID)
           "
-        ></transformers-table>
+        ></contracts-table>
+        <md-button
+          class="md-info"
+          @click="showClientsOverview"
+          v-if="clientSelected"
+        >
+          <md-icon>navigate_before</md-icon>Clients
+          <md-tooltip md-direction="top">Back to clients overview</md-tooltip>
+        </md-button>
       </md-card-content>
     </md-card>
   </div>
 </template>
 
 <script>
-import { TransformersTable } from "@/components";
+import { ContractsTable } from "@/components";
 import { mapState } from "vuex";
 
 export default {
-  name: "search-transformer-form",
+  name: "search-contract-form",
 
   props: {
     dataBackgroundColor: {
@@ -36,51 +44,52 @@ export default {
       default: ""
     },
 
-    selectedSubstation: {
+    selectedClientID: {
       type: String,
       default: ""
     }
   },
 
   components: {
-    TransformersTable
+    ContractsTable
   },
 
   data() {
     return {
-      transformerName: ""
+      predialNumber: ""
     };
   },
 
   computed: {
     ...mapState({
-      transformers: state => state.assetsManagement.transformers
+      contracts: state => state.clientsManagement.contracts
     }),
 
-    transformersFiltered: function() {
-      let newTransformersList = [];
-      for (let i = 0; i < this.transformers.length; i++) {
-        let transformer = this.transformers[i];
+    contractsFiltered: function() {
+      let newContractsList = [];
+      for (let i = 0; i < this.contracts.length; i++) {
+        let contract = this.contracts[i];
 
-        let normTransformerName = transformer.name
+        let normPredialNumber = contract.predial
+          .toString()
           .split(" ")
           .join("")
           .toUpperCase();
 
-        let normSearchTerm = this.transformerName
+        let normSearchTerm = this.predialNumber
           .split(" ")
           .join("")
           .toUpperCase();
 
         if (
-          normTransformerName.includes(normSearchTerm) &&
-          transformer.subestation === this.selectedSubstation
+          normPredialNumber.includes(normSearchTerm) &&
+          contract.client_id === this.selectedClientID
         ) {
-          newTransformersList.push(transformer);
+          newContractsList.push(contract);
         }
       }
 
-      return newTransformersList;
+      return newContractsList;
     }
   }
 };

@@ -85,7 +85,7 @@ export default {
   // TODO: Create a function to validate and notiy events
   methods: {
     createUser() {
-      const url = "http://127.0.0.1:8000/user/";
+      const url = "http://127.0.0.1:8000/employee/";
       let payload = {
         national_id: this.nationalID,
         name: this.name,

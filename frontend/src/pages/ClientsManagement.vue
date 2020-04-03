@@ -7,8 +7,7 @@
           @click="showClientsOverview"
           v-if="clientSelected"
         >
-          <md-icon>navigate_before</md-icon>
-          Clients
+          <md-icon>navigate_before</md-icon>Clients
           <md-tooltip md-direction="top">Back to clients overview</md-tooltip>
         </md-button>
         <create-client-form
@@ -24,12 +23,11 @@
           v-if="clientSelected"
           data-background-color="purple"
           :clientID="clientID"
-        >
-        </client-details>
+        ></client-details>
         <search-contract-form
           v-if="clientSelected"
           data-background-color="purple"
-          :clientlientID="clientID"
+          :selectedClientID="clientID"
         ></search-contract-form>
       </div>
     </div>
@@ -37,13 +35,19 @@
 </template>
 
 <script>
-import { CreateClientForm, SearchClientForm, ClientDetails } from "@/pages";
+import {
+  CreateClientForm,
+  SearchClientForm,
+  ClientDetails,
+  SearchContractForm
+} from "@/pages";
 
 export default {
   components: {
     CreateClientForm,
     SearchClientForm,
-    ClientDetails
+    ClientDetails,
+    SearchContractForm
   },
 
   data() {
@@ -61,6 +65,7 @@ export default {
     showClientDetails: function(clientID) {
       this.clientSelected = true;
       this.clientID = clientID;
+      this.$store.dispatch("clientsManagement/loadAllContracts");
     },
 
     showClientsOverview: function() {

@@ -11,6 +11,7 @@ import SearchTransformerForm from "../pages/AssetsManagement/SearchTransformerFo
 import CreateClientForm from "../pages/ClientsManagement/CreateClientForm.vue";
 import SearchClientForm from "../pages/ClientsManagement/SearchClientForm.vue";
 import ClientDetails from "../pages/ClientsManagement/ClientDetails.vue";
+import SearchContractForm from "../pages/ClientsManagement/SearchContractForm.vue";
 
 export {
   UserCard,
@@ -22,5 +23,6 @@ export {
   SearchTransformerForm,
   CreateClientForm,
   SearchClientForm,
-  ClientDetails
+  ClientDetails,
+  SearchContractForm
 };
