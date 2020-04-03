@@ -29,5 +29,7 @@ urlpatterns = [
     path('', include('period.urls')),
     path('', include('meter.urls')),
     path('', include('metmodel.urls')),
-    path('', include('reads.urls'))
+    path('', include('reads.urls')),
+    path('', include('payment.urls')),
+    path('', include('invoice.urls')),
 ]

@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'invoice',
     'meter',
     'metmodel',
-    'reads'
+    'reads',
+    'payment',
 ]
 
 CORS_ALLOW_HEADERS = [
