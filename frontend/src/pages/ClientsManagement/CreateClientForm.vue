@@ -108,6 +108,8 @@ export default {
           this.address = "";
           this.active = false;
           this.dateOfBirth = "";
+
+          this.$store.dispatch("clientsManagement/loadAllClients");
         })
         .catch(error => {
           console.log(error.response.data);

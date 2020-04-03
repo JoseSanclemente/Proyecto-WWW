@@ -10,6 +10,7 @@ import SubstationDetails from "../pages/AssetsManagement/SubstationDetails.vue";
 import SearchTransformerForm from "../pages/AssetsManagement/SearchTransformerForm.vue";
 import CreateClientForm from "../pages/ClientsManagement/CreateClientForm.vue";
 import SearchClientForm from "../pages/ClientsManagement/SearchClientForm.vue";
+import ClientDetails from "../pages/ClientsManagement/ClientDetails.vue";
 
 export {
   UserCard,
@@ -20,5 +21,6 @@ export {
   SubstationDetails,
   SearchTransformerForm,
   CreateClientForm,
-  SearchClientForm
+  SearchClientForm,
+  ClientDetails
 };
