@@ -9,6 +9,7 @@ import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UserManagement from "@/pages/UserManagement.vue";
 import AssetsManagement from "@/pages/AssetsManagement.vue";
+import ClientsManagement from "@/pages/ClientsManagement.vue";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
         path: "user-management",
         name: "User Management",
         component: UserManagement
+      },
+      {
+        path: "clients-management",
+        name: "Clients Management",
+        component: ClientsManagement
       },
       {
         path: "assets-management",

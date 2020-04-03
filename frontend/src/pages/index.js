@@ -8,6 +8,8 @@ import SearchUserForm from "../pages/UserManagement/SearchUserForm.vue";
 import SearchSubstationForm from "../pages/AssetsManagement/SearchSubstationForm.vue";
 import SubstationDetails from "../pages/AssetsManagement/SubstationDetails.vue";
 import SearchTransformerForm from "../pages/AssetsManagement/SearchTransformerForm.vue";
+import CreateClientForm from "../pages/ClientsManagement/CreateClientForm.vue";
+import SearchClientForm from "../pages/ClientsManagement/SearchClientForm.vue";
 
 export {
   UserCard,
@@ -16,5 +18,7 @@ export {
   SearchUserForm,
   SearchSubstationForm,
   SubstationDetails,
-  SearchTransformerForm
+  SearchTransformerForm,
+  CreateClientForm,
+  SearchClientForm
 };

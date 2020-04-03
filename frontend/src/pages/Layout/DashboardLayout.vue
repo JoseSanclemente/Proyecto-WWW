@@ -7,6 +7,10 @@
         <md-icon>supervisor_account</md-icon>
         <p>User Management</p>
       </sidebar-link>
+      <sidebar-link to="/clients-management">
+        <md-icon>account_box</md-icon>
+        <p>Clients Management</p>
+      </sidebar-link>
       <sidebar-link to="/assets-management">
         <md-icon>offline_bolt</md-icon>
         <p>Assets Management</p>

@@ -3,14 +3,14 @@
     <div class="assets-management">
       <div class="management-form">
         <md-button
-            class="md-info"
-            @click="showSubstationsList"
-            v-if="selectedSubstation"
-          >
-            <md-icon>navigate_before</md-icon>
-            Substations list
-            <md-tooltip md-direction="top">Back to substations list</md-tooltip>
-          </md-button>
+          class="md-info"
+          @click="showSubstationsList"
+          v-if="selectedSubstation"
+        >
+          <md-icon>navigate_before</md-icon>
+          Substations list
+          <md-tooltip md-direction="top">Back to substations list</md-tooltip>
+        </md-button>
         <search-substation-form
           data-background-color="purple"
           v-on:substation-details="showSubstationDetails"
@@ -50,7 +50,7 @@ export default {
   data: function() {
     return {
       substationID: "",
-      selectedSubstation: false,
+      selectedSubstation: false
     };
   },
 
@@ -66,7 +66,7 @@ export default {
     },
 
     showSubstationsList: function() {
-      this.selectedSubstation =false;
+      this.selectedSubstation = false;
     }
   }
 };

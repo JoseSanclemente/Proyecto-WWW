@@ -72,7 +72,10 @@ export default {
           .join("")
           .toUpperCase();
 
-        if (normTransformerName.includes(normSearchTerm) && transformer.subestation === this.selectedSubstation) {
+        if (
+          normTransformerName.includes(normSearchTerm) &&
+          transformer.subestation === this.selectedSubstation
+        ) {
           newTransformersList.push(transformer);
         }
       }
