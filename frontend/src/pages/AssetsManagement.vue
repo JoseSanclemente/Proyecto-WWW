@@ -2,15 +2,11 @@
   <div class="content">
     <div class="assets-management">
       <div class="management-form">
-        <md-button
-          class="md-info"
-          @click="showSubstationsList"
-          v-if="selectedSubstation"
-        >
-          <md-icon>navigate_before</md-icon>
-          Substations list
+        <md-button class="md-info" @click="showSubstationsList" v-if="selectedSubstation">
+          <md-icon>navigate_before</md-icon>Substations list
           <md-tooltip md-direction="top">Back to substations list</md-tooltip>
         </md-button>
+        <create-substation-form data-background-color="purple" v-if="!selectedSubstation"></create-substation-form>
         <search-substation-form
           data-background-color="purple"
           v-on:substation-details="showSubstationDetails"
@@ -20,8 +16,7 @@
           v-if="selectedSubstation"
           data-background-color="purple"
           :substationID="substationID"
-        >
-        </substation-details>
+        ></substation-details>
         <search-transformer-form
           v-if="selectedSubstation"
           data-background-color="purple"
@@ -37,14 +32,16 @@
 import {
   SearchSubstationForm,
   SubstationDetails,
-  SearchTransformerForm
+  SearchTransformerForm,
+  CreateSubstationForm
 } from "@/pages";
 import { mapActions } from "vuex";
 export default {
   components: {
     SearchSubstationForm,
     SubstationDetails,
-    SearchTransformerForm
+    SearchTransformerForm,
+    CreateSubstationForm
   },
 
   data: function() {
@@ -71,11 +68,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.management-form {
-  display: block;
-  margin: 0 auto;
-  width: 90%;
-}
-</style>

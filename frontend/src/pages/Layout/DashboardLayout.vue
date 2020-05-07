@@ -3,6 +3,10 @@
     <notifications></notifications>
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
+      <sidebar-link to="/dashboard">
+        <md-icon>supervisor_account</md-icon>
+        <p>Dashboard</p>
+      </sidebar-link>
       <sidebar-link to="/user-management">
         <md-icon>supervisor_account</md-icon>
         <p>User Management</p>
@@ -28,8 +32,6 @@
       <top-navbar></top-navbar>
 
       <dashboard-content></dashboard-content>
-
-      <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
   </div>
 </template>
@@ -44,7 +46,6 @@ export default {
   components: {
     TopNavbar,
     DashboardContent,
-    ContentFooter,
     MobileMenu
   }
 };

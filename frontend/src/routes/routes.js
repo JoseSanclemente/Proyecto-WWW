@@ -10,8 +10,13 @@ import Notifications from "@/pages/Notifications.vue";
 import UserManagement from "@/pages/UserManagement.vue";
 import AssetsManagement from "@/pages/AssetsManagement.vue";
 import ClientsManagement from "@/pages/ClientsManagement.vue";
+import Login from "@/pages/Login.vue";
 
 const routes = [
+  {
+    path: "/login",
+    component: Login
+  },
   {
     path: "/",
     component: DashboardLayout,

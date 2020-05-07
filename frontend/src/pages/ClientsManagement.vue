@@ -2,28 +2,17 @@
   <div class="content">
     <div class="user-management">
       <div class="management-form">
-        <md-button
-          class="md-info"
-          @click="showClientsOverview"
-          v-if="clientSelected"
-        >
+        <md-button class="md-info" @click="showClientsOverview" v-if="clientSelected">
           <md-icon>navigate_before</md-icon>Clients
           <md-tooltip md-direction="top">Back to clients overview</md-tooltip>
         </md-button>
-        <create-client-form
-          v-if="!clientSelected"
-          data-background-color="purple"
-        ></create-client-form>
+        <create-client-form v-if="!clientSelected" data-background-color="purple"></create-client-form>
         <search-client-form
           v-if="!clientSelected"
           v-on:client-details="showClientDetails"
           data-background-color="purple"
         ></search-client-form>
-        <client-details
-          v-if="clientSelected"
-          data-background-color="purple"
-          :clientID="clientID"
-        ></client-details>
+        <client-details v-if="clientSelected" data-background-color="purple" :clientID="clientID"></client-details>
         <search-contract-form
           v-if="clientSelected"
           data-background-color="purple"
@@ -74,11 +63,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.management-form {
-  display: block;
-  margin: 0 auto;
-  width: 90%;
-}
-</style>

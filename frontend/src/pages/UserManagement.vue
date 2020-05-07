@@ -1,29 +1,34 @@
 <template>
-  <div class="content">
-    <div class="user-management">
-      <div class="management-form">
-        <create-user-form data-background-color="purple"></create-user-form>
-        <search-user-form data-background-color="purple"></search-user-form>
+  <div>
+    <div>
+      <div class="section">
+        <user-create-dialog></user-create-dialog>
+      </div>
+      <div class="section">
+        <users-table data-background-color="purple"></users-table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { CreateUserForm, SearchUserForm } from "@/pages";
+import UserCreateDialog from "@/components/UserManagement/UserCreateDialog.vue";
+import UsersTable from "@/components/UserManagement/UsersTable.vue";
 
 export default {
+  data() {
+    return {
+      showDialog: false
+    };
+  },
   components: {
-    CreateUserForm,
-    SearchUserForm
+    UsersTable,
+    UserCreateDialog
   }
 };
 </script>
-
 <style scoped>
-.management-form {
-  display: block;
-  margin: 0 auto;
-  width: 90%;
+.section {
+  margin: 1em;
 }
 </style>
