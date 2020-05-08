@@ -1,5 +1,5 @@
-import subestation from "@/core/services/substation.js";
-import transformer from "@/core/services/transformer.js";
+import subestation from "@/services/substation.js";
+import transformer from "@/services/transformer.js";
 
 // initial state
 const state = {

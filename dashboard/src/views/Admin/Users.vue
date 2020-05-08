@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import UserTable from "@/components/UserTable.vue";
-import UserForm from "@/components/UserForm.vue";
+import UserTable from "@/components/user/UserTable.vue";
+import UserForm from "@/components/user/UserForm.vue";
 
 export default {
   name: "Users",

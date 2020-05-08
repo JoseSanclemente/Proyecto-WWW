@@ -122,7 +122,7 @@ import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "client-form",
+  name: "consumer-form",
   mixins: [validationMixin],
   props: {
     value: {

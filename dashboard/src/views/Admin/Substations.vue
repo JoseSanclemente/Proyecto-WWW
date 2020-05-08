@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import SubstationTable from "@/components/SubstationTable.vue";
-import SubstationForm from "@/components/SubstationForm.vue";
+import SubstationTable from "@/components/substation/SubstationTable.vue";
+import SubstationForm from "@/components/substation/SubstationForm.vue";
 
 export default {
   name: "Substations",

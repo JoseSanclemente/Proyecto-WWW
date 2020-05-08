@@ -1,5 +1,5 @@
-import clients from "@/core/services/clients.js";
-import contracts from "@/core/services/contracts.js";
+import clients from "@/services/clients.js";
+import contracts from "@/services/contracts.js";
 
 // initial state
 const state = {

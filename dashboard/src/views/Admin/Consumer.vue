@@ -1,29 +1,29 @@
 <template>
   <div>
     <section>
-      <client-form v-model="modalOpen"></client-form>
+      <consumer-form v-model="modalOpen"></consumer-form>
       <md-button class="md-primary md-raised" @click="openModal" :disabled="sending">Add Client</md-button>
     </section>
     <section>
-      <client-table></client-table>
+      <consumer-table></consumer-table>
     </section>
   </div>
 </template>
 
 <script>
-import ClientTable from "@/components/ClientTable.vue";
-import ClientForm from "@/components/ClientForm.vue";
+import ConsumerTable from "@/components/consumer/ConsumerTable.vue";
+import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
 
 export default {
-  name: "Clients",
+  name: "clients",
   data() {
     return {
       modalOpen: false
     };
   },
   components: {
-    ClientForm,
-    ClientTable
+    ConsumerForm,
+    ConsumerTable
   },
   methods: {
     openModal() {

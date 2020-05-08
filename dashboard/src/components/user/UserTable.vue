@@ -1,9 +1,9 @@
 <template>
   <div>
     <user-form v-model="modalOpen"></user-form>
-    <md-table v-model="substations" md-card @md-selected="onSelect">
+    <md-table v-model="people" md-card @md-selected="onSelect">
       <md-table-toolbar>
-        <span class="md-title">Substations List</span>
+        <span class="md-title">Users List</span>
       </md-table-toolbar>
 
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
@@ -29,49 +29,55 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Substation name" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Address">{{ item.address }}</md-table-cell>
-        <md-table-cell md-label="Status" md-sort-by="activeStatus">{{ item.activeStatus }}</md-table-cell>
+        <md-table-cell md-label="ID" md-sort-by="name">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="Name" md-sort-by="email">{{ item.email }}</md-table-cell>
+        <md-table-cell md-label="Role" md-sort-by="gender">{{ item.gender }}</md-table-cell>
+        <md-table-cell md-label="Active" md-sort-by="title">{{ item.title }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
-import UserForm from "@/components/UserForm.vue";
+import UserForm from "@/components/user/UserForm.vue";
 export default {
-  name: "substation-table",
+  name: "user-table",
   components: {
     UserForm
   },
   data: () => ({
     modalOpen: false,
     selected: [],
-    substations: [
+    people: [
       {
-        id: "SUB72332db984166914e",
-        name: "Substation A",
-        address: "Cra 64 #14-105",
-        activeStatus: "Active"
+        name: "Shawna Dubbin",
+        email: "sdubbin0@geocities.com",
+        gender: "Male",
+        title: "Assistant Media Planner"
       },
       {
-        id: "SUBbd7e04c617ad5bef",
-        name: "Substation B",
-        address: "Cra 32 #1a-198",
-        activeStatus: "Active"
+        name: "Odette Demageard",
+        email: "odemageard1@spotify.com",
+        gender: "Female",
+        title: "Account Coordinator"
       },
       {
-        id: "SUB72332dbbd7e04c614",
-        name: "Substation Center",
-        address: "Cra 67 #23-105",
-        activeStatus: "Inactive"
+        name: "Lonnie Izkovitz",
+        email: "lizkovitz3@youtu.be",
+        gender: "Female",
+        title: "Operator"
       },
       {
-        id: "SUB72332db98b412314a",
-        name: "External Substation",
-        address: "Cra 90 #14-105",
-        activeStatus: "Active"
+        name: "Thatcher Stave",
+        email: "tstave4@reference.com",
+        gender: "Male",
+        title: "Software Test Engineer III"
+      },
+      {
+        name: "Clarinda Marieton",
+        email: "cmarietonh@theatlantic.com",
+        gender: "Female",
+        title: "Paralegal"
       }
     ]
   }),
@@ -86,7 +92,7 @@ export default {
         plural = "s";
       }
 
-      return `${count} substation${plural} selected`;
+      return `${count} user${plural} selected`;
     },
     openModal() {
       this.modalOpen = !this.modalOpen;

@@ -3,21 +3,17 @@
     <section>
       <transformer-form></transformer-form>
     </section>
-    <section>
-      <substation-table></substation-table>
-    </section>
+    <section></section>
   </div>
 </template>
 
 <script>
-import SubstationTable from "@/components/SubstationTable.vue";
-import TransformerForm from "@/components/TransformerForm.vue";
+import TransformerForm from "@/components/transformer/TransformerForm.vue";
 
 export default {
   name: "Transformer",
   components: {
-    TransformerForm,
-    SubstationTable
+    TransformerForm
   }
 };
 </script>

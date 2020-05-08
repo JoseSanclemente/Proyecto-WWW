@@ -12,14 +12,14 @@
           <router-link to="/admin/users">
             <md-list-item @click="changeTitle('users')">
               <md-icon>supervisor_account</md-icon>
-              <span class="md-list-item-text">User Management</span>
+              <span class="md-list-item-text">User</span>
             </md-list-item>
           </router-link>
 
-          <router-link to="/admin/clients">
-            <md-list-item @click="changeTitle('clients')">
+          <router-link to="/admin/consumer">
+            <md-list-item @click="changeTitle('consumer')">
               <md-icon>account_box</md-icon>
-              <span class="md-list-item-text">Client Management</span>
+              <span class="md-list-item-text">Consumer</span>
             </md-list-item>
           </router-link>
 
@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  name: "PersistentMini",
+  name: "default-layout",
   data: () => ({
     menuVisible: false,
     title: "User Management"
@@ -66,16 +66,16 @@ export default {
       this.menuVisible = !this.menuVisible;
     },
     changeTitle(page) {
-      if (page == "clients") {
-        this.title = "Clients Management";
+      if (page == "consumer") {
+        this.title = "Consumer Management";
       }
 
       if (page == "users") {
-        this.title = "Users Management";
+        this.title = "User Management";
       }
 
       if (page == "trans") {
-        this.title = "Transformers Management";
+        this.title = "Transformer Management";
       }
 
       if (page == "subs") {

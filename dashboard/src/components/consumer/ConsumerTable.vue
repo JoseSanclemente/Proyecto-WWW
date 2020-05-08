@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import ClientForm from "@/components/ClientForm.vue";
+import ClientForm from "@/components/consumer/ConsumerForm.vue";
 export default {
-  name: "client-table",
+  name: "consumer-table",
   components: {
     ClientForm
   },
