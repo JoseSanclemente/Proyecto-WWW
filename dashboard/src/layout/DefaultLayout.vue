@@ -23,6 +23,13 @@
             </md-list-item>
           </router-link>
 
+          <router-link to="/transformers">
+            <md-list-item>
+              <md-icon>offline_bolt</md-icon>
+              <span class="md-list-item-text">Transformers</span>
+            </md-list-item>
+          </router-link>
+
           <router-link to="/substations">
             <md-list-item>
               <md-icon>apartment</md-icon>
@@ -30,10 +37,10 @@
             </md-list-item>
           </router-link>
 
-          <router-link to="/about">
+          <router-link to="/map">
             <md-list-item>
               <md-icon>location_on</md-icon>
-              <span class="md-list-item-text">Maps</span>
+              <span class="md-list-item-text">Map</span>
             </md-list-item>
           </router-link>
         </md-list>

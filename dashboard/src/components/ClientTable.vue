@@ -1,6 +1,6 @@
 <template>
   <div>
-    <user-form v-model="modalOpen"></user-form>
+    <client-form v-model="modalOpen"></client-form>
     <md-table v-model="clients" md-card @md-selected="onSelect">
       <md-table-toolbar>
         <span class="md-title">Clients List</span>
@@ -42,11 +42,11 @@
 </template>
 
 <script>
-import UserForm from "@/components/UserForm.vue";
+import ClientForm from "@/components/ClientForm.vue";
 export default {
   name: "client-table",
   components: {
-    UserForm
+    ClientForm
   },
   data: () => ({
     modalOpen: false,
