@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"Proyecto-WWW/back/models/bill"
-	"Proyecto-WWW/back/shared/gateway"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func registerPayment(response http.ResponseWriter, request *http.Request) {
@@ -58,4 +59,26 @@ func createBill(response http.ResponseWriter, request *http.Request) {
 	}
 
 	gateway.WriteJSON(response, 200, map[string]string{"id": id})
+}
+
+func getPDF(response http.ResponseWriter, request *http.Request) {
+	params := map[string]string{}
+
+	err := json.NewDecoder(request.Body).Decode(&params)
+	if err != nil {
+		fmt.Println("getPDF_1: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	bill, err := bill.LoadUnpaid(params["contract_id"])
+	if err != nil {
+		fmt.Println("getPDF_1: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	_ = bill
+
+	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
 }

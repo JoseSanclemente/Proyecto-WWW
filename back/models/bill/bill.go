@@ -1,9 +1,12 @@
 package bill
 
 import (
+	"fmt"
+	"time"
+
+	"Proyecto-WWW/back/models/reading"
 	"Proyecto-WWW/back/shared/random"
 	"Proyecto-WWW/back/storage"
-	"fmt"
 )
 
 type Bill struct {
@@ -12,6 +15,7 @@ type Bill struct {
 	CreationDate   int64  `json:"creation_date"`
 	ExpirationDate int64  `json:"expiration_date"`
 	Paid           bool   `json:"paid"`
+	Value          int    `json:"value"`
 }
 
 func Load(id string) (*Bill, error) {
@@ -37,6 +41,59 @@ func Load(id string) (*Bill, error) {
 	}
 
 	return bill, nil
+}
+
+func LoadUnpaid(contractID string) (*Bill, error) {
+	rows, err := storage.DB.Query(
+		"SELECT id, creation_date, expiration_date FROM bill WHERE contract = ? AND paid = false ORDER BY creation_date ASC",
+		contractID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var bills []*Bill
+	for rows.Next() {
+		bill := &Bill{
+			ContractId: contractID,
+		}
+
+		err = rows.Scan(&bill.ID, &bill.CreationDate, &bill.ExpirationDate)
+		if err != nil {
+			return nil, err
+		}
+
+		bills = append(bills, bill)
+	}
+
+	if len(bills) == 0 {
+		return nil, nil
+	}
+
+	value, err := reading.LoadTotal(bills[0].ContractId, bills[0].CreationDate)
+	if err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+	expiration := time.Unix(bills[0].ExpirationDate, 0)
+
+	diff := now.Sub(expiration)
+
+	if diff > (time.Hour * 24 * 30) {
+		value += int(float64(value) * 0.3)
+	} else {
+		value += value * int(diff/(time.Hour*24))
+	}
+
+	if len(bills) > 1 && bills[1].ExpirationDate > now.Unix() {
+		value += 34000
+	}
+
+	bills[0].Value = value
+
+	return bills[0], nil
 }
 
 func (b *Bill) RegisterPayment() error {
