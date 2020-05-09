@@ -13,13 +13,12 @@ type Contract struct {
 	TransformerID    string `json:"transformer_id"`
 	Address          string `json:"address"`
 	NotificationType string `json:"notification_type"`
-	Expired          bool   `json:"expired"`
 	Deleted          bool   `json:"deleted"`
 }
 
 func Load(id string) (*Contract, error) {
 	rows, err := storage.DB.Query(
-		"SELECT consumer, transformer, address, notification_type, expired, deleted FROM contract WHERE id=?",
+		"SELECT consumer, transformer, address, notification_type, deleted FROM contract WHERE id=?",
 		id,
 	)
 	if err != nil {
@@ -34,7 +33,7 @@ func Load(id string) (*Contract, error) {
 	contract := &Contract{
 		ID: id,
 	}
-	err = rows.Scan(&contract.ConsumerID, &contract.TransformerID, &contract.Address, &contract.NotificationType, &contract.Expired, &contract.Deleted)
+	err = rows.Scan(&contract.ConsumerID, &contract.TransformerID, &contract.Address, &contract.NotificationType, &contract.Deleted)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +43,7 @@ func Load(id string) (*Contract, error) {
 
 func List(consumerID string) ([]*Contract, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, transformer, address, notification_type, expired, deleted FROM contract",
+		"SELECT id, transformer, address, notification_type, deleted FROM contract",
 	)
 	if err != nil {
 		return nil, err
@@ -57,7 +56,7 @@ func List(consumerID string) ([]*Contract, error) {
 			ConsumerID: consumerID,
 		}
 
-		err = rows.Scan(&c.ID, &c.TransformerID, &c.Address, &c.NotificationType, &c.Expired, &c.Deleted)
+		err = rows.Scan(&c.ID, &c.TransformerID, &c.Address, &c.NotificationType, &c.Deleted)
 		if err != nil {
 			return nil, err
 		}

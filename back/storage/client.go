@@ -79,7 +79,6 @@ func ResetAndConnect() error {
 		transformer VARCHAR(20) NOT NULL,
 		address VARCHAR(30) NOT NULL,
 		notification_type VARCHAR(20) DEFAULT "",
-		expired BOOLEAN DEFAULT 0,
 		deleted BOOLEAN DEFAULT 0,
 	
 		CONSTRAINT fk_contract_consumer FOREIGN KEY (consumer) REFERENCES consumer (id),
@@ -96,12 +95,15 @@ func ResetAndConnect() error {
 		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);
 	
-	CREATE TABLE payment
+	CREATE TABLE bill
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
-		date VARCHAR(10) NOT NULL,
+		contract VARCHAR(20) NOT NULL,
+		creation_date VARCHAR(10) NOT NULL,
+		expiration_date VARCHAR(10) NOT NULL,
+		payed BOOLEAN DEFAULT 0,
 	
-		CONSTRAINT fk_reading_contract FOREIGN KEY (id) REFERENCES contract (id)
+		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);`
 	_, err = DB.Exec(statement)
 	if err != nil {
