@@ -25,6 +25,7 @@ var (
 		"/consumer/login":    loginConsumer,
 		"/consumer":          createConsumer,
 		"/consumer/contract": createContract,
+		"bill":               createBill,
 	}
 
 	updateEndpoints = map[string]func(response http.ResponseWriter, request *http.Request){
@@ -33,12 +34,13 @@ var (
 		"/substation":        updateSubstation,
 		"/consumer":          updateConsumer,
 		"/consumer/contract": updateContract,
+		"/bill/payment":      registerPayment,
 	}
 
 	endpointsLists = map[string]map[string]func(response http.ResponseWriter, request *http.Request){
-		"GET":    getEndpoints,
-		"POST":   postEndpoints,
-		"UPDATE": updateEndpoints,
+		"GET":  getEndpoints,
+		"POST": postEndpoints,
+		"PUT":  updateEndpoints,
 	}
 )
 
