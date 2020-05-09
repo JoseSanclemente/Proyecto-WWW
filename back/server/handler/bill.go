@@ -13,14 +13,14 @@ func registerPayment(response http.ResponseWriter, request *http.Request) {
 
 	err := json.NewDecoder(request.Body).Decode(&params)
 	if err != nil {
-		fmt.Println("updateBill_1: ", err.Error())
+		fmt.Println("registerPayment_1: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
 	b, err := bill.Load(params["id"])
 	if err != nil {
-		fmt.Println("updateBill_2: ", err.Error())
+		fmt.Println("registerPayment_2: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
@@ -32,7 +32,7 @@ func registerPayment(response http.ResponseWriter, request *http.Request) {
 
 	err = b.RegisterPayment()
 	if err != nil {
-		fmt.Println("updateBill_3: ", err.Error())
+		fmt.Println("registerPayment_3: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
@@ -50,12 +50,12 @@ func createBill(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	err = newBill.Store()
+	id, err := newBill.Store()
 	if err != nil {
 		fmt.Println("createBill_2: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
-	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
+	gateway.WriteJSON(response, 200, map[string]string{"id": id})
 }

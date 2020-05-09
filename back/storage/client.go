@@ -90,7 +90,7 @@ func ResetAndConnect() error {
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
 		contract VARCHAR(20) NOT NULL,
 		value INTEGER NOT NULL,
-		date VARCHAR(10) NOT NULL,
+		date INTEGER NOT NULL,
 	
 		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);
@@ -99,9 +99,9 @@ func ResetAndConnect() error {
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
 		contract VARCHAR(20) NOT NULL,
-		creation_date VARCHAR(10) NOT NULL,
-		expiration_date VARCHAR(10) NOT NULL,
-		payed BOOLEAN DEFAULT 0,
+		creation_date INTEGER NOT NULL,
+		expiration_date INTEGER NOT NULL,
+		paid BOOLEAN DEFAULT 0,
 	
 		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);`
