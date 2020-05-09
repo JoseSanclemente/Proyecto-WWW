@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -14,13 +16,21 @@ import (
 func generateCaptcha(response http.ResponseWriter, request *http.Request) {
 	captchaID := captcha.New()
 
-	err := captcha.WriteImage(response, captchaID, captcha.StdWidth, captcha.StdHeight)
-	if err == nil {
+	buf := bytes.NewBufferString("")
+	encoder := base64.NewEncoder(base64.StdEncoding, buf)
+
+	err := captcha.WriteImage(encoder, captchaID, captcha.StdWidth, captcha.StdHeight)
+	if err != nil {
+		fmt.Println("generateCaptcha_1: ", err.Error())
+		gateway.WriteInternalServerError(response)
 		return
 	}
+	_ = encoder.Close()
 
-	fmt.Println("generateCaptcha_1: ", err.Error())
-	gateway.WriteInternalServerError(response)
+	gateway.WriteJSON(response, 200, map[string]string{
+		"captcha_id": captchaID,
+		"captcha":    buf.String(),
+	})
 }
 
 func loginConsumer(response http.ResponseWriter, request *http.Request) {
