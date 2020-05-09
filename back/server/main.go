@@ -22,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer fmt.Println(storage.DB.Close())
+	defer storage.DB.Close()
 
 	server := &http.Server{
 		Addr:           ":8080",

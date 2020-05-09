@@ -1,22 +1,22 @@
 package bill
 
 import (
+	"Proyecto-WWW/back/shared/random"
 	"Proyecto-WWW/back/storage"
 	"fmt"
-	"time"
 )
 
 type Bill struct {
-	ID             string
-	ContractId     string
-	CreationDate   time.Time
-	ExpirationDate time.Time
-	Payed          bool
+	ID             string `json:"id"`
+	ContractId     string `json:"contract_id"`
+	CreationDate   int64  `json:"creation_date"`
+	ExpirationDate int64  `json:"expiration_date"`
+	Paid           bool   `json:"paid"`
 }
 
 func Load(id string) (*Bill, error) {
 	rows, err := storage.DB.Query(
-		"SELECT contract, creation_date, expiration_date, payed FROM bill WHERE id=?",
+		"SELECT contract, creation_date, expiration_date, paid FROM bill WHERE id=?",
 		id,
 	)
 	if err != nil {
@@ -31,7 +31,7 @@ func Load(id string) (*Bill, error) {
 	bill := &Bill{
 		ID: id,
 	}
-	err = rows.Scan(&bill.ContractId, &bill.CreationDate, &bill.ExpirationDate, &bill.Payed)
+	err = rows.Scan(&bill.ContractId, &bill.CreationDate, &bill.ExpirationDate, &bill.Paid)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func Load(id string) (*Bill, error) {
 
 func (b *Bill) RegisterPayment() error {
 	result, err := storage.DB.Exec(
-		"UPDATE bill SET payed=true WHERE id=?",
+		"UPDATE bill SET paid=true WHERE id=?",
 		b.ID,
 	)
 	if err != nil {
@@ -60,26 +60,28 @@ func (b *Bill) RegisterPayment() error {
 	return nil
 }
 
-func (b *Bill) Store() error {
+func (b *Bill) Store() (string, error) {
+	id := random.GenerateID("BIL")
+
 	result, err := storage.DB.Exec(
-		"INSERT INTO bill(id, contract, creation_date, expiration_date, payed) VALUES(?, ?, ?, ?, false)",
-		b.ID,
+		"INSERT INTO bill(id, contract, creation_date, expiration_date, paid) VALUES(?, ?, ?, ?, false)",
+		id,
 		b.ContractId,
 		b.CreationDate,
 		b.ExpirationDate,
 	)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	rows, err := result.RowsAffected()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if rows != 1 {
-		return fmt.Errorf("expected to affect 1 row, affected %d", rows)
+		return "", fmt.Errorf("expected to affect 1 row, affected %d", rows)
 	}
 
-	return nil
+	return id, nil
 }

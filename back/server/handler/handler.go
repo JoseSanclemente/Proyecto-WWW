@@ -25,7 +25,7 @@ var (
 		"/consumer/login":    loginConsumer,
 		"/consumer":          createConsumer,
 		"/consumer/contract": createContract,
-		"bill":               createBill,
+		"/bill":              createBill,
 	}
 
 	updateEndpoints = map[string]func(response http.ResponseWriter, request *http.Request){

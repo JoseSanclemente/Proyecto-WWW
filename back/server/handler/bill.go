@@ -50,12 +50,12 @@ func createBill(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	err = newBill.Store()
+	id, err := newBill.Store()
 	if err != nil {
 		fmt.Println("createBill_2: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
-	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
+	gateway.WriteJSON(response, 200, map[string]string{"id": id})
 }
