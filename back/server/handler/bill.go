@@ -9,10 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
-
-	"Proyecto-WWW/back/models/bill"
-	"Proyecto-WWW/back/shared/gateway"
+	"os"=
 )
 
 func registerOperatorPayment(response http.ResponseWriter, request *http.Request) {

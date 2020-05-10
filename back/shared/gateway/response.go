@@ -7,6 +7,9 @@ import (
 )
 
 func WriteInternalServerError(r http.ResponseWriter) {
+	r.Header().Set("Content-Type", "application/json")
+	r.Header().Set("Access-Control-Allow-Origin", "*")
+
 	r.WriteHeader(http.StatusInternalServerError)
 	_, err := r.Write([]byte(`{"error":"something went wrong"}`))
 	if err != nil {
