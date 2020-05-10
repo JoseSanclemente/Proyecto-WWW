@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/models/contract"
 	reports "Proyecto-WWW/back/models/report"
 	"Proyecto-WWW/back/shared/gateway"
 	"Proyecto-WWW/back/shared/random"
@@ -122,25 +123,46 @@ func getPDF(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	bills, err := bill.LoadPreviousTotals(params["contract_id"])
+	contract, err := contract.Load(params["contract_id"])
 	if err != nil {
 		fmt.Println("getPDF_2: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
-	bill, err := bill.LoadUnpaid(params["contract_id"])
+	bills, err := bill.LoadPreviousTotals(params["contract_id"])
 	if err != nil {
 		fmt.Println("getPDF_3: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
-	_ = bill
-	_ = bills
-	reports.GetPDF()
+	bill, err := bill.LoadUnpaid(params["contract_id"])
+	if err != nil {
+		fmt.Println("getPDF_4: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
 
-	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
+	b, err := reports.GetPDF(contract, bill, bills)
+	if err != nil {
+		fmt.Println("getPDF_5: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	response.Header().Set("Access-Control-Allow-Origin", "*")
+	response.Header().Set("Content-Disposition", "attachment; filename=recibo.pdf")
+	response.Header().Set("Content-Type", "application/pdf")
+	// response.Header().Set("Content-Length ", strconv.Itoa(len(b)))
+	response.WriteHeader(200)
+
+	_, err = response.Write(b)
+	if err != nil {
+		fmt.Println("getPDF_6: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
 }
 
 func registerBankPayments(response http.ResponseWriter, request *http.Request) {
