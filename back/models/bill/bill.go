@@ -154,11 +154,12 @@ func (b *Bill) Store() (string, error) {
 	id := random.GenerateID("BIL")
 
 	result, err := storage.DB.Exec(
-		"INSERT INTO bill(id, contract, creation_date, expiration_date, paid) VALUES(?, ?, ?, ?, false)",
+		"INSERT INTO bill(id, contract, creation_date, expiration_date, paid, value) VALUES(?, ?, ?, ?, false, ?)",
 		id,
 		b.ContractId,
 		b.CreationDate,
 		b.ExpirationDate,
+		b.Value,
 	)
 	if err != nil {
 		return "", err
