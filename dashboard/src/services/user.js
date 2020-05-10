@@ -6,7 +6,7 @@ const create = user => {
 
 // todo: add pagination
 const list = () => {
-  return api.get("user");
+  return api.get("employee/list");
 };
 
 const del = id => {

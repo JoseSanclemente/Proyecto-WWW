@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <user-form v-model="modalOpen"></user-form>
+      <user-form modalType="create" v-model="modalOpen"></user-form>
       <md-button class="md-primary md-raised" @click="openModal">Create user</md-button>
     </section>
     <section>

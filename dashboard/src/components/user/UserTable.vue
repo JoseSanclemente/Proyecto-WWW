@@ -1,7 +1,15 @@
 <template>
   <div>
-    <user-form v-model="modalOpen"></user-form>
-    <md-table v-model="people" md-card @md-selected="onSelect">
+    <user-form modalType="modify" :inputUser="selected" v-model="modalOpen"></user-form>
+    <md-empty-state
+      v-if="tableUsers.length == 0"
+      class="md-primary"
+      md-icon="remove_circle_outline"
+      md-label="There is nothing here yet"
+      md-description="Users added will be showed here."
+    ></md-empty-state>
+
+    <md-table v-if="tableUsers.length != 0" v-model="tableUsers" md-card @md-selected="onSelect">
       <md-table-toolbar>
         <span class="md-title">Users List</span>
       </md-table-toolbar>
@@ -29,16 +37,16 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Name" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Role" md-sort-by="gender">{{ item.gender }}</md-table-cell>
-        <md-table-cell md-label="Active" md-sort-by="title">{{ item.title }}</md-table-cell>
+        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
+        <md-table-cell md-label="Role" md-sort-by="type">{{ item.type }}</md-table-cell>
+        <md-table-cell md-label="Active">{{ item.deleted }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import UserForm from "@/components/user/UserForm.vue";
 export default {
   name: "user-table",
@@ -48,40 +56,20 @@ export default {
   data: () => ({
     modalOpen: false,
     selected: [],
-    people: [
-      {
-        name: "Shawna Dubbin",
-        email: "sdubbin0@geocities.com",
-        gender: "Male",
-        title: "Assistant Media Planner"
-      },
-      {
-        name: "Odette Demageard",
-        email: "odemageard1@spotify.com",
-        gender: "Female",
-        title: "Account Coordinator"
-      },
-      {
-        name: "Lonnie Izkovitz",
-        email: "lizkovitz3@youtu.be",
-        gender: "Female",
-        title: "Operator"
-      },
-      {
-        name: "Thatcher Stave",
-        email: "tstave4@reference.com",
-        gender: "Male",
-        title: "Software Test Engineer III"
-      },
-      {
-        name: "Clarinda Marieton",
-        email: "cmarietonh@theatlantic.com",
-        gender: "Female",
-        title: "Paralegal"
-      }
-    ]
+    tableUsers: []
   }),
+  computed: {
+    ...mapState("user", ["users"])
+  },
+  created() {
+    this.listUsers();
+    this.tableUsers = this.users;
+  },
+  beforeMount() {
+    console.log(this.tableUsers);
+  },
   methods: {
+    ...mapActions("user", ["listUsers"]),
     onSelect(items) {
       this.selected = items;
     },

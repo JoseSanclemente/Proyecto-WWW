@@ -3,12 +3,12 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">Add user</div>
+          <div class="md-title">{{ title }}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
+            <div class="md-layout-item md-size-80 md-small-size-100">
               <md-field :class="getValidationClass('email')">
                 <label for="email">Email</label>
                 <md-input
@@ -23,11 +23,13 @@
                 <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
               </md-field>
             </div>
+          </div>
 
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('role')">
-                <label for="role">Role</label>
-                <md-select name="role" id="role" v-model="form.role" md-dense :disabled="sending">
+          <div class="md-layout">
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('type')">
+                <label for="type">Role</label>
+                <md-select name="type" id="type" v-model="form.type" md-dense :disabled="sending">
                   <md-option value="admin">Admin</md-option>
                   <md-option value="manager">Manager</md-option>
                   <md-option value="operator">Operator</md-option>
@@ -39,30 +41,28 @@
 
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('pass')">
-                <label for="pass">Password</label>
+              <md-field :class="getValidationClass('password')">
+                <label for="password">Password</label>
                 <md-input
-                  type="pass"
-                  name="pass"
-                  id="pass"
-                  v-model="form.pass"
+                  type="password"
+                  id="password"
+                  v-model="form.password"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.pass.required">The password is required</span>
+                <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('pass')">
+              <md-field :class="getValidationClass('password')">
                 <label for="confirmPass">Confirm password</label>
                 <md-input
-                  type="confirmPass"
-                  name="confirmPass"
+                  type="password"
                   id="confirmPass"
-                  v-model="form.confirmPass"
+                  v-model="confirmPass"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.confirmPass.required">This field is required</span>
+                <span class="md-error" v-if="!$v.form.password.required">This field is required</span>
               </md-field>
             </div>
           </div>
@@ -76,7 +76,7 @@
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
     </form>
   </div>
 </template>
@@ -92,40 +92,59 @@ export default {
   props: {
     value: {
       required: true
-    }
+    },
+    modalType: {
+      required: true
+    },
+    inputUser: null
   },
   data() {
     return {
       form: {
         email: null,
-        role: null,
-        pass: null,
-        confirmPass: null
+        type: null,
+        password: null,
+        deleted: false
       },
-      userSaved: false,
+      confirmPass: null,
+      showSnackBar: false,
       sending: false,
-      lastUser: null
+      message: null,
+      title: null
     };
   },
   validations: {
     form: {
-      role: {
+      type: {
         required
       },
       email: {
         required,
         email
       },
-      pass: {
-        required
-      },
-      confirmPass: {
+      password: {
         required
       }
     }
   },
+  mounted() {
+    this.setTitle();
+  },
   methods: {
     ...mapActions("user", ["createUser"]),
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
+    setTitle() {
+      if (this.modalType == "create") {
+        this.title = "Add user";
+      } else {
+        this.title = "Modify user";
+        this.email = this.inputUser.email;
+        this.type = this.inputUser.type;
+      }
+    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -139,19 +158,26 @@ export default {
       this.$v.$reset();
       this.form.email = null;
       this.form.role = null;
-      this.form.pass = null;
-      this.form.confirmPass = null;
+      this.form.password = null;
+      this.form.type = null;
     },
     saveUser() {
       this.sending = true;
 
-      console.log(this.form);
       this.createUser(this.form)
-        .then(response => {
-          this.sending = false;
-          console.log(response);
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+
+            let message =
+              "The user " + this.form.email + " was successfully added!";
+            this.showNotification(message);
+          }, 2000);
         })
         .catch(error => {
+          this.sending = false;
+          this.clearForm();
+          this.showNotification("An error had occured");
           console.log(error);
         });
     },

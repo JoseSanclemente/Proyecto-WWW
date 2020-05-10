@@ -1,9 +1,9 @@
-import users from "@/services/user.js";
+import user from "@/services/user.js";
 
 // initial state
 const state = {
     users: [],
-    userSaved: false,
+    userSaved: false, //This is not used
 };
 
 // getters
@@ -11,16 +11,15 @@ const getters = {};
 
 // actions
 const actions = {
-    loadAllUsers({ commit }) {
-        users.list().then(response => {
+    listUsers({ commit }) {
+        user.list().then(response => {
             commit("setUsers", response.data);
         });
     },
 
-    createUser({ commit, payload }) {
-        users.create(payload).then(() => {
-            commit("setUserSaved");
-        });
+    createUser({ commit }, payload) {
+        commit("setUserSaved");
+        return user.create(payload)
     }
 };
 
