@@ -1,22 +1,22 @@
-package main
+package pdf
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"time"
+
+	"Proyecto-WWW/back/models/bill"
 
 	"github.com/johnfercher/maroto/pkg/consts"
 	"github.com/johnfercher/maroto/pkg/pdf"
 	"github.com/johnfercher/maroto/pkg/props"
 )
 
-func main() {
-	begin := time.Now()
+func GetPDF(bill *bill.Bill, bills []*bill.Bill) (*bytes.Buffer, error) {
 	m := pdf.NewMaroto(consts.Portrait, consts.A4)
 	m.SetPageMargins(10, 15, 10)
-	//m.SetBorder(true)
 
 	byteSlices, err := ioutil.ReadFile("ads/ad.png")
 	if err != nil {
@@ -37,7 +37,7 @@ func main() {
 	m.RegisterHeader(func() {
 		m.Row(20, func() {
 			m.Col(3, func() {
-				_ = m.Base64Image(base64, consts.Jpg, props.Rect{
+				err = m.Base64Image(base64, consts.Jpg, props.Rect{
 					Center:  true,
 					Percent: 70,
 				})
@@ -77,6 +77,9 @@ func main() {
 
 		m.Line(5.0)
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	m.Row(1, func() {})
 
@@ -147,19 +150,20 @@ func main() {
 
 	m.Row(30, func() {
 		m.Col(0, func() {
-			_ = m.Base64Image(ad, consts.Png, props.Rect{
+			err = m.Base64Image(ad, consts.Png, props.Rect{
 				Center:  true,
 				Percent: 100,
 			})
 		})
 	})
-
-	err = m.OutputFileAndClose("sample1.pdf")
 	if err != nil {
-		fmt.Println("Could not save PDF:", err)
-		os.Exit(1)
+		return nil, err
 	}
 
-	end := time.Now()
-	fmt.Println(end.Sub(begin))
+	buf, err := m.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	return &buf, nil
 }

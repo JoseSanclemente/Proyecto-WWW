@@ -43,7 +43,8 @@ func Load(id string) (*Contract, error) {
 
 func List(consumerID string) ([]*Contract, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, transformer, address, notification_type, deleted FROM contract",
+		"SELECT id, transformer, address, notification_type, deleted FROM contract WHERE consumer = ?",
+		consumerID,
 	)
 	if err != nil {
 		return nil, err
