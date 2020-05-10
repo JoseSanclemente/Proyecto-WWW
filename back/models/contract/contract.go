@@ -67,6 +67,30 @@ func List(consumerID string) ([]*Contract, error) {
 	return contracts, nil
 }
 
+func ListActiveContractsIDs(consumerID string) ([]*Contract, error) {
+	rows, err := storage.DB.Query(
+		"SELECT id FROM contract WHERE deleted=false",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var contracts []*Contract
+	for rows.Next() {
+		c := &Contract{}
+
+		err = rows.Scan(&c.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		contracts = append(contracts, c)
+	}
+
+	return contracts, nil
+}
+
 func (c *Contract) Store() (string, error) {
 	id := random.GenerateID("CON")
 
