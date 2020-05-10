@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"Proyecto-WWW/back/models/bill"
-	"Proyecto-WWW/back/shared/gateway"
-	"Proyecto-WWW/back/shared/random"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"os"=
+	"os"
+
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/shared/gateway"
+	"Proyecto-WWW/back/shared/random"
 )
 
 func registerOperatorPayment(response http.ResponseWriter, request *http.Request) {
