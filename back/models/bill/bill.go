@@ -175,3 +175,39 @@ func (b *Bill) Store() (string, error) {
 
 	return id, nil
 }
+
+func isContractActive(contractID string) (bool, error) {
+	rows, err := storage.DB.Query(
+		"SELECT expiration_date FROM bill WHERE contract = ? AND paid = false ORDER BY creation_date ASC",
+		contractID,
+	)
+	if err != nil {
+		return true, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var bills []*Bill
+	for rows.Next() {
+		bill := &Bill{
+			ContractId: contractID,
+		}
+
+		err = rows.Scan(&bill.ExpirationDate)
+		if err != nil {
+			return true, err
+		}
+
+		bills = append(bills, bill)
+	}
+
+	if len(bills) < 2 {
+		return true, nil
+	}
+
+	now := time.Now()
+	expiration := time.Unix(bills[1].ExpirationDate, 0)
+
+	diff := now.Sub(expiration)
+
+	return diff < 0, nil
+}
