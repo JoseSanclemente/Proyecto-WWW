@@ -30,12 +30,13 @@ var (
 	}
 
 	updateEndpoints = map[string]func(response http.ResponseWriter, request *http.Request){
-		"/employee":          updateUser,
-		"/transformer":       updateTransformer,
-		"/substation":        updateSubstation,
-		"/consumer":          updateConsumer,
-		"/consumer/contract": updateContract,
-		"/bill/payment":      registerPayment,
+		"/employee":              updateUser,
+		"/transformer":           updateTransformer,
+		"/substation":            updateSubstation,
+		"/consumer":              updateConsumer,
+		"/consumer/contract":     updateContract,
+		"/bill/payment/operator": registerOperatorPayment,
+		"/bill/payment/bank":     registerBankPayments,
 	}
 
 	endpointsLists = map[string]map[string]func(response http.ResponseWriter, request *http.Request){
