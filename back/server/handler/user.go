@@ -35,18 +35,21 @@ func loginUser(response http.ResponseWriter, request *http.Request) {
 }
 
 func createUser(response http.ResponseWriter, request *http.Request) {
-	newUser := &user.User{}
+	input := user.Input{}
 
-	err := json.NewDecoder(request.Body).Decode(newUser)
+	err := json.NewDecoder(request.Body).Decode(&input)
 	if err != nil {
 		fmt.Println("createUser_1: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
+	u := user.User(input)
+	newUser := &u
+
 	err = newUser.Store()
 	if err != nil {
-		fmt.Println("createUser_1: ", err.Error())
+		fmt.Println("createUser_2: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}

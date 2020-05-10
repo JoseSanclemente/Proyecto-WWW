@@ -43,7 +43,8 @@ func Load(id string) (*Contract, error) {
 
 func List(consumerID string) ([]*Contract, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, transformer, address, notification_type, deleted FROM contract",
+		"SELECT id, transformer, address, notification_type, deleted FROM contract WHERE consumer = ?",
+		consumerID,
 	)
 	if err != nil {
 		return nil, err
@@ -57,6 +58,30 @@ func List(consumerID string) ([]*Contract, error) {
 		}
 
 		err = rows.Scan(&c.ID, &c.TransformerID, &c.Address, &c.NotificationType, &c.Deleted)
+		if err != nil {
+			return nil, err
+		}
+
+		contracts = append(contracts, c)
+	}
+
+	return contracts, nil
+}
+
+func ListActiveContractsIDs(consumerID string) ([]*Contract, error) {
+	rows, err := storage.DB.Query(
+		"SELECT id FROM contract WHERE deleted=false",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var contracts []*Contract
+	for rows.Next() {
+		c := &Contract{}
+
+		err = rows.Scan(&c.ID)
 		if err != nil {
 			return nil, err
 		}

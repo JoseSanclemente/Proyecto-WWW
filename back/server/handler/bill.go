@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"Proyecto-WWW/back/models/bill"
+	reports "Proyecto-WWW/back/models/report"
 	"Proyecto-WWW/back/shared/gateway"
 	"Proyecto-WWW/back/shared/random"
 )
@@ -121,14 +122,23 @@ func getPDF(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	bills, err := bill.LoadPreviousTotals(params["contract_id"])
+	if err != nil {
+		fmt.Println("getPDF_2: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
 	bill, err := bill.LoadUnpaid(params["contract_id"])
 	if err != nil {
-		fmt.Println("getPDF_1: ", err.Error())
+		fmt.Println("getPDF_3: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
 
 	_ = bill
+	_ = bills
+	reports.GetPDF()
 
 	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
 }
