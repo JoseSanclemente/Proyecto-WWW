@@ -1,16 +1,16 @@
 import axios from "axios";
-import jwt from "./jwt";
+//import jwt from "./jwt";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://localhost:8080";
 // todo: add authentication information
 const intercept = payload => {
   payload = {
     ...payload,
     headers: {
-      ...payload.headers,
-      "Bearer-Token": jwt.getToken()
+      ...payload.headers
+      //"Bearer-Token": jwt.getToken()
     },
-    url: `${BASE_URL}/${payload.url}/`
+    url: `${BASE_URL}/${payload.url}`
   };
   return axios(payload);
 };
@@ -24,7 +24,7 @@ const del = url => {
 };
 
 const post = (url, payload) => {
-  return intercept({ url: url, data: payload, method: "post" });
+  return intercept({ url: url, data: payload, method: "post", header: { 'Access-Control-Allow-Origin': '*' } });
 };
 
 export default { get, del, post };

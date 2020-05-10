@@ -6,8 +6,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: "/",
+    redirect: "/login"
+  },
+  {
     path: "/admin",
-    redirect: "/users",
+    redirect: "/admin/users",
     component: () => import(/* webpackChunkName: "about" */ '../layout/DefaultLayout.vue'),
     children: [
       {

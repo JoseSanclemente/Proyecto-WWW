@@ -2,7 +2,7 @@
   <div>
     <section>
       <user-form v-model="modalOpen"></user-form>
-      <md-button class="md-primary md-raised" @click="openModal" :disabled="sending">Create user</md-button>
+      <md-button class="md-primary md-raised" @click="openModal">Create user</md-button>
     </section>
     <section>
       <user-table></user-table>

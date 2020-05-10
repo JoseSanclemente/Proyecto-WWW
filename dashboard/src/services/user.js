@@ -1,7 +1,7 @@
 import api from "./api";
 
 const create = user => {
-  return api.post("user", user);
+  return api.post("employee", user);
 };
 
 // todo: add pagination

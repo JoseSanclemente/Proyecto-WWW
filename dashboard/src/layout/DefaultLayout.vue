@@ -47,7 +47,6 @@
       </md-app-drawer>
 
       <md-app-content>
-        <slot />
         <router-view />
       </md-app-content>
     </md-app>
