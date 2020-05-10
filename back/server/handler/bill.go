@@ -10,6 +10,9 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func registerOperatorPayment(response http.ResponseWriter, request *http.Request) {
@@ -108,6 +111,28 @@ func readBankFile(request *http.Request) ([][]string, error) {
 	}
 
 	return records, nil
+}
+
+func getPDF(response http.ResponseWriter, request *http.Request) {
+	params := map[string]string{}
+
+	err := json.NewDecoder(request.Body).Decode(&params)
+	if err != nil {
+		fmt.Println("getPDF_1: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	bill, err := bill.LoadUnpaid(params["contract_id"])
+	if err != nil {
+		fmt.Println("getPDF_1: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	_ = bill
+
+	gateway.WriteJSON(response, 200, map[string]string{"message": "ok"})
 }
 
 func registerBankPayments(response http.ResponseWriter, request *http.Request) {

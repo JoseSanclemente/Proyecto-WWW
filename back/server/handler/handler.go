@@ -14,6 +14,7 @@ var (
 		"/consumer/captcha":       generateCaptcha,
 		"/consumer/list":          listConsumers,
 		"/consumer/contract/list": listContracts,
+		"/consumer/contract/pdf":  getPDF,
 		"/dummy_report":           report,
 	}
 
