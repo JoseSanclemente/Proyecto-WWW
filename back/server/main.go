@@ -71,13 +71,13 @@ func createBills(contract *contract.Contract) {
 		return
 	}
 
-	b, err := reports.GetPDF(contract, bills[0], bills[1:])
+	body, err := reports.GetPDF(contract, bills[0], bills[1:])
 	if err != nil {
 		fmt.Println("createBills_4: ", err.Error())
 		return
 	}
 
-	err = email.SendEmail(b)
+	err = email.SendEmail(body)
 	if err != nil {
 		fmt.Println("createBills_5: ", err.Error())
 		return
@@ -124,7 +124,7 @@ func main() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println("sending readings...")
+				fmt.Println("sending readings/generating bills...")
 				createReadingsAndBills()
 			}
 		}
