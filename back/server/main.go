@@ -40,10 +40,10 @@ func createReadings(contractID string) {
 }
 
 func createBills(contractID string) {
-	creationDate := int(time.Now().UTC().Unix())
-	expirationDate := int(creationDate.Add(time.Day * 15).Unix())
+	creationDate := time.Now().UTC()
+	expirationDate := creationDate.Add(time.Hour * 24 * 15).Unix()
 
-	value, err := reading.LoadTotal(contractID, int64(creationDate))
+	value, err := reading.LoadTotal(contractID, creationDate.Unix())
 	if err != nil {
 		fmt.Println("createBills_1: ", err.Error())
 		return
@@ -51,7 +51,7 @@ func createBills(contractID string) {
 
 	b := &bill.Bill{
 		ContractId:     contractID,
-		CreationDate:   creationDate,
+		CreationDate:   creationDate.Unix(),
 		ExpirationDate: expirationDate,
 		Paid:           false,
 		Value:          value,
@@ -62,8 +62,6 @@ func createBills(contractID string) {
 		fmt.Println("createBills_2: ", err.Error())
 		return
 	}
-
-	return nil
 }
 
 func createReadingsAndBills() {

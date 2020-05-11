@@ -215,7 +215,7 @@ func IsContractActive(contractID string) (bool, error) {
 
 func (b *Bill) StoreIfNotExists() error {
 	id := random.GenerateID("BIL")
-	
+
 	year, month, _ := time.Now().UTC().Date()
 	date := time.Date(year, month, 0, 0, 0, 0, 0, time.UTC).Unix()
 
@@ -229,7 +229,7 @@ func (b *Bill) StoreIfNotExists() error {
 		b.ExpirationDate,
 		b.Value,
 		b.ContractId,
-		date
+		date,
 	)
 
 	return err
