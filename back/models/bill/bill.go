@@ -213,12 +213,13 @@ func IsContractActive(contractID string) (bool, error) {
 	return diff < 0, nil
 }
 
-func (b *Bill) StoreIfNotExists() (string, error) {
+func (b *Bill) StoreIfNotExists() error {
 	id := random.GenerateID("BIL")
+	
 	year, month, _ := time.Now().UTC().Date()
 	date := time.Date(year, month, 0, 0, 0, 0, 0, time.UTC).Unix()
 
-	result, err := storage.DB.Exec(
+	_, err := storage.DB.Exec(
 		`INSERT INTO bill(id, contract, creation_date, expiration_date, paid, value) 
 			VALUES(?, ?, ?, ?, false, ?)
 			WHERE NOT EXISTS (SELECT * FROM bill WHERE contract = ? AND creation_date >= ?)`,
@@ -230,14 +231,6 @@ func (b *Bill) StoreIfNotExists() (string, error) {
 		b.ContractId,
 		date
 	)
-	if err != nil {
-		return "", err
-	}
 
-	rows, err := result.RowsAffected()
-	if err != nil {
-		return "", err
-	}
-
-	return id, nil
+	return err
 }
