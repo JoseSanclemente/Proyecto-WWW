@@ -68,7 +68,7 @@ func List(consumerID string) ([]*Contract, error) {
 	return contracts, nil
 }
 
-func ListActiveContractsIDs(consumerID string) ([]*Contract, error) {
+func ListActiveContractsIDs() ([]*Contract, error) {
 	rows, err := storage.DB.Query(
 		"SELECT id FROM contract WHERE deleted=false",
 	)
