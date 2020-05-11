@@ -1,8 +1,10 @@
 package reading
 
 import (
+	"fmt"
 	"time"
 
+	"Proyecto-WWW/back/shared/random"
 	"Proyecto-WWW/back/storage"
 )
 
@@ -43,4 +45,30 @@ func LoadTotal(contractID string, t int64) (int, error) {
 	}
 
 	return value, nil
+}
+
+func (r *Reading) Store() error {
+	id := random.GenerateID("REA")
+
+	result, err := storage.DB.Exec(
+		"INSERT INTO reading(id, contract, value, date) VALUES(?, ?, ?, ?)",
+		id,
+		r.ContractID,
+		r.Value,
+		r.Date,
+	)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rows != 1 {
+		return fmt.Errorf("expected to affect 1 row, affected %d", rows)
+	}
+
+	return nil
 }

@@ -25,9 +25,11 @@
           >
             <md-icon>edit</md-icon>
           </md-button>
-          <md-button class="md-icon-button md-raised md-accent">
+          <md-button @click="changeUserStatus" class="md-icon-button md-raised md-accent">
             <md-icon>delete</md-icon>
           </md-button>
+
+          <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
         </div>
       </md-table-toolbar>
 
@@ -55,21 +57,25 @@ export default {
   },
   data: () => ({
     modalOpen: false,
+    showSnackBar: false,
+    message: "",
     selected: [],
     tableUsers: []
   }),
   computed: {
     ...mapState("user", ["users"])
   },
+  watch: {
+    table: function() {
+      this.tableUsers = this.users;
+    }
+  },
   created() {
     this.listUsers();
     this.tableUsers = this.users;
   },
-  beforeMount() {
-    console.log(this.tableUsers);
-  },
   methods: {
-    ...mapActions("user", ["listUsers"]),
+    ...mapActions("user", ["listUsers", "updateUser"]),
     onSelect(items) {
       this.selected = items;
     },
@@ -84,6 +90,24 @@ export default {
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
+    },
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
+    changeUserStatus() {
+      for (let i = 0; i < this.selected.length; i++) {
+        let item = this.selected[i];
+        item.deleted = !item.deleted;
+        this.updateUser(item)
+          .then(() => {
+            this.listUsers();
+            this.showNotification("Users updated successfully!");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   }
 };

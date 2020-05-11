@@ -20,6 +20,12 @@ const actions = {
     createUser({ commit }, payload) {
         commit("setUserSaved");
         return user.create(payload)
+    },
+
+    updateUser({ commit }, payload) {
+        payload.deleted = payload.deleted.toString()
+        commit("setUserSaved");
+        return user.update(payload)
     }
 };
 

@@ -23,8 +23,12 @@ const del = url => {
   return intercept({ method: "delete", url: url });
 };
 
+const put = (url, payload) => {
+  return intercept({ method: "put", data: payload, url: url })
+}
+
 const post = (url, payload) => {
-  return intercept({ url: url, data: payload, method: "post", header: { 'Access-Control-Allow-Origin': '*' } });
+  return intercept({ url: url, data: payload, method: "post" });
 };
 
-export default { get, del, post };
+export default { get, del, post, put };
