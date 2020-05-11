@@ -177,7 +177,7 @@ func (b *Bill) Store() (string, error) {
 	return id, nil
 }
 
-func isContractActive(contractID string) (bool, error) {
+func IsContractActive(contractID string) (bool, error) {
 	rows, err := storage.DB.Query(
 		"SELECT expiration_date FROM bill WHERE contract = ? AND paid = false ORDER BY creation_date ASC",
 		contractID,
