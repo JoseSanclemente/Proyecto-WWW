@@ -1,6 +1,7 @@
 package bill
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -131,7 +132,7 @@ func LoadPreviousTotals(contractID string) ([]*Bill, error) {
 
 func LoadAllPreviousTotals(contractID string) ([]*Bill, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, creation_date, expiration_date, paid FROM bill WHERE contract = ? ORDER BY creation_date DESC LIMIT 5",
+		"SELECT id, creation_date, expiration_date, paid FROM bill WHERE contract = ? ORDER BY creation_date DESC LIMIT 6",
 		contractID,
 	)
 	if err != nil {
@@ -157,6 +158,10 @@ func LoadAllPreviousTotals(contractID string) ([]*Bill, error) {
 
 		bill.Value = value
 		bills = append(bills, bill)
+	}
+
+	if len(bills) == 0 {
+		return nil, errors.New("no bills found")
 	}
 
 	return bills, nil
