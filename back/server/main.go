@@ -62,6 +62,8 @@ func createBills(contract *contract.Contract) {
 		fmt.Println("createBills_2: ", err.Error())
 		return
 	}
+
+	// TODO: send email
 }
 
 func createReadingsAndBills() {
