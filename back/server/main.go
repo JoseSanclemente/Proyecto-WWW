@@ -11,6 +11,8 @@ import (
 	"Proyecto-WWW/back/models/bill"
 	"Proyecto-WWW/back/models/contract"
 	"Proyecto-WWW/back/models/reading"
+	reports "Proyecto-WWW/back/models/report"
+	"Proyecto-WWW/back/models/report/email"
 	"Proyecto-WWW/back/server/handler"
 	"Proyecto-WWW/back/storage"
 )
@@ -63,7 +65,23 @@ func createBills(contract *contract.Contract) {
 		return
 	}
 
-	// TODO: send email
+	bills, err := bill.LoadAllPreviousTotals(contract.ID)
+	if err != nil {
+		fmt.Println("createBills_3: ", err.Error())
+		return
+	}
+
+	body, err := reports.GetPDF(contract, bills[0], bills[1:])
+	if err != nil {
+		fmt.Println("createBills_4: ", err.Error())
+		return
+	}
+
+	err = email.SendEmail(body)
+	if err != nil {
+		fmt.Println("createBills_5: ", err.Error())
+		return
+	}
 }
 
 func createReadingsAndBills() {
@@ -106,7 +124,7 @@ func main() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println("sending readings...")
+				fmt.Println("sending readings/generating bills...")
 				createReadingsAndBills()
 			}
 		}
