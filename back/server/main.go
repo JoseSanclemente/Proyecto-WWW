@@ -15,17 +15,17 @@ import (
 	"Proyecto-WWW/back/storage"
 )
 
-func createReadingsAndBills() {
+func createReadings() {
 	contracts, err := contract.ListActiveContractsIDs()
 	if err != nil {
-		fmt.Println("createReadingsAndBills_1: ", err.Error())
+		fmt.Println("createReadings_1: ", err.Error())
 		return
 	}
 
 	for _, contract := range contracts {
 		active, err := bill.IsContractActive(contract.ID)
 		if err != nil {
-			fmt.Println("createReadingsAndBills_2: ", err.Error())
+			fmt.Println("createReadings_2: ", err.Error())
 			continue
 		}
 
@@ -41,7 +41,7 @@ func createReadingsAndBills() {
 
 		err = r.Store()
 		if err != nil {
-			fmt.Println("createReadingsAndBills_3: ", err.Error())
+			fmt.Println("createReadings_3: ", err.Error())
 			continue
 		}
 	}
@@ -68,13 +68,15 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(1 * time.Minute)
 
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println("rutina de readings")
+				fmt.Println("sending readings...")
+				createReadings()
+			}
 		}
 	}()
 
