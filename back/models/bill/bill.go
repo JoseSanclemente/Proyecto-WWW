@@ -129,6 +129,39 @@ func LoadPreviousTotals(contractID string) ([]*Bill, error) {
 	return bills, nil
 }
 
+func LoadAllPreviousTotals(contractID string) ([]*Bill, error) {
+	rows, err := storage.DB.Query(
+		"SELECT id, creation_date, expiration_date, paid FROM bill WHERE contract = ? ORDER BY creation_date DESC LIMIT 5",
+		contractID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var bills []*Bill
+	for rows.Next() {
+		bill := &Bill{
+			ContractId: contractID,
+		}
+
+		err = rows.Scan(&bill.ID, &bill.CreationDate, &bill.ExpirationDate, &bill.Paid)
+		if err != nil {
+			return nil, err
+		}
+
+		value, err := reading.LoadTotal(bill.ContractId, bill.CreationDate)
+		if err != nil {
+			return nil, err
+		}
+
+		bill.Value = value
+		bills = append(bills, bill)
+	}
+
+	return bills, nil
+}
+
 func (b *Bill) RegisterPayment() error {
 	result, err := storage.DB.Exec(
 		"UPDATE bill SET paid=true WHERE id=?",
