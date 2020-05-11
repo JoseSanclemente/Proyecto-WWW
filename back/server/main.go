@@ -15,35 +15,67 @@ import (
 	"Proyecto-WWW/back/storage"
 )
 
-func createReadings() {
-	contracts, err := contract.ListActiveContractsIDs()
+func createReadings(contractID string) {
+	active, err := bill.IsContractActive(contractID)
 	if err != nil {
 		fmt.Println("createReadings_1: ", err.Error())
 		return
 	}
 
+	if !active {
+		return
+	}
+
+	r := &reading.Reading{
+		ContractID: contractID,
+		Value:      rand.Intn(4),
+		Date:       int(time.Now().Unix()),
+	}
+
+	err = r.Store()
+	if err != nil {
+		fmt.Println("createReadings_2: ", err.Error())
+		return
+	}
+}
+
+func createBills(contractID string) {
+	creationDate := int(time.Now().UTC().Unix())
+	expirationDate := int(creationDate.Add(time.Day * 15).Unix())
+
+	value, err := reading.LoadTotal(contractID, int64(creationDate))
+	if err != nil {
+		fmt.Println("createBills_1: ", err.Error())
+		return
+	}
+
+	b := &bill.Bill{
+		ContractId:     contractID,
+		CreationDate:   creationDate,
+		ExpirationDate: expirationDate,
+		Paid:           false,
+		Value:          value,
+	}
+
+	err = b.StoreIfNotExists()
+	if err != nil {
+		fmt.Println("createBills_2: ", err.Error())
+		return
+	}
+
+	return nil
+}
+
+func createReadingsAndBills() {
+	contracts, err := contract.ListActiveContractsIDs()
+	if err != nil {
+		fmt.Println("createReadingsAndBills_1: ", err.Error())
+		return
+	}
+
 	for _, contract := range contracts {
-		active, err := bill.IsContractActive(contract.ID)
-		if err != nil {
-			fmt.Println("createReadings_2: ", err.Error())
-			continue
-		}
-
-		if !active {
-			continue
-		}
-
-		r := &reading.Reading{
-			ContractID: contract.ID,
-			Value:      rand.Intn(4),
-			Date:       int(time.Now().Unix()),
-		}
-
-		err = r.Store()
-		if err != nil {
-			fmt.Println("createReadings_3: ", err.Error())
-			continue
-		}
+		createReadings(contract.ID)
+		createBills(contract.ID)
 	}
 }
 
@@ -75,7 +107,7 @@ func main() {
 			select {
 			case <-ticker.C:
 				fmt.Println("sending readings...")
-				createReadings()
+				createReadingsAndBills()
 			}
 		}
 	}()
