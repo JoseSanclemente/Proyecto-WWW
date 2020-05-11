@@ -69,16 +69,12 @@ func main() {
 	}
 
 	ticker := time.NewTicker(1 * time.Second)
-	billTicker := time.NewTicker(10 * time.Second)
 
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
 				fmt.Println("rutina de readings")
-			case <-billTicker.C:
-				fmt.Println("rutina de bills")
-			}
 		}
 	}()
 
