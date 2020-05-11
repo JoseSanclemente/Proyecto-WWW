@@ -71,7 +71,7 @@ func Load(email string) (*User, error) {
 
 func List() ([]*User, error) {
 	rows, err := storage.DB.Query(
-		"SELECT email, password, deleted FROM employee",
+		"SELECT email, password, type, deleted FROM employee",
 	)
 	if err != nil {
 		return nil, err
@@ -82,7 +82,7 @@ func List() ([]*User, error) {
 	for rows.Next() {
 		user := &User{}
 
-		err = rows.Scan(&user.Email, &user.Type, &user.Deleted)
+		err = rows.Scan(&user.Email, &user.Password, &user.Type, &user.Deleted)
 		if err != nil {
 			return nil, err
 		}

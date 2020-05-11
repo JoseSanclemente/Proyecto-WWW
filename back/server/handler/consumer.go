@@ -64,14 +64,17 @@ func loginConsumer(response http.ResponseWriter, request *http.Request) {
 }
 
 func createConsumer(response http.ResponseWriter, request *http.Request) {
-	newConsumer := &consumer.Consumer{}
+	input := consumer.Input{}
 
-	err := json.NewDecoder(request.Body).Decode(newConsumer)
+	err := json.NewDecoder(request.Body).Decode(&input)
 	if err != nil {
 		fmt.Println("createConsumer_1: ", err.Error())
 		gateway.WriteInternalServerError(response)
 		return
 	}
+
+	c := consumer.Consumer(input)
+	newConsumer := &c
 
 	err = newConsumer.Store()
 	if err != nil {
