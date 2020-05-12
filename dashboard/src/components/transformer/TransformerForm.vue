@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
+    <form novalidate class="md-layout" @submit.prevent="validateTrans">
       <md-card class="md-layout-item md-size-60 md-small-size-100">
         <md-card-header>
           <div class="md-title">Add Transformer</div>
@@ -8,39 +8,10 @@
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-40 md-small-size-100">
-              <md-field :class="getValidationClass('name')">
-                <label for="transModel">Select model</label>
-                <md-select
-                  name="transModel"
-                  id="transModel"
-                  v-model="form.transModel"
-                  md-dense
-                  :disabled="sending"
-                >
-                  <md-option value="national_id">A</md-option>
-                  <md-option value="tax_id">B</md-option>
-                </md-select>
-              </md-field>
-            </div>
-
-            <md-button
-              class="md-icon-button md-primary md-raised"
-              @click="openModal"
-              :disabled="sending"
-            >
-              <md-icon>add</md-icon>
-            </md-button>
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('substationID')">
-                <label for="substationID">Select substation</label>
-                <md-select
-                  name="substationID"
-                  id="substationID"
-                  v-model="form.substationID"
-                  md-dense
-                  :disabled="sending"
-                >
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('substation_id')">
+                <label for="substation_id">Select substation</label>
+                <md-select v-model="form.substation_id" md-dense :disabled="sending">
                   <md-option value="national_id">Sub A</md-option>
                   <md-option value="tax_id">Sub B</md-option>
                 </md-select>
@@ -49,6 +20,24 @@
           </div>
 
           <div class="md-layout md-gutter">
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('latitude')">
+                <label for="latitude">Latitude</label>
+                <md-input v-model="form.latitude" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.latitude.required">The latitude is required</span>
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('longitude')">
+                <label for="longitude">Longitude</label>
+                <md-input v-model="form.longitude" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.longitude.required">The address is required</span>
+              </md-field>
+            </div>
+          </div>
+
+          <!--div class="md-layout md-gutter">
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('address')">
                 <label for="address">Transformer address</label>
@@ -62,8 +51,7 @@
             </div>
           </div>
 
-          <map-component></map-component>
-          <model-form v-model="modalOpen"></model-form>
+          <map-component></map-component-->
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -73,51 +61,50 @@
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
     </form>
   </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-import { required, minLength } from "vuelidate/lib/validators";
-import MapComponent from "@/components/MapComponent.vue";
-import ModelForm from "@/components/ModelForm.vue";
+import { required } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
+//import MapComponent from "@/components/MapComponent.vue";
 
 export default {
   name: "transformer-form",
   mixins: [validationMixin],
   components: {
-    MapComponent,
-    ModelForm
+    //MapComponent
   },
   data: () => ({
     form: {
-      name: null,
-      address: null,
-      active: false
+      substation_id: null,
+      latitude: null,
+      longitude: null,
+      //address: null,
+      deleted: false
     },
-    userSaved: false,
-    sending: false,
-    lastUser: null,
-    modalOpen: false
+    showSnackBar: false,
+    message: null,
+    sending: false
   }),
   validations: {
     form: {
-      name: {
-        required,
-        minLength: minLength(3)
+      substation_id: {
+        required
       },
-      address: {
-        required,
-        minLength: minLength(3)
+      latitude: {
+        required
+      },
+      longitude: {
+        required
       }
     }
   },
   methods: {
-    openModal() {
-      this.modalOpen = !this.modalOpen;
-    },
+    ...mapActions("transformer", ["createTransformer"]),
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -127,28 +114,39 @@ export default {
         };
       }
     },
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
     clearForm() {
       this.$v.$reset();
-      this.form.name = null;
-      this.form.address = null;
-      this.form.active = null;
+      this.form.substation_id = null;
+      this.form.latitude = null;
+      this.form.longitude = null;
     },
-    saveUser() {
+    saveTransformer() {
       this.sending = true;
 
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.firstName} ${this.form.lastName}`;
-        this.userSaved = true;
-        this.sending = false;
-        this.clearForm();
-      }, 1500);
+      console.log(this.form);
+      this.createTransformer(this.form)
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+            this.clearForm();
+            this.showNotification("The transform was successfully added!");
+          }, 2000);
+        })
+        .catch(error => {
+          this.sending = false;
+          this.showNotification("An error had occured");
+          console.log(error);
+        });
     },
-    validateUser() {
+    validateTrans() {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveUser();
+        this.saveTransformer();
       }
     }
   }

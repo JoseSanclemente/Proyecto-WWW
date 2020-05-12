@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
+    <form novalidate class="md-layout" @submit.prevent="validateSubstation">
       <md-card class="md-layout-item md-size-40 md-small-size-100">
         <md-card-header>
           <div class="md-title">Add Substation</div>
@@ -8,28 +8,20 @@
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('name')">
-                <label for="name">Substation name</label>
-                <md-input name="name" id="name" v-model="form.name" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.name.required">The substation name is required</span>
-                <span class="md-error" v-else-if="!$v.form.name.minlength">Invalid substation name</span>
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('latitude')">
+                <label for="latitude">Latitude</label>
+                <md-input v-model="form.latitude" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.latitude.required">The latitude is required</span>
               </md-field>
             </div>
 
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('address')">
-                <label for="address">Address</label>
-                <md-input name="address" id="address" v-model="form.address" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.address.required">The address is required</span>
-                <span class="md-error" v-else-if="!$v.form.address.minlength">Invalid address</span>
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('longitude')">
+                <label for="longitude">Longitude</label>
+                <md-input v-model="form.longitude" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.longitude.required">The longitude is required</span>
               </md-field>
-            </div>
-          </div>
-
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-checkbox class="md-primary" v-model="form.active">Active</md-checkbox>
             </div>
           </div>
         </md-card-content>
@@ -41,41 +33,45 @@
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
     </form>
   </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-import { required, minLength } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   name: "substation-form",
   mixins: [validationMixin],
+  components: {
+    //MapComponent
+  },
   data: () => ({
     form: {
-      name: null,
-      address: null,
-      active: false
+      latitude: null,
+      longitude: null,
+      //address: null,
+      deleted: false
     },
-    userSaved: false,
-    sending: false,
-    lastUser: null
+    showSnackBar: false,
+    message: null,
+    sending: false
   }),
   validations: {
     form: {
-      name: {
-        required,
-        minLength: minLength(3)
+      latitude: {
+        required
       },
-      address: {
-        required,
-        minLength: minLength(3)
+      longitude: {
+        required
       }
     }
   },
   methods: {
+    ...mapActions("substation", ["createSubstation"]),
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -85,28 +81,37 @@ export default {
         };
       }
     },
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
     clearForm() {
       this.$v.$reset();
-      this.form.name = null;
-      this.form.address = null;
-      this.form.active = null;
+      this.form.latitude = null;
+      this.form.longitude = null;
     },
-    saveUser() {
+    saveSubstation() {
       this.sending = true;
 
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.firstName} ${this.form.lastName}`;
-        this.userSaved = true;
-        this.sending = false;
-        this.clearForm();
-      }, 1500);
+      this.createSubstation(this.form)
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+            this.clearForm();
+            this.showNotification("The substation was successfully added!");
+          }, 2000);
+        })
+        .catch(error => {
+          this.sending = false;
+          this.showNotification("An error had occured");
+          console.log(error);
+        });
     },
-    validateUser() {
+    validateSubstation() {
       this.$v.$touch();
-
+      console.log(this.form);
       if (!this.$v.$invalid) {
-        this.saveUser();
+        this.saveSubstation();
       }
     }
   }

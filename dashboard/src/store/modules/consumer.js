@@ -1,9 +1,9 @@
-import clients from "@/services/clients.js";
+import consumer from "@/services/consumer.js";
 import contracts from "@/services/contracts.js";
 
 // initial state
 const state = {
-  clients: [],
+  consumers: [],
   contracts: []
 };
 
@@ -12,10 +12,15 @@ const getters = {};
 
 // actions
 const actions = {
-  loadAllClients({ commit }) {
-    clients.list().then(response => {
+  listConsumers({ commit }) {
+    consumer.list().then(response => {
       commit("setClients", response.data);
     });
+  },
+
+  createConsumer({ commit }, payload) {
+    commit("setConsumerSaved");
+    return consumer.create(payload)
   },
 
   loadAllContracts({ commit }) {
@@ -27,13 +32,17 @@ const actions = {
 
 // mutations
 const mutations = {
-  setClients(state, clients) {
-    state.clients = clients;
+  setClients(state, consumers) {
+    state.consumers = consumers;
   },
 
   setContracts(state, contracts) {
     state.contracts = contracts;
-  }
+  },
+
+  setConsumerSaved(state) {
+    state.userSaved = true;
+  },
 };
 
 export default {

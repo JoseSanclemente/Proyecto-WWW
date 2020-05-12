@@ -14,7 +14,6 @@
                 <md-input
                   type="email"
                   name="email"
-                  id="email"
                   autocomplete="email"
                   v-model="form.email"
                   :disabled="sending"
@@ -29,7 +28,7 @@
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('type')">
                 <label for="type">Role</label>
-                <md-select name="type" id="type" v-model="form.type" md-dense :disabled="sending">
+                <md-select name="type" v-model="form.type" md-dense :disabled="sending">
                   <md-option value="admin">Admin</md-option>
                   <md-option value="manager">Manager</md-option>
                   <md-option value="operator">Operator</md-option>
@@ -43,12 +42,7 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
                 <label for="password">Password</label>
-                <md-input
-                  type="password"
-                  id="password"
-                  v-model="form.password"
-                  :disabled="sending"
-                />
+                <md-input type="password" v-model="form.password" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
               </md-field>
             </div>
@@ -56,13 +50,8 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
                 <label for="confirmPass">Confirm password</label>
-                <md-input
-                  type="password"
-                  id="confirmPass"
-                  v-model="confirmPass"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.password.required">This field is required</span>
+                <md-input type="password" v-model="confirmPass" :disabled="sending" />
+                <span class="md-error" v-if="!$v.confirmPass.required">This field is required</span>
               </md-field>
             </div>
           </div>
@@ -72,7 +61,7 @@
 
         <md-card-actions>
           <md-button @click.prevent="close">Cancel</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Create</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Add</md-button>
         </md-card-actions>
       </md-card>
 
@@ -125,6 +114,9 @@ export default {
       password: {
         required
       }
+    },
+    confirmPass: {
+      required
     }
   },
   mounted() {

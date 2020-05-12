@@ -1,12 +1,17 @@
 <template>
   <div>
-    <user-form modalType="modify" :inputUser="selected" v-model="modalOpen"></user-form>
-    <md-table v-if="tableUsers.length > 0" v-model="tableUsers" md-card @md-selected="onSelect">
+    <consumer-form modalType="modify" :inputUser="selected" v-model="modalOpen"></consumer-form>
+    <md-table
+      v-if="tableConsumers.length > 0"
+      v-model="tableConsumers"
+      md-card
+      @md-selected="onSelect"
+    >
       <md-table-toolbar>
-        <span class="md-title">Users List</span>
+        <span class="md-title">Consumers List</span>
       </md-table-toolbar>
       <md-empty-state
-        v-if="tableUsers.length == 0"
+        v-if="tableConsumers.length == 0"
         class="md-primary"
         md-icon="remove_circle_outline"
         md-label="There is nothing here yet"
@@ -37,9 +42,10 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Role" md-sort-by="type">{{ item.type }}</md-table-cell>
-        <md-table-cell md-label="Active">{{ item.deleted }}</md-table-cell>
+        <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell md-label="Latitude" md-sort-by="email">{{ item.lat }}</md-table-cell>
+        <md-table-cell md-label="Longitude">{{ item.long }}</md-table-cell>
+        <md-table-cell md-label="Status">{{ item.deleted }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -47,32 +53,33 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import UserForm from "@/components/user/UserForm.vue";
+import TransformerForm from "@/components/transformer/TransformerForm.vue";
 export default {
-  name: "user-table",
+  name: "transformer-table",
   components: {
-    UserForm
+    TransformerForm
   },
   data: () => ({
     modalOpen: false,
     showSnackBar: false,
     message: "",
     selected: [],
-    tableUsers: []
+    tableConsumers: []
   }),
   computed: {
-    ...mapState("user", ["users"])
+    ...mapState("consumer", ["consumers"])
   },
   watch: {
     table: function() {
-      this.tableUsers = this.users;
+      this.tableConsumers = this.consumers;
     }
   },
   created() {
-    this.tableUsers = this.users;
+    this.listConsumers();
+    this.tableConsumers = this.consumers;
   },
   methods: {
-    ...mapActions("user", ["listUsers", "updateUser"]),
+    ...mapActions("consumer", ["listConsumers"]),
     onSelect(items) {
       this.selected = items;
     },

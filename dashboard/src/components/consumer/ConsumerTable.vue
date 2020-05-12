@@ -1,11 +1,22 @@
 <template>
   <div>
-    <client-form v-model="modalOpen"></client-form>
-    <md-table v-model="clients" md-card @md-selected="onSelect">
+    <consumer-form modalType="modify" :inputUser="selected" v-model="modalOpen"></consumer-form>
+    <md-table
+      v-if="tableConsumers.length > 0"
+      v-model="tableConsumers"
+      md-card
+      @md-selected="onSelect"
+    >
       <md-table-toolbar>
-        <span class="md-title">Clients List</span>
+        <span class="md-title">Consumers List</span>
       </md-table-toolbar>
-
+      <md-empty-state
+        v-if="tableConsumers.length == 0"
+        class="md-primary"
+        md-icon="remove_circle_outline"
+        md-label="There is nothing here yet"
+        md-description="Users added will be showed here."
+      ></md-empty-state>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
@@ -17,9 +28,11 @@
           >
             <md-icon>edit</md-icon>
           </md-button>
-          <md-button class="md-icon-button md-raised md-accent">
+          <md-button @click="changeUserStatus" class="md-icon-button md-raised md-accent">
             <md-icon>delete</md-icon>
           </md-button>
+
+          <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
         </div>
       </md-table-toolbar>
 
@@ -30,58 +43,42 @@
         md-auto-select
       >
         <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Document number" md-sort-by="email">{{ item.docNumber }}</md-table-cell>
-        <md-table-cell md-label="Document type" md-sort-by="gender">{{ item.docType }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="title">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Phone number" md-sort-by="title">{{ item.phoneNumber }}</md-table-cell>
-        <md-table-cell md-label="Address" md-sort-by="title">{{ item.address }}</md-table-cell>
-        <md-table-cell md-label="Status" md-sort-by="title">{{ item.status }}</md-table-cell>
+        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
+        <md-table-cell md-label="Active">{{ item.deleted }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
-import ClientForm from "@/components/consumer/ConsumerForm.vue";
+import { mapState, mapActions } from "vuex";
+import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
 export default {
   name: "consumer-table",
   components: {
-    ClientForm
+    ConsumerForm
   },
   data: () => ({
     modalOpen: false,
+    showSnackBar: false,
+    message: "",
     selected: [],
-    clients: [
-      {
-        id: "CLIeb3ec3ed0c184551",
-        docNumber: "1144712362",
-        docType: "Cédula",
-        email: "dummy@gmail.com",
-        phoneNumber: "314652346",
-        address: "Cra 84 #18-165",
-        status: "Active"
-      },
-      {
-        id: "CLIeb3ec3eB12451s",
-        docNumber: "665531462",
-        docType: "Cédula",
-        email: "sdubbin0@geocities.com",
-        phoneNumber: "316327654281",
-        address: "Cll. 75 #45-90",
-        status: "Active"
-      },
-      {
-        id: "CLI12413e41234bcd",
-        docNumber: "94123141-3",
-        docType: "NIT",
-        email: "contact@acities.comr",
-        phoneNumber: "31642341242",
-        address: "Cra 56 #58-10",
-        status: "Inactive"
-      }
-    ]
+    tableConsumers: []
   }),
+  computed: {
+    ...mapState("consumer", ["consumers"])
+  },
+  watch: {
+    table: function() {
+      this.tableConsumers = this.consumers;
+    }
+  },
+  created() {
+    this.listConsumers();
+    this.tableConsumers = this.consumers;
+  },
   methods: {
+    ...mapActions("consumer", ["listConsumers"]),
     onSelect(items) {
       this.selected = items;
     },
@@ -96,6 +93,24 @@ export default {
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
+    },
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
+    changeUserStatus() {
+      for (let i = 0; i < this.selected.length; i++) {
+        let item = this.selected[i];
+        item.deleted = !item.deleted;
+        this.updateUser(item)
+          .then(() => {
+            this.listUsers();
+            this.showNotification("Users updated successfully!");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   }
 };
