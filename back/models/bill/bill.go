@@ -250,31 +250,7 @@ func IsContractActive(contractID string) (bool, error) {
 	return diff < 0, nil
 }
 
-func (b *Bill) StoreIfNotExists() error {
-	created, err := b.wasAlreadyCreated()
-	if err != nil {
-		return err
-	}
-
-	if created {
-		return nil
-	}
-
-	id := random.GenerateID("BIL")
-
-	_, err = storage.DB.Exec(
-		`INSERT INTO bill(id, contract, creation_date, expiration_date, paid)
-			VALUES (?, ?, ?, ?, false)`,
-		id,
-		b.ContractId,
-		b.CreationDate,
-		b.ExpirationDate,
-	)
-
-	return err
-}
-
-func (b *Bill) wasAlreadyCreated() (bool, error) {
+func (b *Bill) WasAlreadyCreated() (bool, error) {
 	year, month, _ := time.Now().UTC().Date()
 	date := time.Date(year, month, 0, 0, 0, 0, 0, time.UTC).Unix()
 
