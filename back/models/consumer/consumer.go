@@ -6,6 +6,13 @@ import (
 	"Proyecto-WWW/back/storage"
 )
 
+type Input struct {
+	ID       string `json:"id"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+	Deleted  bool   `json:"deleted"`
+}
+
 type Consumer struct {
 	ID       string `json:"id"`
 	Password string `json:"-"`

@@ -59,27 +59,39 @@ func createBills(contract *contract.Contract) {
 		Value:          value,
 	}
 
-	err = b.StoreIfNotExists()
+	created, err := b.WasAlreadyCreated()
 	if err != nil {
 		fmt.Println("createBills_2: ", err.Error())
 		return
 	}
 
-	bills, err := bill.LoadAllPreviousTotals(contract.ID)
+	if created {
+		return
+	}
+
+	fmt.Println("generating new bill...")
+
+	_, err = b.Store()
 	if err != nil {
 		fmt.Println("createBills_3: ", err.Error())
 		return
 	}
 
-	body, err := reports.GetPDF(contract, bills[0], bills[1:])
+	bills, err := bill.LoadAllPreviousTotals(contract.ID)
 	if err != nil {
 		fmt.Println("createBills_4: ", err.Error())
 		return
 	}
 
-	err = email.SendEmail(body)
+	body, err := reports.GetPDF(contract, bills[0], bills[1:])
 	if err != nil {
 		fmt.Println("createBills_5: ", err.Error())
+		return
+	}
+
+	err = email.SendEmail(body)
+	if err != nil {
+		fmt.Println("createBills_6: ", err.Error())
 		return
 	}
 }
@@ -124,7 +136,7 @@ func main() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println("sending readings/generating bills...")
+				fmt.Println("sending readings...")
 				createReadingsAndBills()
 			}
 		}
