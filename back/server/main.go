@@ -130,7 +130,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	ticker := time.NewTicker(4 * time.Second)
+	ticker := time.NewTicker(1 * time.Minute)
 
 	go func() {
 		for {
