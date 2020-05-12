@@ -15,7 +15,6 @@ func SendEmail(file []byte) error {
 		emailAddr  = "ShadyElectricCompany@gmail.com"
 		portNumber = 465
 		tos        = []string{
-			"juan.perez.munoz@correounivalle.edu.co",
 			"diana.navas@correounivalle.edu.co",
 		}
 		filename  = "recibo.pdf"
