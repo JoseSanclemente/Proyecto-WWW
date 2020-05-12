@@ -21,7 +21,7 @@ func LoadTotal(contractID string, t int64) (int, error) {
 	date := time.Date(year, month, 0, 0, 0, 0, 0, creation.Location())
 
 	from := int(date.AddDate(0, -1, 0).Unix())
-	to := int(date.Add(time.Hour * 24 * 31).Unix())
+	to := int(date.Add(time.Second * -1).Unix())
 
 	rows, err := storage.DB.Query(
 		"SELECT SUM(value) FROM reading WHERE contract=? AND date >= ? AND date < ?",
