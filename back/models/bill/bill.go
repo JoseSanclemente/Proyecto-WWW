@@ -192,12 +192,11 @@ func (b *Bill) Store() (string, error) {
 	id := random.GenerateID("BIL")
 
 	result, err := storage.DB.Exec(
-		"INSERT INTO bill(id, contract, creation_date, expiration_date, paid, value) VALUES(?, ?, ?, ?, false, ?)",
+		"INSERT INTO bill(id, contract, creation_date, expiration_date, paid) VALUES(?, ?, ?, ?, false)",
 		id,
 		b.ContractId,
 		b.CreationDate,
 		b.ExpirationDate,
-		b.Value,
 	)
 	if err != nil {
 		return "", err
@@ -252,23 +251,52 @@ func IsContractActive(contractID string) (bool, error) {
 }
 
 func (b *Bill) StoreIfNotExists() error {
+	created, err := b.wasAlreadyCreated()
+	if err != nil {
+		return err
+	}
+
+	if created {
+		return nil
+	}
+
 	id := random.GenerateID("BIL")
 
-	year, month, _ := time.Now().UTC().Date()
-	date := time.Date(year, month, 0, 0, 0, 0, 0, time.UTC).Unix()
-
-	_, err := storage.DB.Exec(
-		`INSERT INTO bill(id, contract, creation_date, expiration_date, paid, value) 
-			VALUES(?, ?, ?, ?, false, ?)
-			WHERE NOT EXISTS (SELECT * FROM bill WHERE contract = ? AND creation_date >= ?)`,
+	_, err = storage.DB.Exec(
+		`INSERT INTO bill(id, contract, creation_date, expiration_date, paid)
+			VALUES (?, ?, ?, ?, false)`,
 		id,
 		b.ContractId,
 		b.CreationDate,
 		b.ExpirationDate,
-		b.Value,
-		b.ContractId,
-		date,
 	)
 
 	return err
+}
+
+func (b *Bill) wasAlreadyCreated() (bool, error) {
+	year, month, _ := time.Now().UTC().Date()
+	date := time.Date(year, month, 0, 0, 0, 0, 0, time.UTC).Unix()
+
+	rows, err := storage.DB.Query(
+		"SELECT COUNT(*) FROM bill WHERE contract = ? AND creation_date >= ?",
+		b.ContractId,
+		date,
+	)
+	if err != nil {
+		return false, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	if !rows.Next() {
+		return false, nil
+	}
+
+	var count int
+	err = rows.Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	return count != 0, nil
 }
