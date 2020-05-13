@@ -11,8 +11,8 @@
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('substation_id')">
                 <label for="substation_id">Select substation</label>
-                <md-select v-model="form.substation_id" md-dense :disabled="sending">
-                  <md-option value="national_id">Sub A</md-option>
+                <md-select v-model="transformerForm.substation_id" md-dense :disabled="sending">
+                  <md-option value="SUB438c141b5a787a6701d21b6a821698df">Sub A</md-option>
                   <md-option value="tax_id">Sub B</md-option>
                 </md-select>
               </md-field>
@@ -45,20 +45,21 @@ export default {
   components: {
     MapComponent
   },
-  data: () => ({
-    form: {
-      substation_id: null,
-      latitude: null,
-      longitude: null,
-      //address: null,
-      deleted: false
-    },
-    showSnackBar: false,
-    message: null,
-    sending: false
-  }),
+  data() {
+    return {
+      transformerForm: {
+        substation_id: null,
+        latitude: null,
+        longitude: null,
+        deleted: false
+      },
+      showSnackBar: false,
+      message: null,
+      sending: false
+    };
+  },
   validations: {
-    form: {
+    transformerForm: {
       substation_id: {
         required
       }
@@ -67,11 +68,11 @@ export default {
   methods: {
     ...mapActions("transformer", ["createTransformer"]),
     setLatLng(marker) {
-      this.form.latitude = marker.lat;
-      this.form.longitude = marker.lng;
+      this.transformerForm.latitude = marker.lat;
+      this.transformerForm.longitude = marker.lng;
     },
     getValidationClass(fieldName) {
-      const field = this.$v.form[fieldName];
+      const field = this.$v.transformerForm[fieldName];
 
       if (field) {
         return {
@@ -85,12 +86,12 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.substation_id = null;
+      this.transformerForm.substation_id = null;
     },
     saveTransformer() {
       this.sending = true;
 
-      this.createTransformer(this.form)
+      this.createTransformer(this.transformerForm)
         .then(() => {
           setTimeout(() => {
             this.sending = false;

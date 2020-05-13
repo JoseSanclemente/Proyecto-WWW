@@ -31,41 +31,28 @@ export default {
   components: {
     MapComponent
   },
-  data: () => ({
-    form: {
-      latitude: null,
-      longitude: null,
-      //address: null,
-      deleted: false
-    },
-    showSnackBar: false,
-    message: null,
-    sending: false
-  }),
+  data() {
+    return {
+      form: {
+        latitude: null,
+        longitude: null,
+        deleted: false
+      },
+      showSnackBar: false,
+      message: null,
+      sending: false
+    };
+  },
   methods: {
     ...mapActions("substation", ["createSubstation"]),
     setLatLng(marker) {
-      console.log(marker);
       this.form.latitude = marker.lat;
       this.form.longitude = marker.lng;
       console.log(this.form);
     },
-    getValidationClass(fieldName) {
-      const field = this.$v.form[fieldName];
-
-      if (field) {
-        return {
-          "md-invalid": field.$invalid && field.$dirty
-        };
-      }
-    },
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
-    },
-    clearForm() {
-      this.form.latitude = null;
-      this.form.longitude = null;
     },
     saveSubstation() {
       this.sending = true;
@@ -74,7 +61,6 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.sending = false;
-            this.clearForm();
             this.showNotification("The substation was successfully added!");
           }, 2000);
         })
@@ -83,12 +69,6 @@ export default {
           this.showNotification("An error had occured");
           console.log(error);
         });
-    },
-    validateSubstation() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        this.saveSubstation();
-      }
     }
   }
 };

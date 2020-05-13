@@ -12,6 +12,7 @@
 </template>
 
 <script>
+//import { mapState } from "vuex";
 export default {
   props: {
     showAddressInput: {
@@ -34,12 +35,40 @@ export default {
       options: {
         center: { lat: 3.4516, lng: -76.532 },
         zoom: 14
-      }
+      },
+      substations: [
+        {
+          id: "SUB438c141b5a787a6701d21b6a821698df",
+          longitude: -76.5264907,
+          latitude: 3.4031701,
+          deleted: false,
+          transformers: [
+            {
+              id: "TRA41f20a10133f2eb4779f4296b8e4f9d6",
+              substation_id: "SUB438c141b5a787a6701d21b6a821698df",
+              longitude: -76.530981,
+              latitude: 3.3828656,
+              deleted: false
+            },
+            {
+              id: "TRAedacf364e6eb8c7391abd09002ec0114",
+              substation_id: "SUB438c141b5a787a6701d21b6a821698df",
+              longitude: -76.5308582,
+              latitude: 3.3837602,
+              deleted: false
+            }
+          ]
+        }
+      ]
     };
+  },
+  computed: {
+    //...mapState("substation", ["substation"])
   },
   mounted() {
     this.map = new window.google.maps.Map(this.$refs["map"], this.options);
     this.geocoder = new window.google.maps.Geocoder();
+    this.setMarkers();
   },
   methods: {
     getMap(callback) {
@@ -55,6 +84,31 @@ export default {
         return "S";
       } else {
         return "T";
+      }
+    },
+    setMarkers() {
+      for (let i = 0; i < this.substations.length; i++) {
+        let sub = this.substations[i];
+        let subPos = { lat: sub.latitude, lng: sub.longitude };
+        new window.google.maps.Marker({
+          position: subPos,
+          map: this.map,
+          icon: {
+            url: "http://maps.google.com/mapfiles/kml/paddle/purple-circle.png"
+          }
+        });
+
+        for (let j = 0; j < sub.transformers.length; j++) {
+          let trans = sub.transformers[j];
+          let pos = { lat: trans.latitude, lng: trans.longitude };
+          new window.google.maps.Marker({
+            position: pos,
+            map: this.map,
+            icon: {
+              url: "http://maps.google.com/mapfiles/kml/paddle/blu-circle.png"
+            }
+          });
+        }
       }
     },
     getLatLng() {
@@ -90,7 +144,9 @@ export default {
       this.returnLatLng();
     },
     returnLatLng() {
-      this.$emit("latlng", this.marker);
+      setTimeout(() => {
+        this.$emit("latlng", this.marker);
+      }, 1000);
     }
   }
 };

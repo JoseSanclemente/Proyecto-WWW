@@ -13,7 +13,6 @@ const getters = {};
 // actions
 const actions = {
   createSubstation({ commit }, payload) {
-    console.log(payload)
     commit("setSubstationsSaved")
     payload.latitude = payload.latitude.toString()
     payload.longitude = payload.longitude.toString()
@@ -22,6 +21,7 @@ const actions = {
   },
   listSubstations({ commit }) {
     subestation.list().then(response => {
+      //console.log(response.data)
       commit("setSubstations", response.data);
     });
   },
