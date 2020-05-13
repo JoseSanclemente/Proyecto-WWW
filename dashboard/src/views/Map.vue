@@ -1,10 +1,10 @@
 <template>
   <div class="map">
-    <map-component></map-component>
+    <map-component :showAddressInput="false"></map-component>
   </div>
 </template>
 <script>
-import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/map/MapComponent.vue";
 export default {
   components: {
     MapComponent

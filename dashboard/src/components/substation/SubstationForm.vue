@@ -1,29 +1,13 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateSubstation">
-      <md-card class="md-layout-item md-size-40 md-small-size-100">
+    <form novalidate class="md-layout" @submit.prevent="saveSubstation">
+      <md-card class="md-layout-item md-size-60 md-small-size-100">
         <md-card-header>
           <div class="md-title">Add Substation</div>
         </md-card-header>
 
         <md-card-content>
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50 md-small-size-100">
-              <md-field :class="getValidationClass('latitude')">
-                <label for="latitude">Latitude</label>
-                <md-input v-model="form.latitude" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.latitude.required">The latitude is required</span>
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-size-50 md-small-size-100">
-              <md-field :class="getValidationClass('longitude')">
-                <label for="longitude">Longitude</label>
-                <md-input v-model="form.longitude" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.longitude.required">The longitude is required</span>
-              </md-field>
-            </div>
-          </div>
+          <map-component mapType="substation" :showAddressInput="true" @latlng="setLatLng"></map-component>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -39,15 +23,13 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
+import MapComponent from "@/components/map/MapComponent.vue";
 
 export default {
   name: "substation-form",
-  mixins: [validationMixin],
   components: {
-    //MapComponent
+    MapComponent
   },
   data: () => ({
     form: {
@@ -60,18 +42,14 @@ export default {
     message: null,
     sending: false
   }),
-  validations: {
-    form: {
-      latitude: {
-        required
-      },
-      longitude: {
-        required
-      }
-    }
-  },
   methods: {
     ...mapActions("substation", ["createSubstation"]),
+    setLatLng(marker) {
+      console.log(marker);
+      this.form.latitude = marker.lat;
+      this.form.longitude = marker.lng;
+      console.log(this.form);
+    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -86,7 +64,6 @@ export default {
       this.showSnackBar = true;
     },
     clearForm() {
-      this.$v.$reset();
       this.form.latitude = null;
       this.form.longitude = null;
     },
@@ -109,7 +86,6 @@ export default {
     },
     validateSubstation() {
       this.$v.$touch();
-      console.log(this.form);
       if (!this.$v.$invalid) {
         this.saveSubstation();
       }
