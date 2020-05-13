@@ -3,114 +3,77 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">Add user</div>
+          <div class="md-title">{{ title }}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('firstName')">
-                <label for="first-name">First Name</label>
+            <div class="md-layout-item md-size-80 md-small-size-100">
+              <md-field :class="getValidationClass('email')">
+                <label for="email">Email</label>
                 <md-input
-                  name="first-name"
-                  id="first-name"
-                  autocomplete="given-name"
-                  v-model="form.firstName"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  v-model="form.email"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.firstName.required">The first name is required</span>
-                <span class="md-error" v-else-if="!$v.form.firstName.minlength">Invalid first name</span>
+                <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
+                <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
               </md-field>
             </div>
+          </div>
 
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('lastName')">
-                <label for="last-name">Last Name</label>
-                <md-input
-                  name="last-name"
-                  id="last-name"
-                  autocomplete="family-name"
-                  v-model="form.lastName"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.lastName.required">The last name is required</span>
-                <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid last name</span>
+          <div class="md-layout">
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('type')">
+                <label for="type">Role</label>
+                <md-select name="type" v-model="form.type" md-dense :disabled="sending">
+                  <md-option value="admin">Admin</md-option>
+                  <md-option value="manager">Manager</md-option>
+                  <md-option value="operator">Operator</md-option>
+                </md-select>
+                <span class="md-error">The role is required</span>
               </md-field>
             </div>
           </div>
 
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('gender')">
-                <label for="gender">Gender</label>
-                <md-select
-                  name="gender"
-                  id="gender"
-                  v-model="form.gender"
-                  md-dense
-                  :disabled="sending"
-                >
-                  <md-option></md-option>
-                  <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
-                </md-select>
-                <span class="md-error">The gender is required</span>
+              <md-field :class="getValidationClass('password')">
+                <label for="password">Password</label>
+                <md-input type="password" v-model="form.password" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('age')">
-                <label for="age">Age</label>
-                <md-input
-                  type="number"
-                  id="age"
-                  name="age"
-                  autocomplete="age"
-                  v-model="form.age"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.age.required">The age is required</span>
-                <span class="md-error" v-else-if="!$v.form.age.maxlength">Invalid age</span>
+              <md-field :class="getValidationClass('password')">
+                <label for="confirmPass">Confirm password</label>
+                <md-input type="password" v-model="confirmPass" :disabled="sending" />
+                <span class="md-error" v-if="!$v.confirmPass.required">This field is required</span>
               </md-field>
             </div>
           </div>
-
-          <md-field :class="getValidationClass('email')">
-            <label for="email">Email</label>
-            <md-input
-              type="email"
-              name="email"
-              id="email"
-              autocomplete="email"
-              v-model="form.email"
-              :disabled="sending"
-            />
-            <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-            <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
-          </md-field>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
           <md-button @click.prevent="close">Cancel</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Create</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Add</md-button>
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
     </form>
   </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-import {
-  required,
-  email,
-  minLength,
-  maxLength
-} from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   name: "user-form",
@@ -118,44 +81,62 @@ export default {
   props: {
     value: {
       required: true
-    }
-  },
-  data: () => ({
-    form: {
-      firstName: null,
-      lastName: null,
-      gender: null,
-      age: null,
-      email: null
     },
-    userSaved: false,
-    sending: false,
-    lastUser: null
-  }),
+    modalType: {
+      required: true
+    },
+    inputUser: null
+  },
+  data() {
+    return {
+      form: {
+        email: null,
+        type: null,
+        password: null,
+        deleted: false
+      },
+      confirmPass: null,
+      showSnackBar: false,
+      sending: false,
+      message: null,
+      title: null
+    };
+  },
   validations: {
     form: {
-      firstName: {
-        required,
-        minLength: minLength(3)
-      },
-      lastName: {
-        required,
-        minLength: minLength(3)
-      },
-      age: {
-        required,
-        maxLength: maxLength(3)
-      },
-      gender: {
+      type: {
         required
       },
       email: {
         required,
         email
+      },
+      password: {
+        required
       }
+    },
+    confirmPass: {
+      required
     }
   },
+  mounted() {
+    this.setTitle();
+  },
   methods: {
+    ...mapActions("user", ["createUser"]),
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
+    setTitle() {
+      if (this.modalType == "create") {
+        this.title = "Add user";
+      } else {
+        this.title = "Modify user";
+        this.email = this.inputUser.email;
+        this.type = this.inputUser.type;
+      }
+    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -167,22 +148,30 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.firstName = null;
-      this.form.lastName = null;
-      this.form.age = null;
-      this.form.gender = null;
       this.form.email = null;
+      this.form.role = null;
+      this.form.password = null;
+      this.form.type = null;
     },
     saveUser() {
       this.sending = true;
 
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.firstName} ${this.form.lastName}`;
-        this.userSaved = true;
-        this.sending = false;
-        this.clearForm();
-      }, 1500);
+      this.createUser(this.form)
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+
+            let message =
+              "The user " + this.form.email + " was successfully added!";
+            this.showNotification(message);
+          }, 2000);
+        })
+        .catch(error => {
+          this.sending = false;
+          this.clearForm();
+          this.showNotification("An error had occured");
+          console.log(error);
+        });
     },
     validateUser() {
       this.$v.$touch();

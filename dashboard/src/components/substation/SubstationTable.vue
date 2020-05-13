@@ -1,6 +1,6 @@
 <template>
   <div>
-    <user-form v-model="modalOpen"></user-form>
+    <!--user-form v-model="modalOpen"></user-form-->
     <md-table v-model="substations" md-card @md-selected="onSelect">
       <md-table-toolbar>
         <span class="md-title">Substations List</span>
@@ -39,11 +39,11 @@
 </template>
 
 <script>
-import UserForm from "@/components/user/UserForm.vue";
+//import UserForm from "@/components/user/UserForm.vue";
 export default {
   name: "substation-table",
   components: {
-    UserForm
+    //sUserForm
   },
   data: () => ({
     modalOpen: false,

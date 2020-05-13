@@ -1,7 +1,11 @@
 import api from "./api";
 
-const list = () => {
-  return api.get("Subestation");
+const create = payload => {
+  return api.post("substations", payload);
 };
 
-export default { list };
+const list = () => {
+  return api.get("substations");
+};
+
+export default { list, create };

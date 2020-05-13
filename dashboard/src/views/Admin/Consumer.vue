@@ -1,8 +1,8 @@
 <template>
   <div>
     <section>
-      <consumer-form v-model="modalOpen"></consumer-form>
-      <md-button class="md-primary md-raised" @click="openModal" :disabled="sending">Add Client</md-button>
+      <consumer-form modalType="create" v-model="modalOpen"></consumer-form>
+      <md-button class="md-primary md-raised" @click="openModal">Add Consumer</md-button>
     </section>
     <section>
       <consumer-table></consumer-table>
