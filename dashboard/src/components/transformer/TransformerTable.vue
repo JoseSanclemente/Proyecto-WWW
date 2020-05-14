@@ -1,22 +1,21 @@
 <template>
   <div>
-    <consumer-form modalType="modify" :inputUser="selected" v-model="modalOpen"></consumer-form>
+    <md-empty-state
+      v-if="transformers == null || transformers.length == 0"
+      class="md-primary"
+      md-icon="remove_circle_outline"
+      md-label="There is nothing here yet"
+      md-description="Transformers added will be showed here."
+    ></md-empty-state>
     <md-table
-      v-if="tableConsumers.length > 0"
-      v-model="tableConsumers"
+      v-if="transformers != null && transformers.length > 0"
+      v-model="transformers"
       md-card
       @md-selected="onSelect"
     >
       <md-table-toolbar>
         <span class="md-title">Consumers List</span>
       </md-table-toolbar>
-      <md-empty-state
-        v-if="tableConsumers.length == 0"
-        class="md-primary"
-        md-icon="remove_circle_outline"
-        md-label="There is nothing here yet"
-        md-description="Users added will be showed here."
-      ></md-empty-state>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
@@ -52,34 +51,22 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
 import TransformerForm from "@/components/transformer/TransformerForm.vue";
 export default {
   name: "transformer-table",
   components: {
     TransformerForm
   },
+  props: {
+    transformers: { type: Array, required: true }
+  },
   data: () => ({
     modalOpen: false,
     showSnackBar: false,
     message: "",
-    selected: [],
-    tableConsumers: []
+    selected: []
   }),
-  computed: {
-    ...mapState("consumer", ["consumers"])
-  },
-  watch: {
-    table: function() {
-      this.tableConsumers = this.consumers;
-    }
-  },
-  created() {
-    this.listConsumers();
-    this.tableConsumers = this.consumers;
-  },
   methods: {
-    ...mapActions("consumer", ["listConsumers"]),
     onSelect(items) {
       this.selected = items;
     },
