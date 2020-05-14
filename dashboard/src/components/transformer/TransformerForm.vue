@@ -11,47 +11,17 @@
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('substation_id')">
                 <label for="substation_id">Select substation</label>
-                <md-select v-model="form.substation_id" md-dense :disabled="sending">
-                  <md-option value="national_id">Sub A</md-option>
-                  <md-option value="tax_id">Sub B</md-option>
+                <md-select v-model="transformerForm.substation_id" md-dense :disabled="sending">
+                  <md-option
+                    v-for="sub in substations"
+                    v-bind:key="sub.id"
+                    v-bind:value="sub.id"
+                  >{{ sub.id }}</md-option>
                 </md-select>
               </md-field>
             </div>
           </div>
-
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50 md-small-size-100">
-              <md-field :class="getValidationClass('latitude')">
-                <label for="latitude">Latitude</label>
-                <md-input v-model="form.latitude" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.latitude.required">The latitude is required</span>
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-size-50 md-small-size-100">
-              <md-field :class="getValidationClass('longitude')">
-                <label for="longitude">Longitude</label>
-                <md-input v-model="form.longitude" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.longitude.required">The address is required</span>
-              </md-field>
-            </div>
-          </div>
-
-          <!--div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50 md-small-size-100">
-              <md-field :class="getValidationClass('address')">
-                <label for="address">Transformer address</label>
-                <md-input name="address" id="address" v-model="form.address" :disabled="sending" />
-                <md-button class="md-icon-button md-mini">
-                  <md-icon>search</md-icon>
-                </md-button>
-                <span class="md-error" v-if="!$v.form.address.required">The address is required</span>
-                <span class="md-error" v-else-if="!$v.form.address.minlength">Invalid address</span>
-              </md-field>
-            </div>
-          </div>
-
-          <map-component></map-component-->
+          <map-component mapType="transformer" :showAddressInput="true" @latlng="setLatLng"></map-component>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -70,43 +40,45 @@
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
-//import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/map/MapComponent.vue";
 
 export default {
   name: "transformer-form",
   mixins: [validationMixin],
   components: {
-    //MapComponent
+    MapComponent
   },
-  data: () => ({
-    form: {
-      substation_id: null,
-      latitude: null,
-      longitude: null,
-      //address: null,
-      deleted: false
-    },
-    showSnackBar: false,
-    message: null,
-    sending: false
-  }),
+  props: {
+    substations: { type: Array, required: true }
+  },
+  data() {
+    return {
+      transformerForm: {
+        substation_id: null,
+        latitude: null,
+        longitude: null,
+        deleted: false
+      },
+      showSnackBar: false,
+      message: null,
+      sending: false
+    };
+  },
   validations: {
-    form: {
+    transformerForm: {
       substation_id: {
-        required
-      },
-      latitude: {
-        required
-      },
-      longitude: {
         required
       }
     }
   },
   methods: {
     ...mapActions("transformer", ["createTransformer"]),
+    setLatLng(marker) {
+      this.transformerForm.latitude = marker.lat;
+      this.transformerForm.longitude = marker.lng;
+    },
     getValidationClass(fieldName) {
-      const field = this.$v.form[fieldName];
+      const field = this.$v.transformerForm[fieldName];
 
       if (field) {
         return {
@@ -120,15 +92,12 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.substation_id = null;
-      this.form.latitude = null;
-      this.form.longitude = null;
+      this.transformerForm.substation_id = null;
     },
     saveTransformer() {
       this.sending = true;
 
-      console.log(this.form);
-      this.createTransformer(this.form)
+      this.createTransformer(this.transformerForm)
         .then(() => {
           setTimeout(() => {
             this.sending = false;

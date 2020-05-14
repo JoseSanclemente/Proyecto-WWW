@@ -1,8 +1,15 @@
 <template>
   <div>
     <consumer-form modalType="modify" :inputUser="selected" v-model="modalOpen"></consumer-form>
+    <md-empty-state
+      v-if="tableConsumers == null || tableConsumers.length == 0"
+      class="md-primary"
+      md-icon="remove_circle_outline"
+      md-label="There is nothing here yet"
+      md-description="Consumers added will be showed here."
+    ></md-empty-state>
     <md-table
-      v-if="tableConsumers.length > 0"
+      v-if="tableConsumers!= null && tableConsumers.length > 0"
       v-model="tableConsumers"
       md-card
       @md-selected="onSelect"
@@ -10,13 +17,6 @@
       <md-table-toolbar>
         <span class="md-title">Consumers List</span>
       </md-table-toolbar>
-      <md-empty-state
-        v-if="tableConsumers.length == 0"
-        class="md-primary"
-        md-icon="remove_circle_outline"
-        md-label="There is nothing here yet"
-        md-description="Users added will be showed here."
-      ></md-empty-state>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 

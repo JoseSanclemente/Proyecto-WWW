@@ -5,7 +5,7 @@ const create = payload => {
 };
 
 const list = () => {
-  return api.get("transformer");
+  return api.get("transformer/list");
 };
 
 export default { list, create };
