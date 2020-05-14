@@ -10,6 +10,7 @@ Vue.use(VueMaterial)
 
 
 import * as VueGoogleMaps from "vue2-google-maps";
+import i18n from './i18n'
 Vue.use(VueGoogleMaps, {
   load: { key: "AIzaSyBbAIAW4XQ_nJWC43SBDVAQVI4uDewyVPY" }
 });
@@ -19,5 +20,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

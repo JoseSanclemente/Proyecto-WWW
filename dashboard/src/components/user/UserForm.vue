@@ -3,14 +3,14 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">{{ title }}</div>
+          <div class="md-title">{{ $t(title) }}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-size-80 md-small-size-100">
               <md-field :class="getValidationClass('email')">
-                <label for="email">Email</label>
+                <label for="email">{{$t("Email")}}</label>
                 <md-input
                   type="email"
                   name="email"
@@ -18,8 +18,8 @@
                   v-model="form.email"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-                <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
+                <span class="md-error" v-if="!$v.form.email.required">{{$t("The email is required")}}</span>
+                <span class="md-error" v-else-if="!$v.form.email.email">{{$t("Invalid email")}}</span>
               </md-field>
             </div>
           </div>
@@ -27,13 +27,13 @@
           <div class="md-layout">
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('type')">
-                <label for="type">Role</label>
+                <label for="type">{{$t("Role")}}</label>
                 <md-select name="type" v-model="form.type" md-dense :disabled="sending">
-                  <md-option value="admin">Admin</md-option>
-                  <md-option value="manager">Manager</md-option>
-                  <md-option value="operator">Operator</md-option>
+                  <md-option value="admin">{{$t("Admin")}}</md-option>
+                  <md-option value="manager">{{$t("Manager")}}</md-option>
+                  <md-option value="operator">{{$t("Operator")}}</md-option>
                 </md-select>
-                <span class="md-error">The role is required</span>
+                <span class="md-error">{{$t("The role is required")}}</span>
               </md-field>
             </div>
           </div>
@@ -41,17 +41,17 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
-                <label for="password">Password</label>
+                <label for="password">{{$t("Password")}}</label>
                 <md-input type="password" v-model="form.password" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
+                <span class="md-error" v-if="!$v.form.password.required">{{$t("The password is required")}}</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
-                <label for="confirmPass">Confirm password</label>
+                <label for="confirmPass">{{$t("Confirm password")}}</label>
                 <md-input type="password" v-model="confirmPass" :disabled="sending" />
-                <span class="md-error" v-if="!$v.confirmPass.required">This field is required</span>
+                <span class="md-error" v-if="!$v.confirmPass.required">{{$t("This field is required")}}</span>
               </md-field>
             </div>
           </div>
@@ -60,12 +60,12 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button @click.prevent="close">Cancel</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Add</md-button>
+          <md-button @click.prevent="close">{{$t("Cancel")}}</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
     </form>
   </div>
 </template>

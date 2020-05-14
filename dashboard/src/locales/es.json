@@ -1,0 +1,20 @@
+{
+  "User Management": "Administración de usuarios",
+  "Add user": "Añadir usuario",
+  "Email": "Correo electronico",
+  "The email is required": "El correo es requerido",
+  "Invalid email": "Correo invalido",
+  "Role": "Rol",
+  "Admin": "Administrador",
+  "Manager": "Gerente",
+  "Operator": "Operador",
+  "The role is required": "El rol es requerido",
+  "Password": "Contraseña",
+  "The password is required": "La contraseña es requerida",
+  "Confirm password": "Confirmar contraseña",
+  "This field is required": "Este campo es requerido",
+  "Cancel": "Cancelar",
+  "Add": "Añadir",
+  "Modify user": "Modificar usuario",
+  "An error had occured": "Ocurrió un error"
+}
