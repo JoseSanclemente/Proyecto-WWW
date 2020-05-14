@@ -1,17 +1,22 @@
 <template>
   <div>
     <user-form modalType="modify" :inputUser="selected" v-model="modalOpen"></user-form>
-    <md-table v-if="tableUsers.length > 0" v-model="tableUsers" md-card @md-selected="onSelect">
+    <md-empty-state
+      v-if="tableUsers == null || tableUsers.length == 0"
+      class="md-primary"
+      md-icon="remove_circle_outline"
+      md-label="There is nothing here yet"
+      md-description="Users added will be showed here."
+    ></md-empty-state>
+    <md-table
+      v-if="tableUsers != null && tableUsers.length > 0"
+      v-model="tableUsers"
+      md-card
+      @md-selected="onSelect"
+    >
       <md-table-toolbar>
         <span class="md-title">Users List</span>
       </md-table-toolbar>
-      <md-empty-state
-        v-if="tableUsers.length == 0"
-        class="md-primary"
-        md-icon="remove_circle_outline"
-        md-label="There is nothing here yet"
-        md-description="Users added will be showed here."
-      ></md-empty-state>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 

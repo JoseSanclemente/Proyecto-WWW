@@ -30,9 +30,7 @@
         md-auto-select
       >
         <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Substation name" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Address">{{ item.address }}</md-table-cell>
-        <md-table-cell md-label="Status" md-sort-by="activeStatus">{{ item.activeStatus }}</md-table-cell>
+        <md-table-cell md-label="Status" md-sort-by="activeStatus">{{ item.deleted }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -45,35 +43,12 @@ export default {
   components: {
     //sUserForm
   },
+  props: {
+    substations: { type: Array, required: true }
+  },
   data: () => ({
     modalOpen: false,
-    selected: [],
-    substations: [
-      {
-        id: "SUB72332db984166914e",
-        name: "Substation A",
-        address: "Cra 64 #14-105",
-        activeStatus: "Active"
-      },
-      {
-        id: "SUBbd7e04c617ad5bef",
-        name: "Substation B",
-        address: "Cra 32 #1a-198",
-        activeStatus: "Active"
-      },
-      {
-        id: "SUB72332dbbd7e04c614",
-        name: "Substation Center",
-        address: "Cra 67 #23-105",
-        activeStatus: "Inactive"
-      },
-      {
-        id: "SUB72332db98b412314a",
-        name: "External Substation",
-        address: "Cra 90 #14-105",
-        activeStatus: "Active"
-      }
-    ]
+    selected: []
   }),
   methods: {
     onSelect(items) {
