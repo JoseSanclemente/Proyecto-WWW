@@ -59,6 +59,7 @@ export default {
         lng: null
       },
       options: {
+        scrollwheel: false,
         center: { lat: 3.4516, lng: -76.532 },
         zoom: 12
       }
@@ -144,8 +145,7 @@ export default {
 
 <style lang="scss" scoped>
 #map {
-  height: 50vh;
-  width: 100%;
+  height: 90vh;
   width: 100%;
 }
 </style>

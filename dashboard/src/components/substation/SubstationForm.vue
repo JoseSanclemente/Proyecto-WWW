@@ -1,7 +1,7 @@
 <template>
   <div>
     <form novalidate class="md-layout" @submit.prevent="saveSubstation">
-      <md-card class="md-layout-item md-size-60 md-small-size-100">
+      <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
           <div class="md-title">{{$t("Add Substation")}}</div>
         </md-card-header>

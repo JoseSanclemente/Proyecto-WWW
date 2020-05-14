@@ -15,7 +15,7 @@
       @md-selected="onSelect"
     >
       <md-table-toolbar>
-        <span class="md-title">Users List</span>
+        <span class="md-title">{{ $t("Users") }}</span>
       </md-table-toolbar>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
@@ -32,7 +32,7 @@
             <md-icon>delete</md-icon>
           </md-button>
 
-          <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+          <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
         </div>
       </md-table-toolbar>
 
@@ -42,9 +42,9 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Role" md-sort-by="type">{{ item.type }}</md-table-cell>
-        <md-table-cell md-label="Active">{{ item.deleted }}</md-table-cell>
+        <md-table-cell :md-label="$t('Email')" md-sort-by="email">{{ item.email }}</md-table-cell>
+        <md-table-cell :md-label="$t('Role')" md-sort-by="type">{{ item.type }}</md-table-cell>
+        <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -53,6 +53,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import UserForm from "@/components/user/UserForm.vue";
+import { getStatusLabel } from "@/helpers/helpers.js";
+
 export default {
   name: "user-table",
   components: {
@@ -89,6 +91,9 @@ export default {
       }
 
       return `${count} user${plural} selected`;
+    },
+    getStatus(status) {
+      return getStatusLabel(status);
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
