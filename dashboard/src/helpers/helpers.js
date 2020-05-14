@@ -12,3 +12,11 @@ export function getTransformers(substations) {
 
     return transformerList
 }
+
+export function getStatusLabel(status) {
+    if (!status) {
+        return "Active"
+    }
+
+    return "Inactive"
+}

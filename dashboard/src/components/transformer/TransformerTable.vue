@@ -14,7 +14,7 @@
       @md-selected="onSelect"
     >
       <md-table-toolbar>
-        <span class="md-title">{{$t("Consumers List")}}</span>
+        <span class="md-title">{{$t("Transformers")}}</span>
       </md-table-toolbar>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
@@ -31,7 +31,7 @@
             <md-icon>delete</md-icon>
           </md-button>
 
-          <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+          <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
         </div>
       </md-table-toolbar>
 
@@ -41,22 +41,20 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Latitude" md-sort-by="email">{{ item.lat }}</md-table-cell>
-        <md-table-cell md-label="Longitude">{{ item.long }}</md-table-cell>
-        <md-table-cell md-label="Status">{{ item.deleted }}</md-table-cell>
+        <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="$t('Latitude')">{{ item.latitude }}</md-table-cell>
+        <md-table-cell :md-label="$t('Longitude')">{{ item.longitude }}</md-table-cell>
+        <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
-import TransformerForm from "@/components/transformer/TransformerForm.vue";
+import { getStatusLabel } from "@/helpers/helpers.js";
+
 export default {
   name: "transformer-table",
-  components: {
-    TransformerForm
-  },
   props: {
     transformers: { type: Array, required: true }
   },
@@ -81,6 +79,9 @@ export default {
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
+    },
+    getStatus(status) {
+      return getStatusLabel(status);
     },
     showNotification(input) {
       this.message = input;
