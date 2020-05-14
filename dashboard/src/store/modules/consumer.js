@@ -4,7 +4,8 @@ import contracts from "@/services/contracts.js";
 // initial state
 const state = {
   consumers: [],
-  contracts: []
+  contracts: [],
+  captcha: []
 };
 
 // getters
@@ -27,7 +28,11 @@ const actions = {
     contracts.list().then(response => {
       commit("setContracts", response.data);
     });
-  }
+  },
+
+  getCaptcha({
+    consumer.
+  })
 };
 
 // mutations
@@ -43,6 +48,11 @@ const mutations = {
   setConsumerSaved(state) {
     state.userSaved = true;
   },
+
+  setCaptcha(state, captcha){
+    state.captcha = captcha;
+  }
+
 };
 
 export default {

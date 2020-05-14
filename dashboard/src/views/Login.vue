@@ -4,7 +4,7 @@
 
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png">
-        <div class="md-title">{{$t("Electro")}}</div>
+        <div class="md-title">{{$t("Electricaribe")}}</div>
       </div>
 
       <div class="form">
@@ -28,7 +28,7 @@
       </div>
 
     </md-content>
-    <div class="background" />
+    <div class="background">
   </div>
 </template>
 
