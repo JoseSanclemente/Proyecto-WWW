@@ -3,7 +3,7 @@
     <!--user-form v-model="modalOpen"></user-form-->
     <md-table v-model="substations" md-card @md-selected="onSelect">
       <md-table-toolbar>
-        <span class="md-title">Substations List</span>
+        <span class="md-title">{{$t("Substations List")}}</span>
       </md-table-toolbar>
 
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">

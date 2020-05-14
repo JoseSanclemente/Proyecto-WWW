@@ -4,23 +4,23 @@
 
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png">
-        <div class="md-title">Electro</div>
+        <div class="md-title">{{$t("Electro")}}</div>
       </div>
 
       <div class="form">
         <md-field>
-          <label>E-mail</label>
+          <label>{{$t("E-mail")}}</label>
           <md-input v-model="login.email" autofocus></md-input>
         </md-field>
 
         <md-field md-has-password>
-          <label>Password</label>
+          <label>{{$t("Password")}}</label>
           <md-input v-model="login.password" type="password"></md-input>
         </md-field>
       </div>
 
       <div class="actions md-layout md-alignment-center-space-between">
-        <md-button class="md-raised md-primary" @click="auth">Log in</md-button>
+        <md-button class="md-raised md-primary" @click="auth">{{$t("Log in")}}</md-button>
       </div>
 
       <div class="loading-overlay" v-if="loading">
