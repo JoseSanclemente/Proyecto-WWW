@@ -8,7 +8,7 @@
       @md-selected="onSelect"
     >
       <md-table-toolbar>
-        <span class="md-title">Consumers List</span>
+        <span class="md-title">{{$t("Consumers List")}}</span>
       </md-table-toolbar>
       <md-empty-state
         v-if="tableConsumers.length == 0"
@@ -106,7 +106,7 @@ export default {
         this.updateUser(item)
           .then(() => {
             this.listUsers();
-            this.showNotification("Users updated successfully!");
+            this.showNotification("Transformers updated successfully!");
           })
           .catch(error => {
             console.log(error);

@@ -4,7 +4,7 @@
       <substation-form></substation-form>
     </section>
     <section>
-      <substation-table></substation-table>
+      <substation-table :substations="substations"></substation-table>
     </section>
   </div>
 </template>
@@ -12,12 +12,22 @@
 <script>
 import SubstationTable from "@/components/substation/SubstationTable.vue";
 import SubstationForm from "@/components/substation/SubstationForm.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Substations",
   components: {
     SubstationForm,
     SubstationTable
+  },
+  created() {
+    this.listSubstations();
+  },
+  computed: {
+    ...mapState("substation", ["substations"])
+  },
+  methods: {
+    ...mapActions("substation", ["listSubstations"])
   }
 };
 </script>

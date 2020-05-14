@@ -2,7 +2,7 @@
   <div>
     <section>
       <user-form modalType="create" v-model="modalOpen"></user-form>
-      <md-button class="md-primary md-raised" @click="openModal">Add user</md-button>
+      <md-button class="md-primary md-raised" @click="openModal">{{ $t('Add user') }}</md-button>
     </section>
     <section>
       <user-table></user-table>

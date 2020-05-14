@@ -5,7 +5,7 @@ const create = payload => {
 };
 
 const list = () => {
-  return api.get("substations");
+  return api.get("substation/list");
 };
 
 export default { list, create };
