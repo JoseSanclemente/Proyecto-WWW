@@ -14,7 +14,7 @@
       @md-selected="onSelect"
     >
       <md-table-toolbar>
-        <span class="md-title">Consumers List</span>
+        <span class="md-title">{{$t("Consumers List")}}</span>
       </md-table-toolbar>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
@@ -93,7 +93,7 @@ export default {
         this.updateUser(item)
           .then(() => {
             this.listUsers();
-            this.showNotification("Users updated successfully!");
+            this.showNotification("Transformers updated successfully!");
           })
           .catch(error => {
             console.log(error);

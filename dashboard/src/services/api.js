@@ -1,7 +1,7 @@
 import axios from "axios";
 //import jwt from "./jwt";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://morning-brook-06940.herokuapp.com";
 // todo: add authentication information
 const intercept = payload => {
   payload = {
