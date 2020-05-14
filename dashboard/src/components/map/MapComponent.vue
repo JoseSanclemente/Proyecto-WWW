@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-field v-if="showAddressInput">
-      <label for="address">Address</label>
+      <label for="address">{{$t("Address")}}</label>
       <md-input name="address" v-model="address" />
       <md-button class="md-icon-button md-primary" @click="getLatLng">
         <md-icon>search</md-icon>

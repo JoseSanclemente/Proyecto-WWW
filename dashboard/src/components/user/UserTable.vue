@@ -5,8 +5,8 @@
       v-if="tableUsers == null || tableUsers.length == 0"
       class="md-primary"
       md-icon="remove_circle_outline"
-      md-label="There is nothing here yet"
-      md-description="Users added will be showed here."
+      :md-label="$t('There is nothing here yet')"
+      :md-description="$t('Users added will be showed here.')"
     ></md-empty-state>
     <md-table
       v-if="tableUsers != null && tableUsers.length > 0"

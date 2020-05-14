@@ -169,7 +169,7 @@ export default {
         .catch(error => {
           this.sending = false;
           this.clearForm();
-          this.showNotification("An error had occured");
+          this.showNotification(this.$t("An error had occurred"));
           console.log(error);
         });
     },
