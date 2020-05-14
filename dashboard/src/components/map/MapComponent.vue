@@ -7,19 +7,45 @@
         <md-icon>search</md-icon>
       </md-button>
     </md-field>
-    <div id="map" ref="map"></div>
+    <div id="map" ref="map">
+      <map-marker
+        v-for="sub in  substations"
+        v-bind:key="sub.id"
+        v-bind:lat="parseFloat(sub.latitude)"
+        v-bind:lng="parseFloat(sub.longitude)"
+        type="substation"
+      ></map-marker>
+
+      <map-marker
+        v-for="trans in  transformers"
+        v-bind:key="trans.id"
+        v-bind:lat="parseFloat(trans.latitude)"
+        v-bind:lng="parseFloat(trans.longitude)"
+        type="transformer"
+      ></map-marker>
+    </div>
   </div>
 </template>
 
 <script>
-//import { mapState } from "vuex";
+import MapMarker from "@/components/map/MapMarker.vue";
+import { markersWithPivots } from "@/helpers/map.js";
 export default {
+  components: {
+    MapMarker
+  },
   props: {
     showAddressInput: {
       required: true
     },
     mapType: {
       required: true
+    },
+    substations: {
+      required: false
+    },
+    transformers: {
+      required: false
     }
   },
   data() {
@@ -27,48 +53,21 @@ export default {
       map: null,
       geocoder: null,
       address: null,
-      transMarker: null,
-      marker: {
+      marker: null,
+      pos: {
         lat: null,
         lng: null
       },
       options: {
         center: { lat: 3.4516, lng: -76.532 },
-        zoom: 14
-      },
-      substations: [
-        {
-          id: "SUB438c141b5a787a6701d21b6a821698df",
-          longitude: -76.5264907,
-          latitude: 3.4031701,
-          deleted: false,
-          transformers: [
-            {
-              id: "TRA41f20a10133f2eb4779f4296b8e4f9d6",
-              substation_id: "SUB438c141b5a787a6701d21b6a821698df",
-              longitude: -76.530981,
-              latitude: 3.3828656,
-              deleted: false
-            },
-            {
-              id: "TRAedacf364e6eb8c7391abd09002ec0114",
-              substation_id: "SUB438c141b5a787a6701d21b6a821698df",
-              longitude: -76.5308582,
-              latitude: 3.3837602,
-              deleted: false
-            }
-          ]
-        }
-      ]
+        zoom: 12
+      }
     };
-  },
-  computed: {
-    //...mapState("substation", ["substation"])
   },
   mounted() {
     this.map = new window.google.maps.Map(this.$refs["map"], this.options);
     this.geocoder = new window.google.maps.Geocoder();
-    this.setMarkers();
+    this.drawLines();
   },
   methods: {
     getMap(callback) {
@@ -86,31 +85,6 @@ export default {
         return "T";
       }
     },
-    setMarkers() {
-      for (let i = 0; i < this.substations.length; i++) {
-        let sub = this.substations[i];
-        let subPos = { lat: sub.latitude, lng: sub.longitude };
-        new window.google.maps.Marker({
-          position: subPos,
-          map: this.map,
-          icon: {
-            url: "http://maps.google.com/mapfiles/kml/paddle/purple-circle.png"
-          }
-        });
-
-        for (let j = 0; j < sub.transformers.length; j++) {
-          let trans = sub.transformers[j];
-          let pos = { lat: trans.latitude, lng: trans.longitude };
-          new window.google.maps.Marker({
-            position: pos,
-            map: this.map,
-            icon: {
-              url: "http://maps.google.com/mapfiles/kml/paddle/blu-circle.png"
-            }
-          });
-        }
-      }
-    },
     getLatLng() {
       let _this = this;
       let formattedAddres = this.address + " Cali Colombia";
@@ -119,22 +93,22 @@ export default {
         status
       ) {
         if (status === "OK") {
-          _this.marker.lat = results[0].geometry.location.lat();
-          _this.marker.lng = results[0].geometry.location.lng();
+          _this.pos.lat = results[0].geometry.location.lat();
+          _this.pos.lng = results[0].geometry.location.lng();
 
-          let newLatLng = { lat: _this.marker.lat, lng: _this.marker.lng };
+          let newLatLng = { lat: _this.pos.lat, lng: _this.pos.lng };
 
           _this.map.setZoom(16);
           _this.map.setCenter(newLatLng);
 
-          if (_this.transMarker == null) {
-            _this.transMarker = new window.google.maps.Marker({
+          if (_this.marker == null) {
+            _this.marker = new window.google.maps.Marker({
               position: newLatLng,
               map: _this.map,
               label: _this.getLabel()
             });
           } else {
-            _this.transMarker.setPosition(newLatLng);
+            _this.marker.setPosition(newLatLng);
           }
         } else {
           console.log("failed");
@@ -145,8 +119,24 @@ export default {
     },
     returnLatLng() {
       setTimeout(() => {
-        this.$emit("latlng", this.marker);
+        this.$emit("latlng", this.pos);
       }, 1000);
+    },
+    drawLines() {
+      if (this.substations != null) {
+        let polyLines = markersWithPivots(this.substations);
+        for (let i = 0; i < polyLines.length; i++) {
+          var line = new window.google.maps.Polyline({
+            path: polyLines[i],
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          line.setMap(this.map);
+        }
+      }
     }
   }
 };

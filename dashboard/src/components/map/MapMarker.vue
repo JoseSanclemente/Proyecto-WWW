@@ -3,7 +3,8 @@ export default {
   name: "map-marker",
   props: {
     lat: { type: Number, required: true },
-    lng: { type: Number, required: true }
+    lng: { type: Number, required: true },
+    type: { type: String, required: true }
   },
   data: () => ({
     marker: null
@@ -12,7 +13,10 @@ export default {
     this.$parent.getMap(map => {
       this.marker = new window.google.maps.Marker({
         position: { lat: this.lat, lng: this.lng },
-        map: map
+        map: map,
+        icon: {
+          url: this.getMarkerIcon()
+        }
       });
     });
   },
@@ -22,6 +26,15 @@ export default {
   },
   render() {
     return null;
+  },
+  methods: {
+    getMarkerIcon() {
+      if (this.type == "substation") {
+        return "http://maps.google.com/mapfiles/kml/paddle/purple-circle.png";
+      } else {
+        return "http://maps.google.com/mapfiles/kml/paddle/blu-circle.png";
+      }
+    }
   }
 };
 </script>

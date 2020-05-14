@@ -12,8 +12,11 @@
               <md-field :class="getValidationClass('substation_id')">
                 <label for="substation_id">Select substation</label>
                 <md-select v-model="transformerForm.substation_id" md-dense :disabled="sending">
-                  <md-option value="SUB438c141b5a787a6701d21b6a821698df">Sub A</md-option>
-                  <md-option value="tax_id">Sub B</md-option>
+                  <md-option
+                    v-for="sub in substations"
+                    v-bind:key="sub.id"
+                    v-bind:value="sub.id"
+                  >{{ sub.id }}</md-option>
                 </md-select>
               </md-field>
             </div>
@@ -44,6 +47,9 @@ export default {
   mixins: [validationMixin],
   components: {
     MapComponent
+  },
+  props: {
+    substations: { type: Array, required: true }
   },
   data() {
     return {

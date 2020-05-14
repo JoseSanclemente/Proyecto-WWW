@@ -21,7 +21,6 @@ const actions = {
   },
   listSubstations({ commit }) {
     subestation.list().then(response => {
-      //console.log(response.data)
       commit("setSubstations", response.data);
     });
   },
