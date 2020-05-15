@@ -14,9 +14,13 @@
         </md-field>
 
         <md-field md-has-password>
-          <label>{{$t("Password")}}</label>
+          <label>{{$t('Password')}}</label>
           <md-input v-model="login.password" type="password"></md-input>
         </md-field>
+      </div>
+      
+      <div class="captcha" >
+        <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
       </div>
 
       <div class="actions md-layout md-alignment-center-space-between">
@@ -29,23 +33,35 @@
 
     </md-content>
     <div class="background">
+      </div>
   </div>
 </template>
 
 <script>
+
+import { mapState, mapActions } from "vuex";
 export default {
-  name: "App",
+  name: "consumer-login",
   data() {
     return {
       loading: false,
+      showSnackBar: false,
       login: {
         email: "",
-        password: ""
+        password: "",
       }
     };
   },
   methods: {
+    ...mapActions("consumer", ["loadCaptcha"]),
+    
+    showNotification(input) {
+      this.message = input;
+      this.showSnackBar = true;
+    },
+
     auth() {
+      
       // your code to login user
       // this is only for example of loading
       this.loading = true;
@@ -53,6 +69,16 @@ export default {
         this.loading = false;
       }, 5000);
     }
+  },
+  components: {
+  },
+  computed: {
+    ...mapState("consumer", ["captcha"])
+  },
+  watch: {
+  },
+  created() {
+    this.loadCaptcha();
   }
 };
 </script>

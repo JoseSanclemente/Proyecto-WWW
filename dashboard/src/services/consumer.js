@@ -16,4 +16,4 @@ const login = payload => {
   return api.post("consumer", payload);
 }
 
-export default { list, create };
+export default { list, create, captcha, login };
