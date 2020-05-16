@@ -13,7 +13,7 @@ const captcha = () => {
 }
 
 const login = payload => {
-  return api.post("consumer", payload);
+  return api.post("consumer/login", payload);
 }
 
 export default { list, create, captcha, login };

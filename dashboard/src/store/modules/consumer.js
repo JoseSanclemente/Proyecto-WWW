@@ -34,8 +34,11 @@ const actions = {
     consumer.captcha().then(response => {
         commit("setCaptcha", response.data)
     });
-    console.log("AQUI ESTA EL CAPTCHA");
-    console.log(state.captcha);
+  },
+  
+  sendLoginData({ commit }, payload){
+    commit("setValidatedLogin");
+    return consumer.login(payload);
   }
 };
 
@@ -55,7 +58,12 @@ const mutations = {
 
   setCaptcha(state, captcha){
     state.captcha = captcha;
+  },
+
+  setValidatedLogin(state){
+    state.validated = true;
   }
+
 };
 
 export default {

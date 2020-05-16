@@ -1,82 +1,127 @@
 <template>
   <div class="centered-container">
     <md-content class="md-elevation-3">
-
       <div class="title">
-        <img src="https://vuematerial.io/assets/logo-color.png">
+        <img src="https://vuematerial.io/assets/logo-color.png" />
         <div class="md-title">{{$t("Electricaribe")}}</div>
       </div>
 
-      <div class="form">
-        <md-field>
-          <label>{{$t("E-mail")}}</label>
-          <md-input v-model="login.email" autofocus></md-input>
+      <form novalidate class="md-layout" @submit.prevent="sendLoginData">
+        <md-field :class="getValidationClass('id')">
+          <label>{{$t("User ID")}}</label>
+          <md-input v-model="login.id" name="id" autocomplete="id" />
+          <span class="md-error" v-if="!$v.login.id.required">{{$t("The user id is required")}}</span>
+          <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
         </md-field>
 
-        <md-field md-has-password>
+        <md-field md-has-password :class="getValidationClass('password')">
           <label>{{$t('Password')}}</label>
-          <md-input v-model="login.password" type="password"></md-input>
+          <md-input v-model="login.password" type="password" name="password"></md-input>
+          <span
+            class="md-error"
+            v-if="!$v.form.password.required"
+          >{{$t("The password is required")}}</span>
         </md-field>
-      </div>
-      
-      <div class="captcha" >
-        <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
-      </div>
 
-      <div class="actions md-layout md-alignment-center-space-between">
-        <md-button class="md-raised md-primary" @click="auth">{{$t("Log in")}}</md-button>
-      </div>
+        <md-field >
+          <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
+        </md-field>
 
-      <div class="loading-overlay" v-if="loading">
-        <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
-      </div>
+        <md-field :class="getValidationClass('captcha')">
+          <label>Enter Captcha</label>
+          <md-input type="number" v-model="login.captcha"></md-input>
+          <span
+            class="md-error"
+            v-if="!$v.form.captcha.required"
+          >{{$t("Type the numbers you see in the picture above")}}</span>
+        </md-field>
+      </form>
 
+      <md-card-actions class="actions md-layout md-alignment-center-space-between">
+        <md-button
+          type="submit"
+          class="md-raised md-primary"
+          @click="sendLoginData"
+          :disable="sending"
+        >{{$t("Log in")}}</md-button>
+      </md-card-actions>
+
+      <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
     </md-content>
-    <div class="background">
-      </div>
   </div>
 </template>
 
 <script>
+import { validationMixin } from "vuelidate";
+import { required, minLength } from "vuelidate/lib/validators";
+import { mapActions, mapState } from "vuex";
 
-import { mapState, mapActions } from "vuex";
 export default {
   name: "consumer-login",
+  mixins: [validationMixin],
   data() {
     return {
-      loading: false,
+      sending: false,
       showSnackBar: false,
       login: {
-        email: "",
+        id: "",
         password: "",
+        captcha: ""
       }
     };
   },
+  validations: {
+    form: {
+      id: {
+        required,
+        minLength: minLength(6)
+      },
+      password: {
+        required
+      },
+      captcha: {
+        required
+      }
+    }
+  },
   methods: {
-    ...mapActions("consumer", ["loadCaptcha"]),
-    
+    ...mapActions("consumer", ["loadCaptcha", "sendLoginData"]),
+
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
     },
+    getValidationClass(fieldName) {
+      const field = this.$v.form[fieldName];
 
-    auth() {
-      
-      // your code to login user
-      // this is only for example of loading
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-      }, 5000);
+      if (field) {
+        return {
+          "md-invalid": field.$invalid && field.$dirty
+        };
+      }
+    },
+    sendLoginData() {
+      this.login["captcha_id"] = this.captcha.captcha_id;
+      this.sending = true;
+      this.sendLoginData(this.login)
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+            this.showNotification("The consumer was successfully added!");
+          }, 2000);
+        })
+        .catch(error => {
+          this.sending = false;
+          this.showNotification("An error had occured");
+          console.log(error);
+        });
     }
-  },
-  components: {
   },
   computed: {
     ...mapState("consumer", ["captcha"])
   },
-  watch: {
-  },
+  watch: {},
+  mounted() {},
   created() {
     this.loadCaptcha();
   }
