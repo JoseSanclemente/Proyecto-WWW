@@ -6,30 +6,30 @@
         <div class="md-title">{{$t("Electricaribe")}}</div>
       </div>
 
-      <form novalidate class="md-layout" @submit.prevent="sendLoginData">
+      <form novalidate class="md-layout" @submit.prevent="validateLoginData">
         <md-field :class="getValidationClass('id')">
           <label>{{$t("User ID")}}</label>
-          <md-input v-model="login.id" name="id" autocomplete="id" />
-          <span class="md-error" v-if="!$v.login.id.required">{{$t("The user id is required")}}</span>
+          <md-input v-model="form.id" name="id" autocomplete="id" />
+          <span class="md-error" v-if="!$v.form.id.required">{{$t("The user id is required")}}</span>
           <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
         </md-field>
 
         <md-field md-has-password :class="getValidationClass('password')">
           <label>{{$t('Password')}}</label>
-          <md-input v-model="login.password" type="password" name="password"></md-input>
+          <md-input v-model="form.password" type="password" name="password"></md-input>
           <span
             class="md-error"
             v-if="!$v.form.password.required"
           >{{$t("The password is required")}}</span>
         </md-field>
 
-        <md-field >
+        <md-field>
           <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
         </md-field>
 
         <md-field :class="getValidationClass('captcha')">
           <label>Enter Captcha</label>
-          <md-input type="number" v-model="login.captcha"></md-input>
+          <md-input type="number" v-model="form.captcha"></md-input>
           <span
             class="md-error"
             v-if="!$v.form.captcha.required"
@@ -41,7 +41,7 @@
         <md-button
           type="submit"
           class="md-raised md-primary"
-          @click="sendLoginData"
+          @click="validateLoginData"
           :disable="sending"
         >{{$t("Log in")}}</md-button>
       </md-card-actions>
@@ -61,13 +61,16 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
-      sending: false,
-      showSnackBar: false,
-      login: {
+      form: {
         id: "",
         password: "",
         captcha: ""
-      }
+      },
+      confirmPass: null,
+      showSnackBar: false,
+      sending: false,
+      message: null,
+      title: null
     };
   },
   validations: {
@@ -100,14 +103,15 @@ export default {
         };
       }
     },
-    sendLoginData() {
-      this.login["captcha_id"] = this.captcha.captcha_id;
+    LoginData() {
+      this.form["captcha_id"] = this.captcha.captcha_id;
+      //console.log(JSON.stringify(this.form))
       this.sending = true;
-      this.sendLoginData(this.login)
+      this.sendLoginData(this.form)
         .then(() => {
           setTimeout(() => {
             this.sending = false;
-            this.showNotification("The consumer was successfully added!");
+            this.showNotification("Login successful!");
           }, 2000);
         })
         .catch(error => {
@@ -115,6 +119,12 @@ export default {
           this.showNotification("An error had occured");
           console.log(error);
         });
+    },
+    validateLoginData() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.LoginData();
+      }
     }
   },
   computed: {
