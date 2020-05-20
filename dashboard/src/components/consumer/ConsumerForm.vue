@@ -8,7 +8,7 @@
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-80 md-small-size-100">
+            <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('id')">
                 <label for="email">{{$t("ID number")}}</label>
                 <md-input name="id" v-model="form.id" :disabled="sending" />
@@ -16,7 +16,7 @@
                 <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
               </md-field>
             </div>
-            <div class="md-layout-item md-size-80 md-small-size-100">
+            <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('email')">
                 <label for="email">Email</label>
                 <md-input
@@ -26,8 +26,17 @@
                   v-model="form.email"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.email.required">{{$t("The email is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.form.email.required"
+                >{{$t("The email is required")}}</span>
                 <span class="md-error" v-else-if="!$v.form.email.email">{{$t("Invalid email")}}</span>
+              </md-field>
+            </div>
+            <div class="md-layout-item">
+              <md-field>
+                <label for>{{$t("Address")}}</label>
+                <md-input v-model="contractForm.address" :disabled="sending" />
               </md-field>
             </div>
           </div>
@@ -37,8 +46,14 @@
               <md-field :class="getValidationClass('password')">
                 <label for="password">{{$t("Password")}}</label>
                 <md-input type="password" v-model="form.password" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.password.required">{{$t("The password is required")}}</span>
-                <span class="md-error" v-if="!$v.form.password.minLength">{{$t("The password is too short!")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.form.password.required"
+                >{{$t("The password is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.form.password.minLength"
+                >{{$t("The password is too short!")}}</span>
               </md-field>
             </div>
 
@@ -46,7 +61,38 @@
               <md-field :class="getValidationClass('confirmPass')">
                 <label for="confirmPass">{{$t("Confirm password")}}</label>
                 <md-input type="password" v-model="confirmPass" :disabled="sending" />
-                <span class="md-error" v-if="!$v.confirmPass.required">{{$t("This field is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.confirmPass.required"
+                >{{$t("This field is required")}}</span>
+              </md-field>
+            </div>
+          </div>
+
+          <h2 class="md-title">{{$t("Contract")}}</h2>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item">
+              <md-field>
+                <label for>{{$t("Bill notification")}}</label>
+                <md-select v-model="contractForm.notification_type">
+                  <md-option value="email">{{$t("Email")}}</md-option>
+                  <md-option value="sendToAddress">{{$t("Send to address")}}</md-option>
+                </md-select>
+              </md-field>
+            </div>
+          </div>
+
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item">
+              <md-field>
+                <label for>Transformer ID</label>
+                <md-select v-model="contractForm.transformer_id">
+                  <md-option
+                    v-for="trans in transformers"
+                    v-bind:key="trans.id"
+                    v-bind:value="trans.id"
+                  >{{ trans.id }}</md-option>
+                </md-select>
               </md-field>
             </div>
           </div>
@@ -74,21 +120,23 @@ export default {
   name: "consumer-form",
   mixins: [validationMixin],
   props: {
-    value: {
-      required: true
-    },
-    modalType: {
-      required: true
-    },
-    inputUser: null
+    value: { required: true },
+    modalType: { required: true },
+    transformers: { required: true }
   },
   data() {
     return {
       form: {
         id: null,
         email: null,
-        password: null,
-        deleted: false
+        password: null
+      },
+      contractForm: {
+        consumer_id: null,
+        transformer_id: null,
+        address: null,
+        notification_type: null,
+        email: null
       },
       confirmPass: null,
       showSnackBar: false,
@@ -120,7 +168,7 @@ export default {
     this.setTitle();
   },
   methods: {
-    ...mapActions("consumer", ["createConsumer"]),
+    ...mapActions("consumer", ["createConsumer", "createContract"]),
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
@@ -157,11 +205,28 @@ export default {
           setTimeout(() => {
             this.sending = false;
             this.showNotification("The consumer was successfully added!");
+
+            this.saveContract();
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
           this.showNotification("An error had occured");
+          console.log(error);
+        });
+    },
+    saveContract() {
+      this.contractForm.consumer_id = this.form.id;
+      this.contractForm.email = this.form.email;
+
+      this.createContract(this.contractForm)
+        .then(() => {
+          this.showNotification("The contract was successfully created!");
+        })
+        .catch(error => {
+          this.showNotification(
+            "An error had occured while creating the contract"
+          );
           console.log(error);
         });
     },

@@ -3,12 +3,13 @@ package transformer
 import (
 	"fmt"
 
-	"Proyecto-WWW/back/shared/random"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/shared/random"
+	"univalle/www/storage"
 )
 
 type Transformer struct {
 	ID           string `json:"id"`
+	Name         string `json:"name"`
 	SubstationID string `json:"substation_id"`
 	Longitude    string `json:"longitude"`
 	Latitude     string `json:"latitude"`
@@ -17,7 +18,7 @@ type Transformer struct {
 
 func Load(id string) (*Transformer, error) {
 	rows, err := storage.DB.Query(
-		"SELECT substation, longitude, latitude, deleted FROM transformer WHERE id=? AND deleted=FALSE",
+		"SELECT name, substation, longitude, latitude, deleted FROM transformer WHERE id=? AND deleted=FALSE",
 		id,
 	)
 	if err != nil {
@@ -32,7 +33,7 @@ func Load(id string) (*Transformer, error) {
 	transformer := &Transformer{
 		ID: id,
 	}
-	err = rows.Scan(&transformer.SubstationID, &transformer.Longitude, &transformer.Latitude, &transformer.Deleted)
+	err = rows.Scan(&transformer.Name, &transformer.SubstationID, &transformer.Longitude, &transformer.Latitude, &transformer.Deleted)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +43,7 @@ func Load(id string) (*Transformer, error) {
 
 func List(substationID string) ([]*Transformer, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, longitude, latitude, deleted FROM transformer WHERE substation=?",
+		"SELECT id, name, longitude, latitude, deleted FROM transformer WHERE substation=?",
 		substationID,
 	)
 	if err != nil {
@@ -56,7 +57,7 @@ func List(substationID string) ([]*Transformer, error) {
 			SubstationID: substationID,
 		}
 
-		err = rows.Scan(&transformer.ID, &transformer.Longitude, &transformer.Latitude, &transformer.Deleted)
+		err = rows.Scan(&transformer.ID, &transformer.Name, &transformer.Longitude, &transformer.Latitude, &transformer.Deleted)
 		if err != nil {
 			return nil, err
 		}
@@ -71,8 +72,9 @@ func (t *Transformer) Store() (string, error) {
 	id := random.GenerateID("TRA")
 
 	result, err := storage.DB.Exec(
-		"INSERT INTO transformer(id, substation, longitude, latitude) VALUES(?, ?, ?, ?)",
+		"INSERT INTO transformer(id, name, substation, longitude, latitude) VALUES(?, ?, ?, ?, ?)",
 		id,
+		t.Name,
 		t.SubstationID,
 		t.Longitude,
 		t.Latitude,
@@ -93,7 +95,11 @@ func (t *Transformer) Store() (string, error) {
 	return id, nil
 }
 
-func (t *Transformer) Update(longitude, latitude, deleted string) error {
+func (t *Transformer) Update(name, longitude, latitude, deleted string) error {
+	if name != "" {
+		t.Name = name
+	}
+
 	if longitude != "" {
 		t.Longitude = longitude
 	}
@@ -111,7 +117,7 @@ func (t *Transformer) Update(longitude, latitude, deleted string) error {
 	}
 
 	result, err := storage.DB.Exec(
-		"UPDATE transformer SET longitude=?, latitude=?, deleted=? WHERE id=?",
+		"UPDATE transformer SET name=?, longitude=?, latitude=?, deleted=? WHERE id=?",
 		t.Longitude,
 		t.Latitude,
 		t.Deleted,

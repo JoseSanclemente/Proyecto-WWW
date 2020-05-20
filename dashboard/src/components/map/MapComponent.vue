@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-field v-if="showAddressInput">
+    <md-field class="md-layout-item md-size-50" v-if="showAddressInput">
       <label for="address">{{$t("Address")}}</label>
       <md-input name="address" v-model="address" />
       <md-button class="md-icon-button md-primary" @click="getLatLng">
@@ -59,6 +59,7 @@ export default {
         lng: null
       },
       options: {
+        scrollwheel: false,
         center: { lat: 3.4516, lng: -76.532 },
         zoom: 12
       }
@@ -144,8 +145,7 @@ export default {
 
 <style lang="scss" scoped>
 #map {
-  height: 50vh;
-  width: 100%;
+  height: 90vh;
   width: 100%;
 }
 </style>

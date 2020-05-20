@@ -1,12 +1,18 @@
 <template>
   <div>
     <form novalidate class="md-layout" @submit.prevent="saveSubstation">
-      <md-card class="md-layout-item md-size-60 md-small-size-100">
+      <md-card class="md-layout-item">
         <md-card-header>
           <div class="md-title">{{$t("Add Substation")}}</div>
         </md-card-header>
 
         <md-card-content>
+          <div class="md-layout-item md-size-50">
+            <md-field>
+              <label for>{{$t("Name")}}</label>
+              <md-input v-model="form.name" />
+            </md-field>
+          </div>
           <map-component mapType="substation" :showAddressInput="true" @latlng="setLatLng"></map-component>
         </md-card-content>
 
@@ -34,9 +40,9 @@ export default {
   data() {
     return {
       form: {
+        name: null,
         latitude: null,
-        longitude: null,
-        deleted: false
+        longitude: null
       },
       showSnackBar: false,
       message: null,

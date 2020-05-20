@@ -3,8 +3,8 @@ package contract
 import (
 	"fmt"
 
-	"Proyecto-WWW/back/shared/random"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/shared/random"
+	"univalle/www/storage"
 )
 
 type Contract struct {

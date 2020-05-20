@@ -1,14 +1,14 @@
 <template>
   <div>
     <form novalidate class="md-layout" @submit.prevent="validateTrans">
-      <md-card class="md-layout-item md-size-60 md-small-size-100">
+      <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
           <div class="md-title">{{$t("Add Transformer")}}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50 md-small-size-100">
+            <div class="md-layout-item md-size-50 md-small-size-50">
               <md-field :class="getValidationClass('substation_id')">
                 <label for="substation_id">{{$t("Select substation")}}</label>
                 <md-select v-model="transformerForm.substation_id" md-dense :disabled="sending">
@@ -18,6 +18,13 @@
                     v-bind:value="sub.id"
                   >{{ sub.id }}</md-option>
                 </md-select>
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-size-50">
+              <md-field>
+                <label for>{{$t("Name")}}</label>
+                <md-input v-model="transformerForm.name" />
               </md-field>
             </div>
           </div>
@@ -55,9 +62,9 @@ export default {
     return {
       transformerForm: {
         substation_id: null,
+        name: null,
         latitude: null,
-        longitude: null,
-        deleted: false
+        longitude: null
       },
       showSnackBar: false,
       message: null,
@@ -96,6 +103,8 @@ export default {
     },
     saveTransformer() {
       this.sending = true;
+
+      console.log(this.transformerForm);
 
       this.createTransformer(this.transformerForm)
         .then(() => {
