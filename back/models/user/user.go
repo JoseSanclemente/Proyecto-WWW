@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 
-	"Proyecto-WWW/back/storage"
+	"univalle/www/storage"
 )
 
 type Input struct {

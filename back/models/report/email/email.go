@@ -2,7 +2,6 @@ package email
 
 import (
 	"crypto/tls"
-	"encoding/base64"
 	"fmt"
 	"net/smtp"
 	"strings"
@@ -86,11 +85,9 @@ func SendEmail(file []byte) error {
 	sampleMsg += "Content-Transfer-Encoding: base64\r\n"
 	sampleMsg += "Content-Disposition: attachment;filename=\"" + filename + "\"\r\n"
 
-	sampleMsg += "\r\n" + base64.StdEncoding.EncodeToString(file)
-
 	// write into email client stream writter
 	// log.Println("Write content into client writter I/O")
-	_, err = writer.Write([]byte(sampleMsg))
+	_, err = writer.Write(file)
 	if err != nil {
 		return err
 	}

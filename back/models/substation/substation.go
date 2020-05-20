@@ -3,13 +3,14 @@ package substation
 import (
 	"fmt"
 
-	"Proyecto-WWW/back/models/transformer"
-	"Proyecto-WWW/back/shared/random"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/models/transformer"
+	"univalle/www/shared/random"
+	"univalle/www/storage"
 )
 
 type Substation struct {
 	ID           string                     `json:"id"`
+	Name         string                     `json:"name"`
 	Longitude    string                     `json:"longitude"`
 	Latitude     string                     `json:"latitude"`
 	Deleted      bool                       `json:"deleted"`
@@ -18,7 +19,7 @@ type Substation struct {
 
 func Load(id string) (*Substation, error) {
 	rows, err := storage.DB.Query(
-		"SELECT longitude, latitude, deleted FROM substation WHERE id=? AND deleted=FALSE",
+		"SELECT name, longitude, latitude, deleted FROM substation WHERE id=? AND deleted=FALSE",
 		id,
 	)
 	if err != nil {
@@ -33,7 +34,7 @@ func Load(id string) (*Substation, error) {
 	substation := &Substation{
 		ID: id,
 	}
-	err = rows.Scan(&substation.Longitude, &substation.Latitude, &substation.Deleted)
+	err = rows.Scan(&substation.Name, &substation.Longitude, &substation.Latitude, &substation.Deleted)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +44,7 @@ func Load(id string) (*Substation, error) {
 
 func List() ([]*Substation, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id, longitude, latitude, deleted FROM substation",
+		"SELECT id, name, longitude, latitude, deleted FROM substation",
 	)
 	if err != nil {
 		return nil, err
@@ -54,7 +55,7 @@ func List() ([]*Substation, error) {
 	for rows.Next() {
 		substation := &Substation{}
 
-		err = rows.Scan(&substation.ID, &substation.Longitude, &substation.Latitude, &substation.Deleted)
+		err = rows.Scan(&substation.ID, &substation.Name, &substation.Longitude, &substation.Latitude, &substation.Deleted)
 		if err != nil {
 			return nil, err
 		}
@@ -75,8 +76,9 @@ func (s *Substation) Store() (string, error) {
 	id := random.GenerateID("SUB")
 
 	result, err := storage.DB.Exec(
-		"INSERT INTO substation(id, longitude, latitude) VALUES(?, ?, ?)",
+		"INSERT INTO substation(id, name, longitude, latitude) VALUES(?, ?, ?, ?)",
 		id,
+		s.Name,
 		s.Longitude,
 		s.Latitude,
 	)
@@ -96,7 +98,11 @@ func (s *Substation) Store() (string, error) {
 	return id, nil
 }
 
-func (s *Substation) Update(longitude, latitude, deleted string) error {
+func (s *Substation) Update(name, longitude, latitude, deleted string) error {
+	if name != "" {
+		s.Name = name
+	}
+
 	if longitude != "" {
 		s.Longitude = longitude
 	}
@@ -114,7 +120,7 @@ func (s *Substation) Update(longitude, latitude, deleted string) error {
 	}
 
 	result, err := storage.DB.Exec(
-		"UPDATE substation SET longitude=?, latitude=?, deleted=? WHERE id=?",
+		"UPDATE substation SET name=?, longitude=?, latitude=?, deleted=? WHERE id=?",
 		s.Longitude,
 		s.Latitude,
 		s.Deleted,
