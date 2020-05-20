@@ -5,18 +5,20 @@ import (
 	"fmt"
 	"time"
 
-	"Proyecto-WWW/back/models/reading"
-	"Proyecto-WWW/back/shared/random"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/models/reading"
+	"univalle/www/shared/random"
+	"univalle/www/storage"
 )
 
 type Bill struct {
-	ID             string `json:"id"`
-	ContractId     string `json:"contract_id"`
-	CreationDate   int64  `json:"creation_date"`
-	ExpirationDate int64  `json:"expiration_date"`
-	Paid           bool   `json:"paid"`
-	Value          int    `json:"value"`
+	ID                 string `json:"id"`
+	ContractId         string `json:"contract_id"`
+	CreationDate       int64  `json:"creation_date"`
+	ExpirationDate     int64  `json:"expiration_date"`
+	Paid               bool   `json:"paid"`
+	Value              int
+	DaysPastExpiration int
+	NeedsReconnection  bool
 }
 
 func Load(id string) (*Bill, error) {
@@ -80,16 +82,14 @@ func LoadUnpaid(contractID string) (*Bill, error) {
 	now := time.Now()
 	expiration := time.Unix(bills[0].ExpirationDate, 0)
 
-	diff := now.Sub(expiration)
-
-	if diff > (time.Hour * 24 * 30) {
-		value += int(float64(value) * 0.3)
-	} else {
-		value += value * int(diff/(time.Hour*24))
+	diff := int(now.Sub(expiration) / time.Hour * 24)
+	if diff > 30 {
+		diff = 30
 	}
+	bills[0].DaysPastExpiration = diff
 
 	if len(bills) > 1 && bills[1].ExpirationDate > now.Unix() {
-		value += 34000
+		bills[0].NeedsReconnection = true
 	}
 
 	bills[0].Value = value

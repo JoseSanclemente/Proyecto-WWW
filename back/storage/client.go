@@ -48,6 +48,7 @@ func ResetAndConnect() error {
 	CREATE TABLE substation 
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
+		name VARCHAR(20) NOT NULL,
 		longitude VARCHAR(20) NOT NULL,
 		latitude VARCHAR(20) NOT NULL,
 		deleted BOOLEAN DEFAULT 0
@@ -56,6 +57,7 @@ func ResetAndConnect() error {
 	CREATE TABLE transformer 
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
+		name VARCHAR(20) NOT NULL,
 		substation VARCHAR(20) NOT NULL,
 		longitude VARCHAR(20) NOT NULL,
 		latitude VARCHAR(20) NOT NULL,

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"Proyecto-WWW/back/shared/random"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/shared/random"
+	"univalle/www/storage"
 )
 
 type Reading struct {

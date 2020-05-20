@@ -3,10 +3,10 @@ package report
 import (
 	"time"
 
-	"Proyecto-WWW/back/models/bill"
-	"Proyecto-WWW/back/models/contract"
-	"Proyecto-WWW/back/models/report/pdf"
-	"Proyecto-WWW/back/storage"
+	"univalle/www/models/bill"
+	"univalle/www/models/contract"
+	"univalle/www/models/report/pdf"
+	"univalle/www/storage"
 )
 
 type MonthConsumption struct {
