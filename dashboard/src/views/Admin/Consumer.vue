@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <consumer-form modalType="create" v-model="modalOpen"></consumer-form>
+      <consumer-form modalType="create" :transformers="transformers" v-model="modalOpen"></consumer-form>
       <md-button class="md-primary md-raised" @click="openModal">{{$t('Add Consumer')}}</md-button>
     </section>
     <section>
@@ -13,6 +13,7 @@
 <script>
 import ConsumerTable from "@/components/consumer/ConsumerTable.vue";
 import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "clients",
@@ -24,6 +25,9 @@ export default {
   components: {
     ConsumerForm,
     ConsumerTable
+  },
+  computed: {
+    ...mapState("transformer", ["transformers"])
   },
   methods: {
     openModal() {

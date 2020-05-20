@@ -14,6 +14,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Manager/Manager.vue'),
   },
   {
+    path: "/operator/dashboard",
+    component: () => import(/* webpackChunkName: "about" */ '../views/Operator/Operator.vue'),
+  },
+  {
     path: "/admin",
     redirect: "/admin/users",
     component: () => import(/* webpackChunkName: "about" */ '../layout/DefaultLayout.vue'),
