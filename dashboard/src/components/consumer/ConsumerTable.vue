@@ -5,8 +5,8 @@
       v-if="tableConsumers == null || tableConsumers.length == 0"
       class="md-primary"
       md-icon="remove_circle_outline"
-      md-label="There is nothing here yet"
-      md-description="Consumers added will be showed here."
+      :md-label="$t('There is nothing here yet')"
+      :md-description="$t('Consumers added will be showed here.')"
     ></md-empty-state>
     <md-table
       v-if="tableConsumers!= null && tableConsumers.length > 0"
@@ -15,7 +15,7 @@
       @md-selected="onSelect"
     >
       <md-table-toolbar>
-        <span class="md-title">Consumers List</span>
+        <span class="md-title">{{$t('Consumers')}}</span>
       </md-table-toolbar>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
         <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
@@ -32,7 +32,7 @@
             <md-icon>delete</md-icon>
           </md-button>
 
-          <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+          <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
         </div>
       </md-table-toolbar>
 
@@ -42,9 +42,9 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Active">{{ item.deleted }}</md-table-cell>
+        <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="$t('Email')">{{ item.email }}</md-table-cell>
+        <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -53,6 +53,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
+import { getStatusLabel } from "@/helpers/helpers.js";
 export default {
   name: "consumer-table",
   components: {
@@ -81,6 +82,9 @@ export default {
     ...mapActions("consumer", ["listConsumers"]),
     onSelect(items) {
       this.selected = items;
+    },
+    getStatus(status) {
+      return getStatusLabel(status);
     },
     getAlternateLabel(count) {
       let plural = "";

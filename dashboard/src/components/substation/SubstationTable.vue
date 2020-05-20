@@ -3,7 +3,7 @@
     <!--user-form v-model="modalOpen"></user-form-->
     <md-table v-model="substations" md-card @md-selected="onSelect">
       <md-table-toolbar>
-        <span class="md-title">Substations List</span>
+        <span class="md-title">{{$t("Substations")}}</span>
       </md-table-toolbar>
 
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
@@ -29,15 +29,16 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Status" md-sort-by="activeStatus">{{ item.deleted }}</md-table-cell>
+        <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
-//import UserForm from "@/components/user/UserForm.vue";
+import { getStatusLabel } from "@/helpers/helpers.js";
+
 export default {
   name: "substation-table",
   components: {
@@ -62,6 +63,9 @@ export default {
       }
 
       return `${count} substation${plural} selected`;
+    },
+    getStatus(status) {
+      return getStatusLabel(status);
     },
     openModal() {
       this.modalOpen = !this.modalOpen;

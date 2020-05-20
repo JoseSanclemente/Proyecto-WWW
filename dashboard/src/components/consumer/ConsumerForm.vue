@@ -3,17 +3,17 @@
     <form novalidate class="md-layout" @submit.prevent="validateConsumer">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">{{ title }}</div>
+          <div class="md-title">{{ $t(title) }}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-size-80 md-small-size-100">
               <md-field :class="getValidationClass('id')">
-                <label for="email">Cédula de ciudanía</label>
+                <label for="email">{{$t("ID number")}}</label>
                 <md-input name="id" v-model="form.id" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.id.required">The email is required</span>
-                <span class="md-error" v-else-if="!$v.form.minLength">Invalid id</span>
+                <span class="md-error" v-if="!$v.form.id.required">{{$t("The email is required")}}</span>
+                <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
               </md-field>
             </div>
             <div class="md-layout-item md-size-80 md-small-size-100">
@@ -26,8 +26,8 @@
                   v-model="form.email"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-                <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
+                <span class="md-error" v-if="!$v.form.email.required">{{$t("The email is required")}}</span>
+                <span class="md-error" v-else-if="!$v.form.email.email">{{$t("Invalid email")}}</span>
               </md-field>
             </div>
           </div>
@@ -35,18 +35,18 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
-                <label for="password">Password</label>
+                <label for="password">{{$t("Password")}}</label>
                 <md-input type="password" v-model="form.password" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
-                <span class="md-error" v-if="!$v.form.password.minLength">The password is too short!</span>
+                <span class="md-error" v-if="!$v.form.password.required">{{$t("The password is required")}}</span>
+                <span class="md-error" v-if="!$v.form.password.minLength">{{$t("The password is too short!")}}</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('confirmPass')">
-                <label for="confirmPass">Confirm password</label>
+                <label for="confirmPass">{{$t("Confirm password")}}</label>
                 <md-input type="password" v-model="confirmPass" :disabled="sending" />
-                <span class="md-error" v-if="!$v.confirmPass.required">This field is required</span>
+                <span class="md-error" v-if="!$v.confirmPass.required">{{$t("This field is required")}}</span>
               </md-field>
             </div>
           </div>
@@ -56,11 +56,11 @@
 
         <md-card-actions>
           <md-button @click.prevent="close">Cancel</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Add</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
     </form>
   </div>
 </template>

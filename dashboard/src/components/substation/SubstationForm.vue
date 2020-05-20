@@ -1,9 +1,9 @@
 <template>
   <div>
     <form novalidate class="md-layout" @submit.prevent="saveSubstation">
-      <md-card class="md-layout-item md-size-60 md-small-size-100">
+      <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">Add Substation</div>
+          <div class="md-title">{{$t("Add Substation")}}</div>
         </md-card-header>
 
         <md-card-content>
@@ -13,11 +13,11 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">Add</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="showSnackBar">{{ message }}</md-snackbar>
+      <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
     </form>
   </div>
 </template>
