@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-field v-if="showAddressInput">
+    <md-field class="md-layout-item md-size-50" v-if="showAddressInput">
       <label for="address">{{$t("Address")}}</label>
       <md-input name="address" v-model="address" />
       <md-button class="md-icon-button md-primary" @click="getLatLng">
