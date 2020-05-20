@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="validateConsumer">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">{{ $t(title) }}</div>
+          <div class="md-title">{{ $t("Add consumer") }}</div>
         </md-card-header>
 
         <md-card-content>
@@ -12,20 +12,14 @@
               <md-field :class="getValidationClass('id')">
                 <label for="email">{{$t("ID number")}}</label>
                 <md-input name="id" v-model="form.id" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.id.required">{{$t("The email is required")}}</span>
+                <span class="md-error" v-if="!$v.form.id.required">{{$t("The ID is required")}}</span>
                 <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
               </md-field>
             </div>
             <div class="md-layout-item md-size-50 md-small-size-100">
               <md-field :class="getValidationClass('email')">
                 <label for="email">Email</label>
-                <md-input
-                  type="email"
-                  name="email"
-                  autocomplete="email"
-                  v-model="form.email"
-                  :disabled="sending"
-                />
+                <md-input v-model="form.email" :disabled="sending" />
                 <span
                   class="md-error"
                   v-if="!$v.form.email.required"
@@ -85,7 +79,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item">
               <md-field>
-                <label for>Transformer ID</label>
+                <label for>{{$t("Transformer ID")}}</label>
                 <md-select v-model="contractForm.transformer_id">
                   <md-option
                     v-for="trans in transformers"
@@ -101,7 +95,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button @click.prevent="close">Cancel</md-button>
+          <md-button @click.prevent="close">{{$t("Close")}}</md-button>
           <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
@@ -114,15 +108,16 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "consumer-form",
   mixins: [validationMixin],
   props: {
-    value: { required: true },
-    modalType: { required: true },
-    transformers: { required: true }
+    value: { required: true }
+  },
+  computed: {
+    ...mapState("substation", ["transformers"])
   },
   data() {
     return {
@@ -141,8 +136,7 @@ export default {
       confirmPass: null,
       showSnackBar: false,
       sending: false,
-      message: null,
-      title: null
+      message: null
     };
   },
   validations: {
@@ -164,22 +158,11 @@ export default {
       required
     }
   },
-  mounted() {
-    this.setTitle();
-  },
   methods: {
     ...mapActions("consumer", ["createConsumer", "createContract"]),
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
-    },
-    setTitle() {
-      if (this.modalType == "create") {
-        this.title = "Add consumer";
-      } else {
-        this.title = "Modify consumer";
-        this.email = this.inputUser.email;
-      }
     },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
@@ -204,14 +187,12 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.sending = false;
-            this.showNotification("The consumer was successfully added!");
-
             this.saveContract();
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
-          this.showNotification("An error had occured");
+          this.showNotification("An error has occured while creating consumer");
           console.log(error);
         });
     },
@@ -221,11 +202,11 @@ export default {
 
       this.createContract(this.contractForm)
         .then(() => {
-          this.showNotification("The contract was successfully created!");
+          this.showNotification("The consumer was successfully created!");
         })
         .catch(error => {
           this.showNotification(
-            "An error had occured while creating the contract"
+            "An error has occured while creating the contract"
           );
           console.log(error);
         });
@@ -233,7 +214,6 @@ export default {
     validateConsumer() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        console.log(this.form);
         this.saveConsumer();
       }
     },

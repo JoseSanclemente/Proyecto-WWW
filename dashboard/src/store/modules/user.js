@@ -17,15 +17,25 @@ const actions = {
         });
     },
 
-    createUser({ commit }, payload) {
+    createUser({ commit, dispatch }, payload) {
         commit("setUserSaved");
-        return user.create(payload)
+        user.create(payload).then(() => {
+            dispatch("listUsers")
+        }).catch(error => {
+            return error
+        })
+
     },
 
-    updateUser({ commit }, payload) {
-        payload.deleted = payload.deleted.toString()
+    updateUser({ commit, dispatch }, payload) {
         commit("setUserSaved");
-        return user.update(payload)
+        payload.deleted = payload.deleted.toString()
+        user.update(payload).then(() => {
+            dispatch("listUsers")
+        }).catch(error => {
+            return error
+        })
+        return
     }
 };
 

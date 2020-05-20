@@ -41,11 +41,9 @@ import { getStatusLabel } from "@/helpers/helpers.js";
 
 export default {
   name: "substation-table",
-  components: {
-    //sUserForm
-  },
+  components: {},
   props: {
-    substations: { type: Array, required: true }
+    substations: { required: true }
   },
   data: () => ({
     modalOpen: false,

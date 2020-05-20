@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-small-size-100">
         <md-card-header>
-          <div class="md-title">{{ $t(title) }}</div>
+          <div class="md-title">{{ $t("Add user") }}</div>
         </md-card-header>
 
         <md-card-content>
@@ -18,7 +18,10 @@
                   v-model="form.email"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.email.required">{{$t("The email is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.form.email.required"
+                >{{$t("The email is required")}}</span>
                 <span class="md-error" v-else-if="!$v.form.email.email">{{$t("Invalid email")}}</span>
               </md-field>
             </div>
@@ -43,7 +46,10 @@
               <md-field :class="getValidationClass('password')">
                 <label for="password">{{$t("Password")}}</label>
                 <md-input type="password" v-model="form.password" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.password.required">{{$t("The password is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.form.password.required"
+                >{{$t("The password is required")}}</span>
               </md-field>
             </div>
 
@@ -51,7 +57,10 @@
               <md-field :class="getValidationClass('password')">
                 <label for="confirmPass">{{$t("Confirm password")}}</label>
                 <md-input type="password" v-model="confirmPass" :disabled="sending" />
-                <span class="md-error" v-if="!$v.confirmPass.required">{{$t("This field is required")}}</span>
+                <span
+                  class="md-error"
+                  v-if="!$v.confirmPass.required"
+                >{{$t("This field is required")}}</span>
               </md-field>
             </div>
           </div>
@@ -60,7 +69,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button @click.prevent="close">{{$t("Cancel")}}</md-button>
+          <md-button @click.prevent="close">{{$t("Close")}}</md-button>
           <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
@@ -81,25 +90,19 @@ export default {
   props: {
     value: {
       required: true
-    },
-    modalType: {
-      required: true
-    },
-    inputUser: null
+    }
   },
   data() {
     return {
       form: {
         email: null,
         type: null,
-        password: null,
-        deleted: false
+        password: null
       },
       confirmPass: null,
       showSnackBar: false,
       sending: false,
-      message: null,
-      title: null
+      message: null
     };
   },
   validations: {
@@ -119,23 +122,11 @@ export default {
       required
     }
   },
-  mounted() {
-    this.setTitle();
-  },
   methods: {
     ...mapActions("user", ["createUser"]),
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
-    },
-    setTitle() {
-      if (this.modalType == "create") {
-        this.title = "Add user";
-      } else {
-        this.title = "Modify user";
-        this.email = this.inputUser.email;
-        this.type = this.inputUser.type;
-      }
     },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
@@ -152,6 +143,7 @@ export default {
       this.form.role = null;
       this.form.password = null;
       this.form.type = null;
+      this.confirmPass = null;
     },
     saveUser() {
       this.sending = true;
@@ -164,6 +156,8 @@ export default {
             let message =
               "The user " + this.form.email + " was successfully added!";
             this.showNotification(message);
+
+            this.clearForm();
           }, 2000);
         })
         .catch(error => {
@@ -181,6 +175,7 @@ export default {
       }
     },
     close() {
+      this.clearForm();
       this.$emit("input", !this.value);
     }
   }

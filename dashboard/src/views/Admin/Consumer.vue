@@ -1,8 +1,8 @@
 <template>
   <div>
     <section>
-      <consumer-form modalType="create" :transformers="transformers" v-model="modalOpen"></consumer-form>
-      <md-button class="md-primary md-raised" @click="openModal">{{$t('Add Consumer')}}</md-button>
+      <consumer-form v-model="modalOpen"></consumer-form>
+      <md-button class="md-primary md-raised" @click="openModal">{{$t('Add consumer')}}</md-button>
     </section>
     <section>
       <consumer-table></consumer-table>
@@ -13,10 +13,10 @@
 <script>
 import ConsumerTable from "@/components/consumer/ConsumerTable.vue";
 import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
-import { mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
-  name: "clients",
+  name: "Consumer",
   data() {
     return {
       modalOpen: false
@@ -26,10 +26,13 @@ export default {
     ConsumerForm,
     ConsumerTable
   },
-  computed: {
-    ...mapState("transformer", ["transformers"])
+  beforeMount() {
+    this.listConsumers();
+    this.listSubstations();
   },
   methods: {
+    ...mapActions("consumer", ["listConsumers"]),
+    ...mapActions("substation", ["listSubstations"]),
     openModal() {
       this.modalOpen = !this.modalOpen;
     }

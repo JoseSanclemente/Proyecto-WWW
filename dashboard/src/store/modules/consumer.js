@@ -14,15 +14,32 @@ const getters = {};
 const actions = {
   listConsumers({ commit }) {
     consumer.list().then(response => {
-      commit("setClients", response.data);
+      commit("setConsumers", response.data);
     }).catch(error => {
       return error
     });
   },
 
-  createConsumer({ commit }, payload) {
+  createConsumer({ commit, dispatch }, payload) {
     commit("dummyMutation");
-    return consumer.create(payload)
+
+    consumer.create(payload).then(() => {
+      dispatch("listConsumers")
+    }).catch(error => {
+      return error
+    })
+  },
+
+  updateConsumer({ commit, dispatch }, payload) {
+    commit("dummyMutation");
+    payload.deleted = payload.deleted.toString()
+
+    consumer.update(payload).then(() => {
+      dispatch("listConsumers")
+    }).catch(error => {
+      return error
+    })
+    return
   },
 
   listContracts({ commit }, consumerID) {
@@ -39,7 +56,6 @@ const actions = {
   },
 
   payBill({ commit }, payload) {
-    console.log(payload)
     commit("dummyMutation")
     return consumer.payConsumerBill(payload)
   },
@@ -63,7 +79,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  setClients(state, consumers) {
+  setConsumers(state, consumers) {
     state.consumers = consumers;
   },
 
