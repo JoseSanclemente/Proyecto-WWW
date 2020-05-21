@@ -42,8 +42,7 @@
         md-auto-select
       >
         <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
-        <md-table-cell :md-label="$t('Latitude')">{{ item.latitude }}</md-table-cell>
-        <md-table-cell :md-label="$t('Longitude')">{{ item.longitude }}</md-table-cell>
+        <md-table-cell :md-label="$t('Name')">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
@@ -52,11 +51,12 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
+import { mapState } from "vuex";
 
 export default {
   name: "transformer-table",
-  props: {
-    transformers: { type: Array, required: true }
+  computed: {
+    ...mapState("substation", ["transformers"])
   },
   data: () => ({
     modalOpen: false,

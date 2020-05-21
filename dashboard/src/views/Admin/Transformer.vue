@@ -4,7 +4,7 @@
       <transformer-form :substations="substations"></transformer-form>
     </section>
     <section>
-      <transformer-table :transformers="transformers"></transformer-table>
+      <transformer-table></transformer-table>
     </section>
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
 import TransformerForm from "@/components/transformer/TransformerForm.vue";
 import TransformerTable from "@/components/transformer/TransformerTable.vue";
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Transformer",
@@ -22,15 +22,12 @@ export default {
   },
   beforeMount() {
     this.listSubstations();
-    this.setTransformers(this.substations);
   },
   computed: {
-    ...mapState("substation", ["substations"]),
-    ...mapState("transformer", ["transformers"])
+    ...mapState("substation", ["substations"])
   },
   methods: {
-    ...mapActions("substation", ["listSubstations"]),
-    ...mapMutations("transformer", ["setTransformers"])
+    ...mapActions("substation", ["listSubstations"])
   }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <user-form modalType="create" v-model="modalOpen"></user-form>
+      <user-form v-model="modalOpen"></user-form>
       <md-button class="md-primary md-raised" @click="openModal">{{ $t('Add user') }}</md-button>
     </section>
     <section>
@@ -13,7 +13,7 @@
 <script>
 import UserTable from "@/components/user/UserTable.vue";
 import UserForm from "@/components/user/UserForm.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Users",
@@ -26,7 +26,10 @@ export default {
     UserForm,
     UserTable
   },
-  beforeMount() {
+  computed: {
+    ...mapState("user", ["users"])
+  },
+  created() {
     this.listUsers();
   },
   methods: {

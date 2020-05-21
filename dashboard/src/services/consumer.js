@@ -11,6 +11,10 @@ const list = () => {
 const captcha = () => {
   return api.get("consumer/captcha");
 }
+const update = consumer => {
+  return api.put("consumer", consumer);
+};
+
 const createContract = payload => {
   return api.post("consumer/contract", payload)
 }
@@ -35,4 +39,4 @@ const payConsumerBill = payload => {
   return api.put("bill/payment/operator", payload)
 }
 
-export default { list, create, createContract, getConsumerPDF, listConsumerContracts, payConsumerBill };
+export default { list, create, update, createContract, getConsumerPDF, listConsumerContracts, payConsumerBill };
