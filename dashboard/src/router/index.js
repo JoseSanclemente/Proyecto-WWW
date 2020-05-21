@@ -10,17 +10,21 @@ const routes = [
     redirect: "/login"
   },
   {
+    path: "/home",
+    component: () => import(/* webpackChunkName: "landing" */ '../views/Landing.vue'),
+  },
+  {
     path: "/manager/dashboard",
-    component: () => import(/* webpackChunkName: "about" */ '../views/Manager/Manager.vue'),
+    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Manager.vue'),
   },
   {
     path: "/operator/dashboard",
-    component: () => import(/* webpackChunkName: "about" */ '../views/Operator/Operator.vue'),
+    component: () => import(/* webpackChunkName: "operator" */ '../views/Operator/Operator.vue'),
   },
   {
     path: "/admin",
     redirect: "/admin/users",
-    component: () => import(/* webpackChunkName: "about" */ '../layout/DefaultLayout.vue'),
+    component: () => import(/* webpackChunkName: "default" */ '../layout/DefaultLayout.vue'),
     children: [
       {
         path: 'users',
@@ -70,7 +74,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   }
 ]
 
