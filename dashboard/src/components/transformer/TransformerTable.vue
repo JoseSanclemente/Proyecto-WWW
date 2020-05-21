@@ -27,8 +27,8 @@
           >
             <md-icon>edit</md-icon>
           </md-button>
-          <md-button @click="changeUserStatus" class="md-icon-button md-raised md-accent">
-            <md-icon>delete</md-icon>
+          <md-button @click="deleteTransformer" class="md-icon-button md-raised md-accent">
+            <md-icon>flash_off</md-icon>
           </md-button>
 
           <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
@@ -42,6 +42,7 @@
         md-auto-select
       >
         <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="$t('Name')" md-sort-by="id">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="$t('Latitude')">{{ item.latitude }}</md-table-cell>
         <md-table-cell :md-label="$t('Longitude')">{{ item.longitude }}</md-table-cell>
         <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
@@ -52,6 +53,7 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
+import {mapActions} from "vuex";
 
 export default {
   name: "transformer-table",
@@ -65,6 +67,8 @@ export default {
     selected: []
   }),
   methods: {
+    ...mapActions("transformer", ["deactivateTransformer"]),
+
     onSelect(items) {
       this.selected = items;
     },
@@ -87,19 +91,16 @@ export default {
       this.message = input;
       this.showSnackBar = true;
     },
-    changeUserStatus() {
-      for (let i = 0; i < this.selected.length; i++) {
-        let item = this.selected[i];
-        item.deleted = !item.deleted;
-        this.updateUser(item)
-          .then(() => {
-            this.listUsers();
-            this.showNotification("Transformers updated successfully!");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
+    deleteTransformer() {
+      this.selected.forEach(transformer => {
+        this.deactivateTransformer(transformer).then(response => {
+          console.log("✅ transformer updated")
+          console.log(response)
+        }).catch(error => {
+          console.log("🚨 error updating transformer")
+          console.log(error)
+        })
+      })
     }
   }
 };

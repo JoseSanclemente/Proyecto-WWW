@@ -38,6 +38,18 @@
             </div>
           </div>
 
+          <div class="md-layout">
+            <div class="md-layout-item md-size-50 md-small-size-100">
+              <md-field :class="getValidationClass('type')">
+                <label for="deleted">{{$t("Active")}}</label>
+                <md-select name="type" v-model="form.deleted" md-dense :disabled="sending">
+                  <md-option value=false>{{$t("Yes")}}</md-option>
+                  <md-option value=true>{{$t("No")}}</md-option>
+                </md-select>
+              </md-field>
+            </div>
+          </div>
+
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
@@ -61,7 +73,7 @@
 
         <md-card-actions>
           <md-button @click.prevent="close">{{$t("Cancel")}}</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
+          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t(buttonAction)}}</md-button>
         </md-card-actions>
       </md-card>
 
@@ -85,11 +97,14 @@ export default {
     modalType: {
       required: true
     },
-    inputUser: null
+    inputUser: {
+      required: false
+    }
   },
   data() {
     return {
       form: {
+        id: null,
         email: null,
         type: null,
         password: null,
@@ -99,7 +114,8 @@ export default {
       showSnackBar: false,
       sending: false,
       message: null,
-      title: null
+      title: null,
+      buttonAction: "Add"
     };
   },
   validations: {
@@ -122,8 +138,14 @@ export default {
   mounted() {
     this.setTitle();
   },
+
+  watch: {
+    value: function () {
+      this.setTitle()
+    }
+  },
   methods: {
-    ...mapActions("user", ["createUser"]),
+    ...mapActions("user", ["createUser", "updateUser", "listUsers"]),
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
@@ -131,10 +153,15 @@ export default {
     setTitle() {
       if (this.modalType == "create") {
         this.title = "Add user";
+        this.buttonAction = "Add"
       } else {
         this.title = "Modify user";
-        this.email = this.inputUser.email;
-        this.type = this.inputUser.type;
+        this.buttonAction = "Save"
+        if (this.inputUser != undefined && this.inputUser.length > 0) {
+          this.form.email = this.inputUser[0].email
+          this.form.type = this.inputUser[0].type
+          this.form.deleted = this.inputUser[0].deleted
+        }
       }
     },
     getValidationClass(fieldName) {
@@ -153,6 +180,29 @@ export default {
       this.form.password = null;
       this.form.type = null;
     },
+
+    modifyUser() {
+      this.sending = true;
+
+      this.updateUser(this.form)
+        .then(() => {
+          setTimeout(() => {
+            this.sending = false;
+
+            let message =
+                    "The user " + this.form.email + " was successfully added!";
+            this.showNotification(message);
+            this.value = false
+            this.listUsers();
+          }, 2000);
+        })
+        .catch(() => {
+          this.sending = false;
+          this.clearForm();
+          this.showNotification(this.$t("An error had occurred"));
+        });
+    },
+
     saveUser() {
       this.sending = true;
 
@@ -164,6 +214,7 @@ export default {
             let message =
               "The user " + this.form.email + " was successfully added!";
             this.showNotification(message);
+            this.listUsers();
           }, 2000);
         })
         .catch(error => {
@@ -177,7 +228,13 @@ export default {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveUser();
+        switch (this.title) {
+          case "Modify user":
+            this.modifyUser()
+            return
+        }
+
+        this.saveUser()
       }
     },
     close() {

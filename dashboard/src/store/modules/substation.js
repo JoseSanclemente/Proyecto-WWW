@@ -1,5 +1,4 @@
-import subestation from "@/services/substation.js";
-
+import substation from "@/services/substation.js";
 
 // initial state
 const state = {
@@ -17,13 +16,18 @@ const actions = {
     payload.latitude = payload.latitude.toString()
     payload.longitude = payload.longitude.toString()
 
-    return subestation.create(payload)
+    return substation.create(payload)
   },
   listSubstations({ commit }) {
-    subestation.list().then(response => {
+    substation.list().then(response => {
       commit("setSubstations", response.data);
     });
   },
+  deactivateSubstation({ commit }, payload) {
+    payload.deleted = "true"
+    substation.update(payload)
+    commit("dummyMutation")
+  }
 };
 
 // mutations
@@ -34,6 +38,8 @@ const mutations = {
   setSubstationsSaved(state) {
     state.subs = true;
   },
+  dummyMutation() {
+  }
 };
 
 export default {

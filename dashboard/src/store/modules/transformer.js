@@ -18,6 +18,12 @@ const actions = {
         payload.longitude = payload.longitude.toString()
         return transformer.create(payload)
     },
+
+    deactivateTransformer({ commit }, payload) {
+        payload.deleted = "true"
+        transformer.update(payload)
+        commit("dummyMutation")
+    }
 };
 
 // mutations
@@ -26,8 +32,12 @@ const mutations = {
         let transformerList = getTransformers(substations)
         state.transformers = transformerList;
     },
+
     setTransSaved(state) {
         state.transSaved = true
+    },
+
+    dummyMutation() {
     }
 };
 

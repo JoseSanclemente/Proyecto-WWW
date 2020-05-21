@@ -2,15 +2,15 @@
   <div>
     <consumer-form modalType="modify" :inputUser="selected" v-model="modalOpen"></consumer-form>
     <md-empty-state
-      v-if="tableConsumers == null || tableConsumers.length == 0"
+      v-if="consumers == null || consumers.length == 0"
       class="md-primary"
       md-icon="remove_circle_outline"
       :md-label="$t('There is nothing here yet')"
       :md-description="$t('Consumers added will be showed here.')"
     ></md-empty-state>
     <md-table
-      v-if="tableConsumers!= null && tableConsumers.length > 0"
-      v-model="tableConsumers"
+      v-if="consumers!= null && consumers.length > 0"
+      v-model="consumers"
       md-card
       @md-selected="onSelect"
     >
@@ -64,19 +64,12 @@ export default {
     showSnackBar: false,
     message: "",
     selected: [],
-    tableConsumers: []
   }),
   computed: {
     ...mapState("consumer", ["consumers"])
   },
-  watch: {
-    table: function() {
-      this.tableConsumers = this.consumers;
-    }
-  },
   created() {
     this.listConsumers();
-    this.tableConsumers = this.consumers;
   },
   methods: {
     ...mapActions("consumer", ["listConsumers"]),

@@ -16,7 +16,7 @@
                     v-for="sub in substations"
                     v-bind:key="sub.id"
                     v-bind:value="sub.id"
-                  >{{ sub.id }}</md-option>
+                  >{{ sub.name }}</md-option>
                 </md-select>
               </md-field>
             </div>

@@ -8,4 +8,8 @@ const list = () => {
   return api.get("transformer/list");
 };
 
-export default { list, create };
+const update = payload => {
+  api.put("transformer", payload)
+}
+
+export default { list, create, update };

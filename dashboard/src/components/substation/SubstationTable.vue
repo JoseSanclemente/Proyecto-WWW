@@ -17,8 +17,8 @@
           >
             <md-icon>edit</md-icon>
           </md-button>
-          <md-button class="md-icon-button md-raised md-accent">
-            <md-icon>delete</md-icon>
+          <md-button class="md-icon-button md-raised md-accent" @click="deleteSubstation">
+            <md-icon>domain_disabled</md-icon>
           </md-button>
         </div>
       </md-table-toolbar>
@@ -30,6 +30,7 @@
         md-auto-select
       >
         <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="$t('Name')" md-sort-by="id">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
       </md-table-row>
     </md-table>
@@ -38,6 +39,7 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
+import { mapActions } from "vuex";
 
 export default {
   name: "substation-table",
@@ -52,6 +54,8 @@ export default {
     selected: []
   }),
   methods: {
+    ...mapActions("substation", ["deactivateSubstation"]),
+
     onSelect(items) {
       this.selected = items;
     },
@@ -69,6 +73,17 @@ export default {
     },
     openModal() {
       this.modalOpen = !this.modalOpen;
+    },
+    deleteSubstation() {
+      this.selected.forEach(substation => {
+        this.deactivateSubstation(substation).then(respnse => {
+          console.log("✅ substation updated")
+          console.log(respnse)
+        }).catch(error => {
+          console.log("🚨 error updating substation")
+          console.log(error)
+        })
+      })
     }
   }
 };

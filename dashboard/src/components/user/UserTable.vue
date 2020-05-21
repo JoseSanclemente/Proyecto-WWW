@@ -2,15 +2,15 @@
   <div>
     <user-form modalType="modify" :inputUser="selected" v-model="modalOpen"></user-form>
     <md-empty-state
-      v-if="tableUsers == null || tableUsers.length == 0"
+      v-if="users == null || users.length == 0"
       class="md-primary"
       md-icon="remove_circle_outline"
       :md-label="$t('There is nothing here yet')"
       :md-description="$t('Users added will be showed here.')"
     ></md-empty-state>
     <md-table
-      v-if="tableUsers != null && tableUsers.length > 0"
-      v-model="tableUsers"
+      v-if="users != null && users.length > 0"
+      v-model="users"
       md-card
       @md-selected="onSelect"
     >
@@ -29,7 +29,7 @@
             <md-icon>edit</md-icon>
           </md-button>
           <md-button @click="changeUserStatus" class="md-icon-button md-raised md-accent">
-            <md-icon>delete</md-icon>
+            <md-icon>voice_over_off</md-icon>
           </md-button>
 
           <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
@@ -64,19 +64,10 @@ export default {
     modalOpen: false,
     showSnackBar: false,
     message: "",
-    selected: [],
-    tableUsers: []
+    selected: []
   }),
   computed: {
     ...mapState("user", ["users"])
-  },
-  watch: {
-    table: function() {
-      this.tableUsers = this.users;
-    }
-  },
-  created() {
-    this.tableUsers = this.users;
   },
   methods: {
     ...mapActions("user", ["listUsers", "updateUser"]),

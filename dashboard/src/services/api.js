@@ -12,6 +12,7 @@ const intercept = payload => {
     },
     url: `${BASE_URL}/${payload.url}`
   };
+  console.log("ℹ️ API final petition:", payload)
   return axios(payload);
 };
 

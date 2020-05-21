@@ -57,5 +57,9 @@
   "User": "Usuario",
   "Users added will be showed here.": "Los usuarios añadidos serán mostrados aquí.",
   "Users updated successfully!": "¡Los usuarios se actualizaron con éxito!",
-  "Users": "Usuarios"
+  "Users": "Usuarios",
+  "Name": "Nombre",
+  "Save": "Guardar",
+  "Yes": "Si",
+  "No": "No"
 }
