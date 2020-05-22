@@ -165,7 +165,7 @@ export default {
           this.showNotification("Bill paid sucessfully!");
         })
         .catch(error => {
-          this.showNotification("An error has occured while paying the bill");
+          this.showNotification("This bill is already paid!");
           console.log(error);
         });
     },

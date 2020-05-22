@@ -5,7 +5,8 @@
       <md-table-toolbar>
         <span class="md-title">{{$t("Substations")}}</span>
         <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-          <md-input :placeholder="$t('Search by name')" v-model="searchedSubstation" @input="searchOnTable" />
+          <md-input v-model="searchedSubstation" @input="searchOnTable" />
+          <md-icon>search</md-icon>
         </md-field>
       </md-table-toolbar>
 
@@ -25,14 +26,14 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
-import {mapMutations, mapState} from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   name: "substation-table",
   components: {},
   data: () => ({
     modalOpen: false,
-    searchedSubstation: "",
+    searchedSubstation: ""
   }),
   computed: {
     ...mapState("substation", ["searchedSubstations"])
@@ -47,7 +48,7 @@ export default {
     },
     searchOnTable() {
       this.searchSubstation(this.searchedSubstation);
-    },
+    }
   }
 };
 </script>

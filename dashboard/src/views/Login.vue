@@ -31,10 +31,6 @@
           <md-field :class="getValidationClass('captcha')">
             <label>Enter Captcha</label>
             <md-input v-model="form.captcha"></md-input>
-            <span
-              class="md-error"
-              v-if="!$v.form.captcha.required"
-            >{{$t("Type the numbers you see in the picture above")}}</span>
           </md-field>
         </form>
 
@@ -132,6 +128,7 @@ export default {
           this.loadCaptcha();
           this.showNotification("The information sent is incorrect");
           console.log(error);
+          this.form.captcha = null;
         });
     },
     validateLoginData() {

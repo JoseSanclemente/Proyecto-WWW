@@ -16,14 +16,12 @@
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
         <span class="md-title">{{$t("Transformers")}}</span>
         <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-          <md-input placeholder="Search by name" v-model="searchedTransformer" @input="searchOnTable" />
+          <md-input v-model="searchedTransformer" @input="searchOnTable" />
+          <md-icon>search</md-icon>
         </md-field>
       </md-table-toolbar>
 
-      <md-table-row
-        slot="md-table-row"
-        slot-scope="{ item }"
-      >
+      <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
         <md-table-cell :md-label="$t('Name')">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
@@ -39,7 +37,7 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
-import {mapMutations, mapState} from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   name: "transformer-table",
@@ -76,7 +74,7 @@ export default {
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
-    },
+    }
   }
 };
 </script>

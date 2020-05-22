@@ -11,8 +11,8 @@
     <md-table v-model="searched" md-card md-fixed-header>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
         <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-          <label>{{$t('Search by ID')}}</label>
           <md-input v-model="searchedConsumer" @input="searchOnTable" />
+          <md-icon>search</md-icon>
         </md-field>
       </md-table-toolbar>
 
