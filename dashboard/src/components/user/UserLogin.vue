@@ -3,7 +3,8 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png" />
-        <div class="md-title">{{$t("Electricaribe - Employees")}}</div>
+        <div class="md-title">{{$t("Electricaribe")}}</div>
+        <div class="md-subtitle">{{$t("Employees")}}</div>
       </div>
 
       <form novalidate class="md-layout" @submit.prevent="validateLoginData">
@@ -96,6 +97,7 @@ export default {
           setTimeout(() => {
             this.sending = false;
             this.showNotification("Login successful!");
+            this.$router.push('')
           }, 2000);
         })
         .catch(error => {
