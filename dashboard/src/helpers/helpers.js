@@ -20,3 +20,17 @@ export function getStatusLabel(status) {
 
     return "Inactive"
 }
+
+export function getRoleLabel(role) {
+    if (role == "admin") {
+        return "Administrator"
+    }
+
+    if (role == "operator") {
+        return "Operator"
+    }
+
+    if (role == "manager") {
+        return "Manager"
+    }
+}

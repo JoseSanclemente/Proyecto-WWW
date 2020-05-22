@@ -10,7 +10,7 @@
 </template>
 <script>
 import MapComponent from "@/components/map/MapComponent.vue";
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   components: {
     MapComponent
@@ -20,14 +20,11 @@ export default {
   },
   created() {
     this.listSubstations();
-    this.setTransformers(this.substations);
   },
   computed: {
-    ...mapState("substation", ["substations"]),
-    ...mapState("transformer", ["transformers"])
+    ...mapState("substation", ["substations", "transformers"])
   },
   methods: {
-    ...mapMutations("transformer", ["setTransformers"]),
     ...mapActions("substation", ["listSubstations"])
   }
 };

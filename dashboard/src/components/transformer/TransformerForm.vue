@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("transformer", ["createTransformer"]),
+    ...mapActions("substation", ["createTransformer"]),
     setLatLng(marker) {
       this.transformerForm.latitude = marker.lat;
       this.transformerForm.longitude = marker.lng;
@@ -100,11 +100,10 @@ export default {
     clearForm() {
       this.$v.$reset();
       this.transformerForm.substation_id = null;
+      this.transformerForm.name = null;
     },
     saveTransformer() {
       this.sending = true;
-
-      console.log(this.transformerForm);
 
       this.createTransformer(this.transformerForm)
         .then(() => {

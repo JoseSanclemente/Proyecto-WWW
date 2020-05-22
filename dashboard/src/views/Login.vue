@@ -1,10 +1,9 @@
 <template>
   <div class="centered-container">
     <md-content class="md-elevation-3">
-
       <div class="title">
-        <img src="https://vuematerial.io/assets/logo-color.png">
-        <div class="md-title">{{$t("Electro")}}</div>
+        <img src="https://vuematerial.io/assets/logo-color.png" />
+        <div class="md-title">{{$t("Frens Co.")}}</div>
       </div>
 
       <div class="form">
@@ -26,7 +25,6 @@
       <div class="loading-overlay" v-if="loading">
         <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
       </div>
-
     </md-content>
     <div class="background" />
   </div>
