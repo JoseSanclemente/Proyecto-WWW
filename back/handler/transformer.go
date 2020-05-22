@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"univalle/www/models/transformer"
-	"univalle/www/shared/gateway"
+	"Proyecto-WWW/back/models/transformer"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func createTransformer(response http.ResponseWriter, request *http.Request) {
@@ -39,7 +39,7 @@ func updateTransformer(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	t, err := transformer.Load(params["id"])
+	t, err := transformer.LoadAny(params["id"])
 	if err != nil {
 		fmt.Println("updateTransformer_2: ", err.Error())
 		gateway.WriteInternalServerError(response)

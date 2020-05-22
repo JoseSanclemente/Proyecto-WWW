@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"univalle/www/models/reading"
-	"univalle/www/shared/random"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/models/reading"
+	"Proyecto-WWW/back/shared/random"
+	"Proyecto-WWW/back/storage"
 )
 
 type Bill struct {
@@ -79,8 +79,8 @@ func LoadUnpaid(contractID string) (*Bill, error) {
 		return nil, err
 	}
 
-	now := time.Now()
-	expiration := time.Unix(bills[0].ExpirationDate, 0)
+	now := time.Now().In(time.UTC)
+	expiration := time.Unix(bills[0].ExpirationDate, 0).In(time.UTC)
 
 	diff := int(now.Sub(expiration) / time.Hour * 24)
 	if diff > 30 {
@@ -242,8 +242,8 @@ func IsContractActive(contractID string) (bool, error) {
 		return true, nil
 	}
 
-	now := time.Now()
-	expiration := time.Unix(bills[1].ExpirationDate, 0)
+	now := time.Now().In(time.UTC)
+	expiration := time.Unix(bills[1].ExpirationDate, 0).In(time.UTC)
 
 	diff := now.Sub(expiration)
 

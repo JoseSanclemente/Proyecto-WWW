@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"univalle/www/models/contract"
-	"univalle/www/shared/gateway"
+	"Proyecto-WWW/back/models/contract"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func createContract(response http.ResponseWriter, request *http.Request) {

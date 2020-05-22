@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"univalle/www/models/substation"
-	"univalle/www/shared/gateway"
+	"Proyecto-WWW/back/models/substation"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func createSubstation(response http.ResponseWriter, request *http.Request) {
@@ -39,7 +39,7 @@ func updateSubstation(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	s, err := substation.Load(params["id"])
+	s, err := substation.LoadAny(params["id"])
 	if err != nil {
 		fmt.Println("updateSubstation_2: ", err.Error())
 		gateway.WriteInternalServerError(response)

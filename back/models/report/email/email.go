@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-func SendEmail(file []byte) error {
+func SendEmail(email string, file []byte) error {
 	var (
 		serverAddr = "smtp.gmail.com"
 		password   = "shady_password"
 		emailAddr  = "ShadyElectricCompany@gmail.com"
 		portNumber = 465
 		tos        = []string{
-			"diana.navas@correounivalle.edu.co",
+			email,
 		}
 		filename  = "recibo.pdf"
 		delimeter = "**=myohmy689407924327"
@@ -64,7 +64,7 @@ func SendEmail(file []byte) error {
 	// basic email headers
 	sampleMsg := fmt.Sprintf("From: %s\r\n", emailAddr)
 	sampleMsg += fmt.Sprintf("To: %s\r\n", strings.Join(tos, ";"))
-	sampleMsg += "Subject: Golang example send email in HTML format with attachment\r\n"
+	sampleMsg += "Subject: Factura digital\r\n"
 
 	// log.Println("Mark content to accept multiple contents")
 	sampleMsg += "MIME-Version: 1.0\r\n"
@@ -75,8 +75,8 @@ func SendEmail(file []byte) error {
 	sampleMsg += fmt.Sprintf("\r\n--%s\r\n", delimeter)
 	sampleMsg += "Content-Type: text/html; charset=\"utf-8\"\r\n"
 	sampleMsg += "Content-Transfer-Encoding: 7bit\r\n"
-	sampleMsg += fmt.Sprintf("\r\n%s", "<html><body><h1>Hi There</h1>"+
-		"<p>this is sample email (with attachment) sent via golang program</p></body></html>\r\n")
+	sampleMsg += fmt.Sprintf("\r\n%s", "<html><body><h1>Hola</h1>"+
+		"<p>Recuerda que si no realizas el pago de tus facturas oportunamente se generan cobros de reconexión y la Empresa te reportará a los operadores de Bancos de Datos y/o Centrales de Riesgo.</p></body></html>\r\n")
 
 	// place file
 	// log.Println("Put file attachment")
@@ -87,7 +87,9 @@ func SendEmail(file []byte) error {
 
 	// write into email client stream writter
 	// log.Println("Write content into client writter I/O")
-	_, err = writer.Write(file)
+	sampleMsg += "\r\n" + string(file)
+
+	_, err = writer.Write([]byte(sampleMsg))
 	if err != nil {
 		return err
 	}

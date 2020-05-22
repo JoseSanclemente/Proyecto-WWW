@@ -3,8 +3,8 @@ package transformer
 import (
 	"fmt"
 
-	"univalle/www/shared/random"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/shared/random"
+	"Proyecto-WWW/back/storage"
 )
 
 type Transformer struct {
@@ -19,6 +19,31 @@ type Transformer struct {
 func Load(id string) (*Transformer, error) {
 	rows, err := storage.DB.Query(
 		"SELECT name, substation, longitude, latitude, deleted FROM transformer WHERE id=? AND deleted=FALSE",
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	if !rows.Next() {
+		return nil, nil
+	}
+
+	transformer := &Transformer{
+		ID: id,
+	}
+	err = rows.Scan(&transformer.Name, &transformer.SubstationID, &transformer.Longitude, &transformer.Latitude, &transformer.Deleted)
+	if err != nil {
+		return nil, err
+	}
+
+	return transformer, nil
+}
+
+func LoadAny(id string) (*Transformer, error) {
+	rows, err := storage.DB.Query(
+		"SELECT name, substation, longitude, latitude, deleted FROM transformer WHERE id=?",
 		id,
 	)
 	if err != nil {
@@ -118,6 +143,7 @@ func (t *Transformer) Update(name, longitude, latitude, deleted string) error {
 
 	result, err := storage.DB.Exec(
 		"UPDATE transformer SET name=?, longitude=?, latitude=?, deleted=? WHERE id=?",
+		t.Name,
 		t.Longitude,
 		t.Latitude,
 		t.Deleted,

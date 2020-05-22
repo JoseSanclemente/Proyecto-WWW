@@ -23,18 +23,20 @@ func init() {
 		"/consumer/list":          listConsumers,
 		"/consumer/contract/list": listContracts,
 		"/consumer/contract/pdf":  getPDF,
-		"/dummy_report":           report,
 	}
 
 	postEndpoints = map[string]func(response http.ResponseWriter, request *http.Request){
-		"/employee/login":    loginUser,
-		"/employee":          createUser,
-		"/substations":       createSubstation,
-		"/transformer":       createTransformer,
-		"/consumer/login":    loginConsumer,
-		"/consumer":          createConsumer,
-		"/consumer/contract": createContract,
-		"/bill":              createBill,
+		"/employee/login":      loginUser,
+		"/employee":            createUser,
+		"/substations":         createSubstation,
+		"/transformer":         createTransformer,
+		"/consumer/login":      loginConsumer,
+		"/consumer":            createConsumer,
+		"/consumer/contract":   createContract,
+		"/bill":                createBill,
+		"/report/monthly":      monthly,
+		"/report/yearly":       yearly,
+		"/report/consumer/top": top,
 	}
 
 	updateEndpoints = map[string]func(response http.ResponseWriter, request *http.Request){

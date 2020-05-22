@@ -1,4 +1,4 @@
-module univalle/www
+module Proyecto-WWW/back
 
 go 1.14
 

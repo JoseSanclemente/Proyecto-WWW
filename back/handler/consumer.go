@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"univalle/www/models/consumer"
-	"univalle/www/shared/gateway"
+	"Proyecto-WWW/back/models/consumer"
+	"Proyecto-WWW/back/shared/gateway"
 
 	"github.com/dchest/captcha"
 )

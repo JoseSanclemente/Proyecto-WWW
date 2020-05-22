@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"os"
 
-	"univalle/www/models/bill"
-	"univalle/www/models/contract"
-	reports "univalle/www/models/report"
-	"univalle/www/shared/gateway"
-	"univalle/www/shared/random"
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/models/contract"
+	reports "Proyecto-WWW/back/models/report"
+	"Proyecto-WWW/back/shared/gateway"
+	"Proyecto-WWW/back/shared/random"
 )
 
 func registerOperatorPayment(response http.ResponseWriter, request *http.Request) {
@@ -33,7 +33,7 @@ func registerOperatorPayment(response http.ResponseWriter, request *http.Request
 	}
 
 	if b == nil {
-		gateway.WriteJSON(response, 400, map[string]string{"error": "bill not found"})
+		gateway.WriteJSON(response, 404, map[string]string{"error": "bill not found"})
 		return
 	}
 
@@ -121,69 +121,36 @@ func getPDF(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	contract := &contract.Contract{
-		ID:               "CON1234567890123456",
-		ConsumerID:       "1234531",
-		TransformerID:    "TRA1234567890123456",
-		Address:          "Cra 84a #14-115",
-		NotificationType: "Email",
-		Deleted:          false,
+	contract, err := contract.Load(contractID)
+	if err != nil {
+		fmt.Println("getPDF_2: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
 	}
 
-	// contract, err := contract.Load(params["contract_id"])
-	// if err != nil {
-	// 	fmt.Println("getPDF_2: ", err.Error())
-	// 	gateway.WriteInternalServerError(response)
-	// 	return
-	// }
-
-	bills := []*bill.Bill{
-		{
-			CreationDate: 1583020800,
-			Value:        145,
-		},
-		{
-			CreationDate: 1580515200,
-			Value:        170,
-		},
-		{
-			CreationDate: 1577836800,
-			Value:        100,
-		},
-		{
-			CreationDate: 1575158400,
-			Value:        5,
-		},
-		{
-			CreationDate: 1572566400,
-			Value:        200,
-		},
+	if contract == nil {
+		response.WriteHeader(404)
+		return
 	}
 
-	// bills, err := bill.LoadPreviousTotals(params["contract_id"])
-	// if err != nil {
-	// 	fmt.Println("getPDF_3: ", err.Error())
-	// 	gateway.WriteInternalServerError(response)
-	// 	return
-	// }
-
-	bill := &bill.Bill{
-		ID:                 "BIL1234567890123456",
-		ContractId:         "CON1234567890123456",
-		CreationDate:       1585699200,
-		ExpirationDate:     1588204800,
-		Paid:               false,
-		Value:              150,
-		DaysPastExpiration: 30,
-		NeedsReconnection:  true,
+	bills, err := bill.LoadPreviousTotals(contractID)
+	if err != nil {
+		fmt.Println("getPDF_3: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
 	}
 
-	// bill, err := bill.LoadUnpaid(params["contract_id"])
-	// if err != nil {
-	// 	fmt.Println("getPDF_4: ", err.Error())
-	// 	gateway.WriteInternalServerError(response)
-	// 	return
-	// }
+	bill, err := bill.LoadUnpaid(contractID)
+	if err != nil {
+		fmt.Println("getPDF_4: ", err.Error())
+		gateway.WriteInternalServerError(response)
+		return
+	}
+
+	if bill == nil {
+		response.WriteHeader(404)
+		return
+	}
 
 	b, err := reports.GetPDF(contract, bill, bills)
 	if err != nil {

@@ -73,7 +73,7 @@ func ResetAndConnect() error {
 		email VARCHAR(20) NOT NULL,
 		deleted BOOLEAN DEFAULT 0
 	);
-	
+
 	CREATE TABLE contract
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
@@ -82,7 +82,7 @@ func ResetAndConnect() error {
 		address VARCHAR(30) NOT NULL,
 		notification_type VARCHAR(20) DEFAULT "",
 		deleted BOOLEAN DEFAULT 0,
-	
+
 		CONSTRAINT fk_contract_consumer FOREIGN KEY (consumer) REFERENCES consumer (id),
 		CONSTRAINT fk_contract_transformer FOREIGN KEY (transformer) REFERENCES transformer (id)
 	);
@@ -93,10 +93,10 @@ func ResetAndConnect() error {
 		contract VARCHAR(20) NOT NULL,
 		value INTEGER NOT NULL,
 		date INTEGER NOT NULL,
-	
+
 		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);
-	
+
 	CREATE TABLE bill
 	(
 		id VARCHAR(20) PRIMARY KEY NOT NULL,
@@ -104,10 +104,16 @@ func ResetAndConnect() error {
 		creation_date INTEGER NOT NULL,
 		expiration_date INTEGER NOT NULL,
 		paid BOOLEAN DEFAULT 0,
-	
+
 		CONSTRAINT fk_reading_contract FOREIGN KEY (contract) REFERENCES contract (id)
 	);`
+
 	_, err = DB.Exec(statement)
+	if err != nil {
+		return err
+	}
+
+	err = populate()
 	if err != nil {
 		return err
 	}

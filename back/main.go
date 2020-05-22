@@ -8,13 +8,13 @@ import (
 	"os"
 	"time"
 
-	"univalle/www/handler"
-	"univalle/www/models/bill"
-	"univalle/www/models/contract"
-	"univalle/www/models/reading"
-	reports "univalle/www/models/report"
-	"univalle/www/models/report/email"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/handler"
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/models/contract"
+	"Proyecto-WWW/back/models/reading"
+	"Proyecto-WWW/back/models/report"
+	reports "Proyecto-WWW/back/models/report"
+	"Proyecto-WWW/back/storage"
 )
 
 func createReadings(contractID string) {
@@ -91,7 +91,7 @@ func createBills(contract *contract.Contract) {
 		return
 	}
 
-	err = email.SendEmail(body)
+	err = report.SendEmail(contract.ConsumerID, body)
 	if err != nil {
 		fmt.Println("createBills_6: ", err.Error())
 		return

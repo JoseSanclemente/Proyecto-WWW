@@ -3,8 +3,8 @@ package contract
 import (
 	"fmt"
 
-	"univalle/www/shared/random"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/shared/random"
+	"Proyecto-WWW/back/storage"
 )
 
 type Contract struct {
@@ -70,7 +70,7 @@ func List(consumerID string) ([]*Contract, error) {
 
 func ListActiveContractsIDs() ([]*Contract, error) {
 	rows, err := storage.DB.Query(
-		"SELECT id FROM contract WHERE deleted=false",
+		"SELECT id, consumer FROM contract WHERE deleted=false",
 	)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func ListActiveContractsIDs() ([]*Contract, error) {
 	for rows.Next() {
 		c := &Contract{}
 
-		err = rows.Scan(&c.ID)
+		err = rows.Scan(&c.ID, &c.ConsumerID)
 		if err != nil {
 			return nil, err
 		}

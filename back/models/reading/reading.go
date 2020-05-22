@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"univalle/www/shared/random"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/shared/random"
+	"Proyecto-WWW/back/storage"
 )
 
 type Reading struct {
@@ -16,7 +16,7 @@ type Reading struct {
 }
 
 func LoadTotal(contractID string, t int64) (int, error) {
-	creation := time.Unix(t, 0)
+	creation := time.Unix(t, 0).In(time.UTC)
 	year, month, _ := creation.Date()
 	date := time.Date(year, month, 0, 0, 0, 0, 0, creation.Location())
 
@@ -24,6 +24,23 @@ func LoadTotal(contractID string, t int64) (int, error) {
 	to := int(date.Add(time.Second * -1).Unix())
 
 	rows, err := storage.DB.Query(
+		"SELECT * FROM reading WHERE contract=? AND date >= ? AND date < ?",
+		contractID,
+		from,
+		to,
+	)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if !rows.Next() {
+		return 0, nil
+	}
+
+	_ = rows.Close()
+
+	rows, err = storage.DB.Query(
 		"SELECT SUM(value) FROM reading WHERE contract=? AND date >= ? AND date < ?",
 		contractID,
 		from,

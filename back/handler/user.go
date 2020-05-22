@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"univalle/www/models/user"
-	"univalle/www/shared/gateway"
+	"Proyecto-WWW/back/models/user"
+	"Proyecto-WWW/back/shared/gateway"
 )
 
 func loginUser(response http.ResponseWriter, request *http.Request) {

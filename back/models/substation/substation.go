@@ -3,9 +3,9 @@ package substation
 import (
 	"fmt"
 
-	"univalle/www/models/transformer"
-	"univalle/www/shared/random"
-	"univalle/www/storage"
+	"Proyecto-WWW/back/models/transformer"
+	"Proyecto-WWW/back/shared/random"
+	"Proyecto-WWW/back/storage"
 )
 
 type Substation struct {
@@ -20,6 +20,31 @@ type Substation struct {
 func Load(id string) (*Substation, error) {
 	rows, err := storage.DB.Query(
 		"SELECT name, longitude, latitude, deleted FROM substation WHERE id=? AND deleted=FALSE",
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	if !rows.Next() {
+		return nil, nil
+	}
+
+	substation := &Substation{
+		ID: id,
+	}
+	err = rows.Scan(&substation.Name, &substation.Longitude, &substation.Latitude, &substation.Deleted)
+	if err != nil {
+		return nil, err
+	}
+
+	return substation, nil
+}
+
+func LoadAny(id string) (*Substation, error) {
+	rows, err := storage.DB.Query(
+		"SELECT name, longitude, latitude, deleted FROM substation WHERE id=?",
 		id,
 	)
 	if err != nil {
@@ -121,6 +146,7 @@ func (s *Substation) Update(name, longitude, latitude, deleted string) error {
 
 	result, err := storage.DB.Exec(
 		"UPDATE substation SET name=?, longitude=?, latitude=?, deleted=? WHERE id=?",
+		s.Name,
 		s.Longitude,
 		s.Latitude,
 		s.Deleted,

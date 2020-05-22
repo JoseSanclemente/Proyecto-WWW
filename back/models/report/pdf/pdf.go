@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"univalle/www/models/bill"
-	"univalle/www/models/contract"
+	"Proyecto-WWW/back/models/bill"
+	"Proyecto-WWW/back/models/contract"
 
 	"github.com/unidoc/unipdf/v3/creator"
 	"github.com/unidoc/unipdf/v3/model"
