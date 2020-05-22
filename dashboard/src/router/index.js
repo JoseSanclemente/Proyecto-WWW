@@ -14,6 +14,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "landing" */ '../views/Landing.vue'),
   },
   {
+    path: "/consumer/contracts",
+    component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Contracts.vue'),
+  },
+  {
+    path: "/consumer/profile",
+    component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Profile.vue'),
+  },
+  {
     path: "/manager/dashboard",
     component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Manager.vue'),
   },

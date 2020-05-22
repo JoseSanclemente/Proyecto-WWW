@@ -39,7 +39,6 @@ const actions = {
     }).catch(error => {
       return error
     })
-    return
   },
 
   listContracts({ commit }, consumerID) {
@@ -72,6 +71,10 @@ const actions = {
 
       commit("dummyMutation")
     }).catch(error => {
+      console.log(error.response)
+      if (error.response == null) {
+        return "not_found"
+      }
       return error
     });
   }
