@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-app md-waterfall md-mode="fixed">
-      <md-app-toolbar class="md-primary">
+      <md-app-toolbar class="md-accent">
         <span class="md-title">Profile</span>
       </md-app-toolbar>
 
@@ -9,14 +9,14 @@
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
         <md-list>
-          <router-link to="/consumer/contracts">
+          <router-link :to="{ name: 'consumer-contracts', params: {id: consumer.id } }">
             <md-list-item>
               <md-icon>description</md-icon>
               <span class="md-list-item-text">Contracts</span>
             </md-list-item>
           </router-link>
 
-          <router-link to="/consumer/profile">
+          <router-link :to="{ name: 'consumer-profile', params: {id: consumer.id } }">
             <md-list-item>
               <md-icon>account_circle</md-icon>
               <span class="md-list-item-text">Profile</span>
@@ -26,25 +26,38 @@
           <router-link to="/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
-              <span class="md-list-item-text">Sign out</span>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
         </md-list>
+
+        <md-list-item>
+          <md-field>
+            <label>{{$t("Language")}}</label>
+            <md-select v-model="$i18n.locale">
+              <md-option
+                v-for="(lang, i) in langs"
+                :key="`Lang${i}`"
+                :value="lang.code"
+              >{{ lang.name }}</md-option>
+            </md-select>
+          </md-field>
+        </md-list-item>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
         <md-card class="md-layout-item md-size-50 md-small-size-100">
           <md-card-media>
             <img src="../../assets/banner.jpg" alt="banner" />
           </md-card-media>
-          <md-card-header class="card-background">
+          <md-card-header>
             <div class="md-title">{{ $t("Edit information") }}</div>
           </md-card-header>
 
-          <md-card-content class="card-content card-background">
+          <md-card-content class="card-content">
             <div class="md-layout md-gutter">
-              <div class="md-layout-item md-size-50 md-small-size-100">
+              <div class="md-layout-item md-size-60 md-small-size-100">
                 <md-field>
                   <label for="email">Email</label>
                   <md-input v-model="consumer.email" :disabled="sending" />
@@ -55,7 +68,7 @@
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100">
                 <md-field>
-                  <label for="password">{{$t("Password")}}</label>
+                  <label for="password">{{$t("New password")}}</label>
                   <md-input type="password" v-model="consumer.password" :disabled="sending" />
                 </md-field>
               </div>
@@ -71,10 +84,10 @@
 
           <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
-          <md-card-actions class="card-actions card-background">
+          <md-card-actions class="card-actions">
             <md-button
-              type="submit"
-              class="md-primary md-raised"
+              @click="update"
+              class="md-accent md-raised"
               :disabled="sending"
             >{{$t("Modify")}}</md-button>
           </md-card-actions>
@@ -91,74 +104,41 @@ export default {
   data() {
     return {
       consumer: {
-        email: "dummy@gmail.com",
-        notification_type: "email",
-        password: null
+        id: null,
+        email: null,
+        password: null,
+        delete: null
       },
-      confirmPassword: null,
       consumer_id: null,
-      contract_id: "123456",
+      confirmPassword: null,
       sending: false,
       showSnackBar: false,
-      message: null
+      message: null,
+      langs: [
+        { name: "English", code: "en" },
+        { name: "Español", code: "es" },
+        { name: "Português", code: "pt" }
+      ]
     };
   },
+  created() {
+    this.consumer.id = this.loggedConsumer[0].id;
+    this.consumer.email = this.loggedConsumer[0].email;
+  },
   computed: {
-    ...mapState("consumer", ["contracts"])
+    ...mapState("consumer", ["loggedConsumer"])
   },
   methods: {
-    ...mapActions("consumer", ["getPDF", "listContracts", "payBill"]),
-    getConsumerContracts() {
+    ...mapActions("consumer", ["updateConsumer"]),
+    update() {
       this.sending = true;
 
-      this.listContracts(this.consumer_id)
-        .then(() => {
-          setTimeout(() => {
-            this.sending = false;
-          }, 1000);
-        })
-        .catch(error => {
+      this.updateConsumer(this.consumer).then(() => {
+        setTimeout(() => {
           this.sending = false;
-          console.log(error);
-        });
-    },
-    getAlternateLabel(count) {
-      let plural = "";
-
-      if (count > 1) {
-        plural = "s";
-      }
-
-      return `${count} contract${plural} selected`;
-    },
-    getConsumerPDF(contract_id) {
-      this.sending = true;
-      this.getPDF(contract_id)
-        .then(() => {
-          setTimeout(() => {
-            this.sending = false;
-          }, 1000);
-        })
-        .catch(error => {
-          this.showNotification(
-            "An error has occured while downloading the bill"
-          );
-          console.log(error);
-        });
-    },
-    payConsumerBill(id) {
-      let payload = {
-        contract_id: id
-      };
-
-      this.payBill(payload)
-        .then(() => {
-          this.showNotification("Bill paid sucessfully!");
-        })
-        .catch(error => {
-          this.showNotification("An error has occured while paying the bill");
-          console.log(error);
-        });
+          this.showNotification("Information successfully updated!");
+        }, 2000);
+      });
     },
     showNotification(input) {
       this.message = input;
@@ -173,7 +153,7 @@ img {
   height: 350px;
 }
 
-.card-background {
+.content {
   background-color: #333333;
 }
 

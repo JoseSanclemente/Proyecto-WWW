@@ -10,7 +10,8 @@
     <md-table v-model="searched" md-card md-fixed-header>
       <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
         <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-          <md-input placeholder="Search by email" v-model="searchedUser" @input="searchOnTable" />
+          <label>{{$t('Search by email')}}</label>
+          <md-input v-model="searchedUser" @input="searchOnTable" />
         </md-field>
       </md-table-toolbar>
 

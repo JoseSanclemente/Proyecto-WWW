@@ -5,8 +5,8 @@ const state = {
   consumers: [],
   contracts: [],
   searched: [],
-  dummy: false,
-  captcha: {}
+  captcha: {},
+  loggedConsumer: null
 };
 
 // getters
@@ -129,6 +129,12 @@ const mutations = {
 
   setValidatedLogin(state) {
     state.validated = true;
+  },
+
+  setLoggedConsumer(state, id) {
+    state.loggedConsumer = state.consumers.filter(function (consumer) {
+      return consumer.id == id
+    })
   }
 
 };

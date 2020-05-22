@@ -2,7 +2,7 @@
   <div>
     <section>
       <consumer-form v-model="modalOpen"></consumer-form>
-      <md-button class="md-primary md-raised" @click="openModal">{{$t('Add consumer')}}</md-button>
+      <md-button class="md-accent md-raised" @click="openModal">{{$t('Add consumer')}}</md-button>
     </section>
     <section>
       <consumer-table></consumer-table>
@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style src="../../assets/styles/main.scss" lang="scss">
 section {
   margin: 1.2em 0;
 }
