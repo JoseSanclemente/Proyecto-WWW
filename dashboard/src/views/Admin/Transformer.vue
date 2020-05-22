@@ -1,11 +1,18 @@
 <template>
   <div>
-    <section>
-      <transformer-form :substations="substations"></transformer-form>
+    <section id="top-transformers">
+      <transformer-form
+        :substations="substations"
+        :modify="transformerToModify"
+        v-on:edit-cancelled="addView()"
+      ></transformer-form>
     </section>
-    <section>
-      <transformer-table></transformer-table>
+    <section v-if="showTable">
+      <transformer-table v-on:loadModifyForm="loadModifyForm"></transformer-table>
     </section>
+    <!--md-button v-scroll-to="'transformer-form'">
+      scroll
+    </md-button-->
   </div>
 </template>
 
@@ -18,8 +25,16 @@ export default {
   name: "Transformer",
   components: {
     TransformerForm,
-    TransformerTable
+    TransformerTable,
   },
+
+  data() {
+    return {
+      transformerToModify: null,
+      showTable: true
+    }
+  },
+
   beforeMount() {
     this.listSubstations();
   },
@@ -27,7 +42,17 @@ export default {
     ...mapState("substation", ["substations"])
   },
   methods: {
-    ...mapActions("substation", ["listSubstations"])
+    ...mapActions("substation", ["listSubstations"]),
+
+    loadModifyForm(payload) {
+      this.transformerToModify = payload
+      this.showTable = false
+    },
+
+    addView() {
+      this.transformerToModify = null
+      this.showTable = true
+    }
   }
 };
 </script>

@@ -112,10 +112,13 @@ export default {
           setTimeout(() => {
             this.sending = false;
             this.showNotification("Login successful!");
+            this.$router.push('/consumer/contracts');
+            this.$router.replace({ name: "consumer-contracts", params: {id:this.form.id}})
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
+          this.loadCaptcha();
           this.showNotification("The id or password is incorrect, Check your id then type your password again");
           console.log(error);
         });

@@ -16,34 +16,18 @@
       <md-table-toolbar>
         <span class="md-title">{{$t("Transformers")}}</span>
       </md-table-toolbar>
-      <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
-
-        <div class="md-toolbar-section-end">
-          <md-button
-            v-if="count == 1"
-            class="md-icon-button md-raised md-accent"
-            @click="openModal"
-          >
-            <md-icon>edit</md-icon>
-          </md-button>
-          <md-button @click="changeUserStatus" class="md-icon-button md-raised md-accent">
-            <md-icon>delete</md-icon>
-          </md-button>
-
-          <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
-        </div>
-      </md-table-toolbar>
-
       <md-table-row
         slot="md-table-row"
         slot-scope="{ item }"
-        md-selectable="multiple"
-        md-auto-select
       >
         <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
         <md-table-cell :md-label="$t('Name')">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
+        <md-table-cell>
+          <md-button class="md-icon-button md-primary" @click="$emit('loadModifyForm', item)">
+            <md-icon>edit</md-icon>
+          </md-button>
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -76,9 +60,6 @@ export default {
       }
 
       return `${count} user${plural} selected`;
-    },
-    openModal() {
-      this.modalOpen = !this.modalOpen;
     },
     getStatus(status) {
       return getStatusLabel(status);

@@ -2,23 +2,39 @@
   <div>
     <md-app md-waterfall md-mode="fixed">
       <md-app-toolbar class="md-primary">
-        <span class="md-title">Dashboard</span>
+        <span class="md-title">Bill payment</span>
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full">
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
         <md-list>
-          <md-list-item>
-            <md-icon>exit_to_app</md-icon>
-            <span class="md-list-item-text">Sign out</span>
-          </md-list-item>
+          <router-link to="/operator/payment">
+            <md-list-item>
+              <md-icon>description</md-icon>
+              <span class="md-list-item-text">Bill Payment</span>
+            </md-list-item>
+          </router-link>
+
+          <router-link to="/operator/consumers">
+            <md-list-item>
+              <md-icon>account_circle</md-icon>
+              <span class="md-list-item-text">Consumers</span>
+            </md-list-item>
+          </router-link>
+
+          <router-link to="/login">
+            <md-list-item>
+              <md-icon>exit_to_app</md-icon>
+              <span class="md-list-item-text">Sign out</span>
+            </md-list-item>
+          </router-link>
         </md-list>
       </md-app-drawer>
 
       <md-app-content>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
-        <h1 class="md-title">Bill Payment</h1>
+        <h1 class="md-title">Search consumer</h1>
 
         <div class="md-layout-item md-size-40">
           <md-field>

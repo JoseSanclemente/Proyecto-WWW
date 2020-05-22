@@ -45,6 +45,12 @@ const actions = {
       commit("setTransformers")
     });
   },
+
+  updateTransformer({ commit }, payload) {
+    commit("dummyMutation")
+    payload.deleted = payload.deleted.toString()
+    return transformer.update(payload)
+  }
 };
 
 // mutations
@@ -61,6 +67,8 @@ const mutations = {
   setSubstationsSaved(state) {
     state.subs = true;
   },
+
+  dummyMutation(){}
 };
 
 export default {

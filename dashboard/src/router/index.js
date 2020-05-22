@@ -14,20 +14,34 @@ const routes = [
     component: () => import(/* webpackChunkName: "landing" */ '../views/Landing.vue'),
   },
   {
-    path: "/consumer/contracts",
+    path: "/employees/login",
+    component: () => import(/* webpackChunkName: "employees" */ '../views/UserLogin.vue'),
+  },
+  {
+    name: "consumer-contracts",
+    path: "/consumer/contracts/:id",
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Contracts.vue'),
   },
   {
-    path: "/consumer/profile",
+
+    path: "/consumer/profile/",
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Profile.vue'),
   },
   {
-    path: "/manager/dashboard",
-    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Manager.vue'),
+    path: "/manager/reports",
+    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Reports.vue'),
   },
   {
-    path: "/operator/dashboard",
+    path: "/manager/users",
+    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/User.vue'),
+  },
+  {
+    path: "/operator/payment",
     component: () => import(/* webpackChunkName: "operator" */ '../views/Operator/Operator.vue'),
+  },
+  {
+    path: "/operator/consumers",
+    component: () => import(/* webpackChunkName: "operator" */ '../views/Operator/Consumer.vue'),
   },
   {
     path: "/admin",
