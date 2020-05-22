@@ -23,8 +23,6 @@ const login = payload => {
   return api.post("consumer/login", payload);
 }
 
-export default { list, create, captcha, login };
-
 const getConsumerPDF = payload => {
   let url = "consumer/contract/pdf?contract_id=" + payload
   return api.get(url)
@@ -39,4 +37,4 @@ const payConsumerBill = payload => {
   return api.put("bill/payment/operator", payload)
 }
 
-export default { list, create, update, createContract, getConsumerPDF, listConsumerContracts, payConsumerBill };
+export default { list, create,  captcha, login , update, createContract, getConsumerPDF, listConsumerContracts, payConsumerBill };

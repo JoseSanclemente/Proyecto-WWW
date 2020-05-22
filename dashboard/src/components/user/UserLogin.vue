@@ -3,15 +3,15 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png" />
-        <div class="md-title">{{$t("Electricaribe")}}</div>
+        <div class="md-title">{{$t("Electricaribe - Employees")}}</div>
       </div>
 
       <form novalidate class="md-layout" @submit.prevent="validateLoginData">
-        <md-field :class="getValidationClass('id')">
-          <label>{{$t("User ID")}}</label>
-          <md-input v-model="form.id" name="id" autocomplete="id" />
-          <span class="md-error" v-if="!$v.form.id.required">{{$t("The user id is required")}}</span>
-          <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid id")}}</span>
+        <md-field :class="getValidationClass('email')">
+          <label>{{$t("Email")}}</label>
+          <md-input v-model="form.email" name="email" autocomplete="email" />
+          <span class="md-error" v-if="!$v.form.email.required">{{$t("The user email is required")}}</span>
+          <span class="md-error" v-else-if="!$v.form.minLength">{{$t("Invalid email")}}</span>
         </md-field>
 
         <md-field md-has-password :class="getValidationClass('password')">
@@ -23,18 +23,6 @@
           >{{$t("The password is required")}}</span>
         </md-field>
 
-        <md-field>
-          <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
-        </md-field>
-
-        <md-field :class="getValidationClass('captcha')">
-          <label>Enter Captcha</label>
-          <md-input type="number" v-model="form.captcha"></md-input>
-          <span
-            class="md-error"
-            v-if="!$v.form.captcha.required"
-          >{{$t("Type the numbers you see in the picture above")}}</span>
-        </md-field>
       </form>
 
       <md-card-actions class="actions md-layout md-alignment-center-space-between">
@@ -57,14 +45,13 @@ import { required, minLength } from "vuelidate/lib/validators";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "consumer-login",
+  name: "user-login",
   mixins: [validationMixin],
   data() {
     return {
       form: {
-        id: "",
+        email: "",
         password: "",
-        captcha: ""
       },
       confirmPass: null,
       showSnackBar: false,
@@ -75,20 +62,17 @@ export default {
   },
   validations: {
     form: {
-      id: {
+      email: {
         required,
         minLength: minLength(6)
       },
       password: {
         required
-      },
-      captcha: {
-        required
       }
     }
   },
   methods: {
-    ...mapActions("consumer", ["loadCaptcha", "sendLoginData"]),
+    ...mapActions("user", ["sendLoginData"]),
 
     showNotification(input) {
       this.message = input;
@@ -104,7 +88,7 @@ export default {
       }
     },
     LoginData() {
-      this.form["captcha_id"] = this.captcha.captcha_id;
+
       //console.log(JSON.stringify(this.form))
       this.sending = true;
       this.sendLoginData(this.form)
@@ -116,7 +100,7 @@ export default {
         })
         .catch(error => {
           this.sending = false;
-          this.showNotification("The id or password is incorrect, Check your id then type your password again");
+          this.showNotification("The email or password is incorrect, Check your email then type your password again");
           console.log(error);
         });
     },
@@ -128,7 +112,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("consumer", ["captcha"])
+    ...mapState()
   },
   watch: {},
   mounted() {},

@@ -3,7 +3,7 @@ import consumer from "@/services/consumer.js";
 // initial state
 const state = {
   consumers: [],
-  dummy: false
+  dummy: false,
   contracts: [],
   captcha: {}
 };
@@ -101,7 +101,7 @@ const mutations = {
 
   dummyMutation(state) {
     state.dummy = true
-  }
+  },
   setConsumerSaved(state) {
     state.userSaved = true;
   },
