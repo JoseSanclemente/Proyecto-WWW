@@ -57,9 +57,7 @@
                   <div class="md-layout-item md-size-60">
                     <md-field>
                       <label for="startYear">{{$t("Select year")}}</label>
-                      <md-select md-dense>
-                        <md-option value="2018">2018</md-option>
-                        <md-option value="2019">2019</md-option>
+                      <md-select v-model="inputMonthly" md-dense>
                         <md-option value="2020">2020</md-option>
                       </md-select>
                     </md-field>
@@ -67,7 +65,7 @@
                 </div>
                 <div class="md-layout">
                   <div class="md-layout-item chart-layout">
-                    <bar-chart :data="chartData"></bar-chart>
+                    <bar-chart :data="monthlyData"></bar-chart>
                   </div>
                 </div>
               </md-card-content>
@@ -84,9 +82,7 @@
                   <div class="md-layout-item">
                     <md-field>
                       <label for="startYear">{{$t("Select start year")}}</label>
-                      <md-select md-dense>
-                        <md-option value="2018">2018</md-option>
-                        <md-option value="2019">2019</md-option>
+                      <md-select v-model="inputStartYear" md-dense>
                         <md-option value="2020">2020</md-option>
                       </md-select>
                     </md-field>
@@ -95,9 +91,7 @@
                   <div class="md-layout-item">
                     <md-field>
                       <label for="endYear">{{$t("Select end year")}}</label>
-                      <md-select md-dense>
-                        <md-option value="2018">2018</md-option>
-                        <md-option value="2019">2019</md-option>
+                      <md-select v-model="inputEndYear" md-dense>
                         <md-option value="2020">2020</md-option>
                       </md-select>
                     </md-field>
@@ -105,7 +99,7 @@
                 </div>
                 <div class="md-layout">
                   <div class="md-layout-item chart-layout">
-                    <bar-chart :data="chartData"></bar-chart>
+                    <bar-chart :data="yearlyData"></bar-chart>
                   </div>
                 </div>
               </md-card-content>
@@ -114,28 +108,14 @@
         </div>
 
         <div class="md-layout md-size-50">
-          <md-table md-card class="table">
-            <md-table-toolbar>
-              <h1 class="md-title">{{$t("Top Consumers")}}</h1>
+          <md-table v-model="topConsumersList" md-card md-fixed-header>
+            <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
+              <span class="md-title">{{$t("Top Consumers")}}</span>
             </md-table-toolbar>
-            <md-table-row>
-              <md-table-head md-numeric>ID</md-table-head>
-              <md-table-head>{{$t("Total consumption")}}</md-table-head>
-            </md-table-row>
 
-            <md-table-row>
-              <md-table-cell md-numeric>1</md-table-cell>
-              <md-table-cell>310.020</md-table-cell>
-            </md-table-row>
-
-            <md-table-row>
-              <md-table-cell md-numeric>2</md-table-cell>
-              <md-table-cell>298.098</md-table-cell>
-            </md-table-row>
-
-            <md-table-row>
-              <md-table-cell md-numeric>3</md-table-cell>
-              <md-table-cell>Vera Taleworth</md-table-cell>
+            <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
+              <md-table-cell :md-label="$t('Value')">{{ item.value }}</md-table-cell>
             </md-table-row>
           </md-table>
         </div>
@@ -146,6 +126,7 @@
 
 <script>
 import BarChart from "@/components/charts/BarChart.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Manager",
@@ -154,7 +135,10 @@ export default {
   },
   data() {
     return {
-      chartData: {
+      inputMonthly: "2020",
+      inputStartYear: "2020",
+      inputEndYear: "2020",
+      monthlyData: {
         labels: [
           "Jan",
           "Feb",
@@ -172,23 +156,35 @@ export default {
         datasets: [
           {
             label: "Total consumption",
-            data: [12, 19, 3, 5, 2, 3],
+            data: [163, 250, 353, 380, 204],
             backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
               "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(255, 206, 86, 0.2)"
             ],
             borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(255, 206, 86, 0.9)"
             ],
+            borderWidth: 1
+          }
+        ]
+      },
+      yearlyData: {
+        labels: ["2020"],
+        datasets: [
+          {
+            label: "Total consumption",
+            data: [1350],
+            backgroundColor: ["rgba(90, 86, 204, 0.5)"],
+            borderColor: ["rgba(90, 86, 204, 1)"],
             borderWidth: 1
           }
         ]
@@ -199,6 +195,21 @@ export default {
         { name: "Português", code: "pt" }
       ]
     };
+  },
+  computed: {
+    ...mapState("report", ["topConsumersList"])
+  },
+  created() {
+    this.topConsumers();
+  },
+  methods: {
+    ...mapActions("report", ["topConsumers"]),
+    getMonthlyData() {
+      if (this.monthYear == 2020) {
+        this.monthlyConsumption.year = 2020;
+        this.monthlyConsumption = ["Jan", "Feb", "Mar", "Apr", "May"];
+      }
+    }
   }
 };
 </script>

@@ -110,9 +110,7 @@ export default {
         })
         .catch(error => {
           this.sending = false;
-          this.showNotification(
-            "The email or password is incorrect, Check your email then type your password again"
-          );
+          this.showNotification("The information sent is incorrect");
           console.log(error);
         });
     },

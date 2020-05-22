@@ -179,6 +179,9 @@ export default {
       this.form.password = null;
       this.form.confirmPass = null;
       this.form.id = null;
+      this.contractForm.transformer_id = null;
+      this.contractForm.address = null;
+      this.contractForm.notification_type = null;
     },
     saveConsumer() {
       this.sending = true;
@@ -203,6 +206,8 @@ export default {
       this.createContract(this.contractForm)
         .then(() => {
           this.showNotification("The consumer was successfully created!");
+
+          this.clearForm();
         })
         .catch(error => {
           this.showNotification(

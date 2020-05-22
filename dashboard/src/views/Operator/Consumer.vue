@@ -46,25 +46,10 @@
       </md-app-drawer>
 
       <md-app-content>
-        <md-table v-model="searched" md-card md-fixed-header>
-          <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
-            <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-              <label>{{$t("Search by ID")}}</label>
-              <md-input v-model="searchedConsumer" @input="searchOnTable" />
-            </md-field>
-          </md-table-toolbar>
+        <consumer-form v-model="modalOpen"></consumer-form>
+        <md-button class="md-primary md-raised" @click="openModal">{{$t('Add consumer')}}</md-button>
 
-          <md-table-row slot="md-table-row" slot-scope="{ item }">
-            <md-table-cell :md-label="$t('ID')" md-sort-by="id">{{ item.id }}</md-table-cell>
-            <md-table-cell :md-label="$t('Email')">{{ item.email }}</md-table-cell>
-            <md-table-cell :md-label="$t('Status')">{{ $t(getStatus(item.deleted)) }}</md-table-cell>
-            <md-table-cell>
-              <md-button class="md-icon-button md-primary" @click="openUpdateModal(item)">
-                <md-icon>edit</md-icon>
-              </md-button>
-            </md-table-cell>
-          </md-table-row>
-        </md-table>
+        <consumer-table></consumer-table>
       </md-app-content>
     </md-app>
   </div>
@@ -73,8 +58,16 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import { getStatusLabel } from "@/helpers/helpers.js";
+import ConsumerForm from "@/components/consumer/ConsumerForm.vue";
+import ConsumerTable from "@/components/consumer/ConsumerTable.vue";
+
 export default {
+  components: {
+    ConsumerForm,
+    ConsumerTable
+  },
   data: () => ({
+    modalOpen: false,
     searchedConsumer: null,
     langs: [
       { name: "English", code: "en" },
@@ -86,11 +79,16 @@ export default {
     ...mapState("consumer", ["searched"])
   },
   created() {
+    this.listSubstations();
     this.listConsumers();
   },
   methods: {
     ...mapMutations("consumer", ["searchConsumer"]),
     ...mapActions("consumer", ["listConsumers"]),
+    ...mapActions("substation", ["listSubstations"]),
+    openModal() {
+      this.modalOpen = !this.modalOpen;
+    },
     searchOnTable() {
       this.searchConsumer(this.searchedConsumer);
     },
