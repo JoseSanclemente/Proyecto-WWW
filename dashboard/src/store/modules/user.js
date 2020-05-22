@@ -38,6 +38,12 @@ const actions = {
             return error
         })
         return
+    },
+    sendLoginData({ commit }, payload) {
+        commit("setValidatedLogin");
+        let us = user.login(payload);
+        console.log(us)
+        return us;
     }
 };
 
@@ -61,6 +67,9 @@ const mutations = {
         } else {
             state.searched = state.users
         }
+    },
+    setValidatedLogin(state) {
+        state.validated = true;
     }
 };
 

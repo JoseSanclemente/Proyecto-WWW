@@ -3,9 +3,11 @@ import consumer from "@/services/consumer.js";
 // initial state
 const state = {
   consumers: [],
+  dummy: false,
   contracts: [],
   searched: [],
-  dummy: false
+  dummy: false,
+  captcha: {}
 };
 
 // getters
@@ -79,6 +81,17 @@ const actions = {
       }
       return error
     });
+  },
+
+  loadCaptcha({ commit }) {
+    consumer.captcha().then(response => {
+      commit("setCaptcha", response.data)
+    });
+  },
+
+  sendLoginData({ commit }, payload) {
+    commit("setValidatedLogin");
+    return consumer.login(payload);
   }
 };
 
@@ -106,7 +119,19 @@ const mutations = {
 
   dummyMutation(state) {
     state.dummy = true
+  },
+  setConsumerSaved(state) {
+    state.userSaved = true;
+  },
+
+  setCaptcha(state, captcha) {
+    state.captcha = captcha;
+  },
+
+  setValidatedLogin(state) {
+    state.validated = true;
   }
+
 };
 
 export default {
