@@ -8,4 +8,8 @@ const list = () => {
   return api.get("substation/list");
 };
 
-export default { list, create };
+const update = payload => {
+  return api.put("substation", payload)
+}
+
+export default { list, create, update };

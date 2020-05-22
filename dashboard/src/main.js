@@ -8,6 +8,8 @@ import 'vue-material/dist/vue-material.min.css'
 //import 'vue-material/dist/theme/default-dark.css'
 Vue.use(VueMaterial)
 
+import vueScrollto from 'vue-scrollto'
+Vue.use(vueScrollto)
 
 import * as VueGoogleMaps from "vue2-google-maps";
 import i18n from './i18n'

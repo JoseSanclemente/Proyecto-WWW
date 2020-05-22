@@ -3,7 +3,6 @@ import consumer from "@/services/consumer.js";
 // initial state
 const state = {
   consumers: [],
-  dummy: false,
   contracts: [],
   searched: [],
   captcha: {},
