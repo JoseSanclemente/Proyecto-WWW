@@ -9,10 +9,26 @@
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
         <md-list>
-          <md-list-item>
-            <md-icon>exit_to_app</md-icon>
-            <span class="md-list-item-text">Sign out</span>
-          </md-list-item>
+          <router-link to="/manager/reports">
+            <md-list-item>
+              <md-icon>assessment</md-icon>
+              <span class="md-list-item-text">{{$t("Reports")}}</span>
+            </md-list-item>
+          </router-link>
+
+          <router-link to="/manager/users">
+            <md-list-item>
+              <md-icon>account_circle</md-icon>
+              <span class="md-list-item-text">{{$t("Users")}}</span>
+            </md-list-item>
+          </router-link>
+
+          <router-link to="/login">
+            <md-list-item>
+              <md-icon>exit_to_app</md-icon>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
+            </md-list-item>
+          </router-link>
         </md-list>
       </md-app-drawer>
 

@@ -4,6 +4,7 @@ import user from "@/services/user.js";
 const state = {
     users: [],
     userSaved: false, //This is not used
+    searched: [],
 };
 
 // getters
@@ -14,6 +15,7 @@ const actions = {
     listUsers({ commit }) {
         user.list().then(response => {
             commit("setUsers", response.data);
+            commit("setSearched");
         });
     },
 
@@ -37,7 +39,7 @@ const actions = {
         })
         return
     },
-    sendLoginData({ commit }, payload){
+    sendLoginData({ commit }, payload) {
         commit("setValidatedLogin");
         let us = user.login(payload);
         console.log(us)
@@ -56,9 +58,19 @@ const mutations = {
     resetUserState(state) {
         state.userSaved = false;
     },
-    setValidatedLogin(state){
+    setSearched(state) {
+        state.searched = state.users
+    },
+    searchUser(state, email) {
+        if (email) {
+            state.searched = state.users.filter(item => item.email.toLowerCase().includes(email.toLowerCase()))
+        } else {
+            state.searched = state.users
+        }
+    },
+    setValidatedLogin(state) {
         state.validated = true;
-      }
+    }
 };
 
 export default {

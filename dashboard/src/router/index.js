@@ -28,12 +28,20 @@ const routes = [
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Profile.vue'),
   },
   {
-    path: "/manager/dashboard",
-    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Manager.vue'),
+    path: "/manager/reports",
+    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Reports.vue'),
   },
   {
-    path: "/operator/dashboard",
+    path: "/manager/users",
+    component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/User.vue'),
+  },
+  {
+    path: "/operator/payment",
     component: () => import(/* webpackChunkName: "operator" */ '../views/Operator/Operator.vue'),
+  },
+  {
+    path: "/operator/consumers",
+    component: () => import(/* webpackChunkName: "operator" */ '../views/Operator/Consumer.vue'),
   },
   {
     path: "/admin",

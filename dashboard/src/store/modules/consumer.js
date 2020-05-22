@@ -5,6 +5,8 @@ const state = {
   consumers: [],
   dummy: false,
   contracts: [],
+  searched: [],
+  dummy: false,
   captcha: {}
 };
 
@@ -16,6 +18,7 @@ const actions = {
   listConsumers({ commit }) {
     consumer.list().then(response => {
       commit("setConsumers", response.data);
+      commit("setSearched")
     }).catch(error => {
       return error
     });
@@ -80,13 +83,13 @@ const actions = {
     });
   },
 
-  loadCaptcha({ commit }){
+  loadCaptcha({ commit }) {
     consumer.captcha().then(response => {
-        commit("setCaptcha", response.data)
+      commit("setCaptcha", response.data)
     });
   },
-  
-  sendLoginData({ commit }, payload){
+
+  sendLoginData({ commit }, payload) {
     commit("setValidatedLogin");
     return consumer.login(payload);
   }
@@ -102,6 +105,18 @@ const mutations = {
     state.contracts = contracts;
   },
 
+  setSearched(state) {
+    state.searched = state.consumers
+  },
+
+  searchConsumer(state, id) {
+    if (id) {
+      state.searched = state.consumers.filter(item => item.id.toLowerCase().includes(id.toLowerCase()))
+    } else {
+      state.searched = state.consumers
+    }
+  },
+
   dummyMutation(state) {
     state.dummy = true
   },
@@ -109,11 +124,11 @@ const mutations = {
     state.userSaved = true;
   },
 
-  setCaptcha(state, captcha){
+  setCaptcha(state, captcha) {
     state.captcha = captcha;
   },
 
-  setValidatedLogin(state){
+  setValidatedLogin(state) {
     state.validated = true;
   }
 
