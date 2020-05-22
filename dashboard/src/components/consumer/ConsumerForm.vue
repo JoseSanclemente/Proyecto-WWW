@@ -79,13 +79,13 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item">
               <md-field>
-                <label for>{{$t("Transformer ID")}}</label>
+                <label for>{{$t("Transformer")}}</label>
                 <md-select v-model="contractForm.transformer_id">
                   <md-option
                     v-for="trans in transformers"
                     v-bind:key="trans.id"
                     v-bind:value="trans.id"
-                  >{{ trans.id }}</md-option>
+                  >{{ trans.name }}</md-option>
                 </md-select>
               </md-field>
             </div>
