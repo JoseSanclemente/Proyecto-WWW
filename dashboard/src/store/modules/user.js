@@ -36,7 +36,12 @@ const actions = {
             return error
         })
         return
-    }
+    },
+
+    sendLoginData({ commit }, payload){
+        commit("setValidatedLogin");
+        return user.login(payload);
+      }
 };
 
 // mutations
@@ -49,7 +54,10 @@ const mutations = {
     },
     resetUserState(state) {
         state.userSaved = false;
-    }
+    },
+    setValidatedLogin(state){
+        state.validated = true;
+      }
 };
 
 export default {

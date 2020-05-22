@@ -17,4 +17,8 @@ const get = id => {
   return api.get(`user/${id}`);
 };
 
-export default { list, update, get, create };
+const login = payload => {
+  return api.post("employee/login", payload);
+}
+
+export default { list, update, get, create, login };
