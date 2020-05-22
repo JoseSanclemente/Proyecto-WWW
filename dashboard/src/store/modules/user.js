@@ -4,6 +4,7 @@ import user from "@/services/user.js";
 const state = {
     users: [],
     userSaved: false, //This is not used
+    searched: [],
 };
 
 // getters
@@ -14,6 +15,7 @@ const actions = {
     listUsers({ commit }) {
         user.list().then(response => {
             commit("setUsers", response.data);
+            commit("setSearched");
         });
     },
 
@@ -49,6 +51,16 @@ const mutations = {
     },
     resetUserState(state) {
         state.userSaved = false;
+    },
+    setSearched(state) {
+        state.searched = state.users
+    },
+    searchUser(state, email) {
+        if (email) {
+            state.searched = state.users.filter(item => item.email.toLowerCase().includes(email.toLowerCase()))
+        } else {
+            state.searched = state.users
+        }
     }
 };
 

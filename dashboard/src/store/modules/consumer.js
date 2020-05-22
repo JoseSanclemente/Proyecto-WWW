@@ -4,6 +4,7 @@ import consumer from "@/services/consumer.js";
 const state = {
   consumers: [],
   contracts: [],
+  searched: [],
   dummy: false
 };
 
@@ -15,6 +16,7 @@ const actions = {
   listConsumers({ commit }) {
     consumer.list().then(response => {
       commit("setConsumers", response.data);
+      commit("setSearched")
     }).catch(error => {
       return error
     });
@@ -88,6 +90,18 @@ const mutations = {
 
   setContracts(state, contracts) {
     state.contracts = contracts;
+  },
+
+  setSearched(state) {
+    state.searched = state.consumers
+  },
+
+  searchConsumer(state, id) {
+    if (id) {
+      state.searched = state.consumers.filter(item => item.id.toLowerCase().includes(id.toLowerCase()))
+    } else {
+      state.searched = state.consumers
+    }
   },
 
   dummyMutation(state) {

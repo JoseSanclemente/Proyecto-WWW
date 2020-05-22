@@ -7,9 +7,11 @@
       @destroyModal="destroyModal"
     ></update-user-form>
     <h1 class="md-title">{{ $t("Users") }}</h1>
-    <md-table v-if="users != null && users.length > 0" v-model="users" md-card>
-      <md-table-toolbar class="md-primary" slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+    <md-table v-model="searched" md-card md-fixed-header>
+      <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
+        <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
+          <md-input placeholder="Search by email" v-model="searchedUser" @input="searchOnTable" />
+        </md-field>
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import UpdateUserForm from "@/components/user/UpdateUserForm.vue";
 import { getStatusLabel, getRoleLabel } from "@/helpers/helpers.js";
 
@@ -41,12 +43,17 @@ export default {
     showSnackBar: false,
     message: "",
     inputUser: null,
-    render: false
+    render: false,
+    searchedUser: null
   }),
   computed: {
-    ...mapState("user", ["users"])
+    ...mapState("user", ["searched"])
   },
   methods: {
+    ...mapMutations("user", ["searchUser"]),
+    searchOnTable() {
+      this.searchUser(this.searchedUser);
+    },
     getRole(role) {
       return getRoleLabel(role);
     },
