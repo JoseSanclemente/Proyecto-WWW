@@ -2,7 +2,7 @@
   <div class="centered-container">
     <md-content class="md-elevation-3">
       <div class="title">
-        <img src="https://vuematerial.io/assets/logo-color.png" />
+        <img src="../assets/logo.png" />
         <div class="md-title">{{$t("Frens Co.")}}</div>
         <div class="md-subtitle">{{$t("Employees")}}</div>
       </div>
@@ -28,7 +28,7 @@
       <md-card-actions class="actions md-layout md-alignment-center-space-between">
         <md-button
           type="submit"
-          class="md-raised md-primary"
+          class="md-raised md-accent"
           @click="validateLoginData"
           :disable="sending"
         >{{$t("Log in")}}</md-button>

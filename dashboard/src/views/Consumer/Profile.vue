@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-app md-waterfall md-mode="fixed">
-      <md-app-toolbar class="md-primary">
+      <md-app-toolbar class="md-accent">
         <span class="md-title">Profile</span>
       </md-app-toolbar>
 
@@ -26,25 +26,38 @@
           <router-link to="/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
-              <span class="md-list-item-text">Sign out</span>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
         </md-list>
+
+        <md-list-item>
+          <md-field>
+            <label>{{$t("Language")}}</label>
+            <md-select v-model="$i18n.locale">
+              <md-option
+                v-for="(lang, i) in langs"
+                :key="`Lang${i}`"
+                :value="lang.code"
+              >{{ lang.name }}</md-option>
+            </md-select>
+          </md-field>
+        </md-list-item>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
         <md-card class="md-layout-item md-size-50 md-small-size-100">
           <md-card-media>
             <img src="../../assets/banner.jpg" alt="banner" />
           </md-card-media>
-          <md-card-header class="card-background">
+          <md-card-header>
             <div class="md-title">{{ $t("Edit information") }}</div>
           </md-card-header>
 
-          <md-card-content class="card-content card-background">
+          <md-card-content class="card-content">
             <div class="md-layout md-gutter">
-              <div class="md-layout-item md-size-50 md-small-size-100">
+              <div class="md-layout-item md-size-60 md-small-size-100">
                 <md-field>
                   <label for="email">Email</label>
                   <md-input v-model="consumer.email" :disabled="sending" />
@@ -55,7 +68,7 @@
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100">
                 <md-field>
-                  <label for="password">{{$t("Password")}}</label>
+                  <label for="password">{{$t("New password")}}</label>
                   <md-input type="password" v-model="consumer.password" :disabled="sending" />
                 </md-field>
               </div>
@@ -71,10 +84,10 @@
 
           <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
-          <md-card-actions class="card-actions card-background">
+          <md-card-actions class="card-actions">
             <md-button
               @click="update"
-              class="md-primary md-raised"
+              class="md-accent md-raised"
               :disabled="sending"
             >{{$t("Modify")}}</md-button>
           </md-card-actions>
@@ -100,7 +113,12 @@ export default {
       confirmPassword: null,
       sending: false,
       showSnackBar: false,
-      message: null
+      message: null,
+      langs: [
+        { name: "English", code: "en" },
+        { name: "Español", code: "es" },
+        { name: "Português", code: "pt" }
+      ]
     };
   },
   created() {
@@ -135,7 +153,7 @@ img {
   height: 350px;
 }
 
-.card-background {
+.content {
   background-color: #333333;
 }
 

@@ -6,7 +6,7 @@
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+        <md-toolbar class="md-transparent" md-elevation="0">{{$t("Navigation")}}</md-toolbar>
 
         <md-list>
           <router-link to="/manager/reports">
@@ -23,27 +23,40 @@
             </md-list-item>
           </router-link>
 
-          <router-link to="/login">
+          <router-link to="/employee/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
               <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
+
+          <md-list-item>
+            <md-field>
+              <label>{{$t("Language")}}</label>
+              <md-select v-model="$i18n.locale">
+                <md-option
+                  v-for="(lang, i) in langs"
+                  :key="`Lang${i}`"
+                  :value="lang.code"
+                >{{ lang.name }}</md-option>
+              </md-select>
+            </md-field>
+          </md-list-item>
         </md-list>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <div class="md-layout md-glutter">
           <div class="md-layout-item">
             <md-card class="chart">
               <md-card-header>
-                <div class="md-title">Monthly Consumption</div>
+                <div class="md-title">{{$t("Monthly Consumption")}}</div>
               </md-card-header>
               <md-card-content>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-60">
                     <md-field>
-                      <label for="startYear">Select year</label>
+                      <label for="startYear">{{$t("Select year")}}</label>
                       <md-select md-dense>
                         <md-option value="2018">2018</md-option>
                         <md-option value="2019">2019</md-option>
@@ -64,13 +77,13 @@
           <div class="md-layout-item">
             <md-card class="chart">
               <md-card-header>
-                <div class="md-title">Year Consumption</div>
+                <div class="md-title">{{$t("Annual Consumption")}}</div>
               </md-card-header>
               <md-card-content>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item">
                     <md-field>
-                      <label for="startYear">Select start year</label>
+                      <label for="startYear">{{$t("Select start year")}}</label>
                       <md-select md-dense>
                         <md-option value="2018">2018</md-option>
                         <md-option value="2019">2019</md-option>
@@ -81,7 +94,7 @@
 
                   <div class="md-layout-item">
                     <md-field>
-                      <label for="endYear">Select end year</label>
+                      <label for="endYear">{{$t("Select end year")}}</label>
                       <md-select md-dense>
                         <md-option value="2018">2018</md-option>
                         <md-option value="2019">2019</md-option>
@@ -103,11 +116,11 @@
         <div class="md-layout md-size-50">
           <md-table md-card class="table">
             <md-table-toolbar>
-              <h1 class="md-title">Top Consumers</h1>
+              <h1 class="md-title">{{$t("Top Consumers")}}</h1>
             </md-table-toolbar>
             <md-table-row>
               <md-table-head md-numeric>ID</md-table-head>
-              <md-table-head>Total consumption</md-table-head>
+              <md-table-head>{{$t("Total consumption")}}</md-table-head>
             </md-table-row>
 
             <md-table-row>
@@ -179,7 +192,12 @@ export default {
             borderWidth: 1
           }
         ]
-      }
+      },
+      langs: [
+        { name: "English", code: "en" },
+        { name: "Español", code: "es" },
+        { name: "Português", code: "pt" }
+      ]
     };
   }
 };
@@ -189,6 +207,10 @@ export default {
 .md-app {
   height: 100vh;
   border: 1px solid rgba(#000, 0.12);
+}
+
+.content {
+  background-color: #333333;
 }
 
 .chart {
