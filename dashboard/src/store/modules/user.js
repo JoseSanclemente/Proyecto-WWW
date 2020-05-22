@@ -37,11 +37,12 @@ const actions = {
         })
         return
     },
-
     sendLoginData({ commit }, payload){
         commit("setValidatedLogin");
-        return user.login(payload);
-      }
+        let us = user.login(payload);
+        console.log(us)
+        return us;
+    }
 };
 
 // mutations

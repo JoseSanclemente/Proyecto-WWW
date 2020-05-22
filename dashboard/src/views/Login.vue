@@ -1,12 +1,12 @@
 <template>
   <div>
-    <user-login></user-login>
+    <consumer-login></consumer-login>
   </div>
 </template>
 
 <script>
-// import ConsumerLogin from "@/components/consumer/ConsumerLogin.vue";
-import UserLogin from "@/components/user/UserLogin.vue";
+import ConsumerLogin from "@/components/consumer/ConsumerLogin.vue";
+//import UserLogin from "@/components/user/UserLogin.vue";
 //import { mapActions } from "vuex";
 
 export default {
@@ -17,8 +17,7 @@ export default {
     };
   },
   components: {
-    //ConsumerLogin,
-    UserLogin
+    ConsumerLogin
   },
   beforeMount() {
 
