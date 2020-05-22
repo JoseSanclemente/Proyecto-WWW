@@ -24,7 +24,8 @@ const routes = [
   },
   {
 
-    path: "/consumer/profile/",
+    name: "consumer-profile",
+    path: "/consumer/profile/:id",
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Profile.vue'),
   },
   {

@@ -3,7 +3,7 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png" />
-        <div class="md-title">{{$t("Electricaribe")}}</div>
+        <div class="md-title">{{$t("Frens Co.")}}</div>
       </div>
 
       <form novalidate class="md-layout" @submit.prevent="validateLoginData">
@@ -23,13 +23,11 @@
           >{{$t("The password is required")}}</span>
         </md-field>
 
-        <md-field>
-          <img v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
-        </md-field>
+        <img class="captcha-image" v-bind:src="'data:image/jpeg;base64,'+ captcha.captcha" />
 
         <md-field :class="getValidationClass('captcha')">
           <label>Enter Captcha</label>
-          <md-input type="number" v-model="form.captcha"></md-input>
+          <md-input v-model="form.captcha"></md-input>
           <span
             class="md-error"
             v-if="!$v.form.captcha.required"
@@ -44,6 +42,7 @@
           @click="validateLoginData"
           :disable="sending"
         >{{$t("Log in")}}</md-button>
+        <md-progress-spinner md-mode="indeterminate" v-if="sending" />
       </md-card-actions>
 
       <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
@@ -54,7 +53,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, minLength } from "vuelidate/lib/validators";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   name: "consumer-login",
@@ -66,11 +65,9 @@ export default {
         password: "",
         captcha: ""
       },
-      confirmPass: null,
       showSnackBar: false,
       sending: false,
-      message: null,
-      title: null
+      message: null
     };
   },
   validations: {
@@ -89,6 +86,7 @@ export default {
   },
   methods: {
     ...mapActions("consumer", ["loadCaptcha", "sendLoginData"]),
+    ...mapMutations("consumer", ["setLoggedConsumer"]),
 
     showNotification(input) {
       this.message = input;
@@ -105,21 +103,28 @@ export default {
     },
     LoginData() {
       this.form["captcha_id"] = this.captcha.captcha_id;
-      //console.log(JSON.stringify(this.form))
       this.sending = true;
+
       this.sendLoginData(this.form)
         .then(() => {
+          this.setLoggedConsumer(this.form.id);
+
           setTimeout(() => {
             this.sending = false;
             this.showNotification("Login successful!");
-            this.$router.push('/consumer/contracts');
-            this.$router.replace({ name: "consumer-contracts", params: {id:this.form.id}})
+            this.$router.push("/consumer/contracts");
+            this.$router.replace({
+              name: "consumer-contracts",
+              params: { id: this.form.id }
+            });
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
           this.loadCaptcha();
-          this.showNotification("The id or password is incorrect, Check your id then type your password again");
+          this.showNotification(
+            "The id or password is incorrect, Check your id then type your password again"
+          );
           console.log(error);
         });
     },
@@ -133,15 +138,16 @@ export default {
   computed: {
     ...mapState("consumer", ["captcha"])
   },
-  watch: {},
-  mounted() {},
-  created() {
+  beforeMount() {
     this.loadCaptcha();
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.captcha-image {
+  background-color: white;
+}
 .centered-container {
   display: flex;
   align-items: center;

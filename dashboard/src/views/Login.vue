@@ -6,24 +6,18 @@
 
 <script>
 import ConsumerLogin from "@/components/consumer/ConsumerLogin.vue";
-//import UserLogin from "@/components/user/UserLogin.vue";
-//import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "login",
-  data() {
-    return {
-
-    };
-  },
   components: {
     ConsumerLogin
   },
   beforeMount() {
-
+    this.listConsumers();
   },
   methods: {
-
+    ...mapActions("consumer", ["listConsumers"])
   }
 };
 </script>

@@ -9,14 +9,14 @@
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
         <md-list>
-          <router-link to="/consumer/contracts">
+          <router-link :to="{ name: 'consumer-contracts', params: {id: consumer.id } }">
             <md-list-item>
               <md-icon>description</md-icon>
               <span class="md-list-item-text">Contracts</span>
             </md-list-item>
           </router-link>
 
-          <router-link to="/consumer/profile">
+          <router-link :to="{ name: 'consumer-profile', params: {id: consumer.id } }">
             <md-list-item>
               <md-icon>account_circle</md-icon>
               <span class="md-list-item-text">Profile</span>
@@ -73,7 +73,7 @@
 
           <md-card-actions class="card-actions card-background">
             <md-button
-              type="submit"
+              @click="update"
               class="md-primary md-raised"
               :disabled="sending"
             >{{$t("Modify")}}</md-button>
@@ -91,74 +91,36 @@ export default {
   data() {
     return {
       consumer: {
-        email: "dummy@gmail.com",
-        notification_type: "email",
-        password: null
+        id: null,
+        email: null,
+        password: null,
+        delete: null
       },
-      confirmPassword: null,
       consumer_id: null,
-      contract_id: "123456",
+      confirmPassword: null,
       sending: false,
       showSnackBar: false,
       message: null
     };
   },
+  created() {
+    this.consumer.id = this.loggedConsumer[0].id;
+    this.consumer.email = this.loggedConsumer[0].email;
+  },
   computed: {
-    ...mapState("consumer", ["contracts"])
+    ...mapState("consumer", ["loggedConsumer"])
   },
   methods: {
-    ...mapActions("consumer", ["getPDF", "listContracts", "payBill"]),
-    getConsumerContracts() {
+    ...mapActions("consumer", ["updateConsumer"]),
+    update() {
       this.sending = true;
 
-      this.listContracts(this.consumer_id)
-        .then(() => {
-          setTimeout(() => {
-            this.sending = false;
-          }, 1000);
-        })
-        .catch(error => {
+      this.updateConsumer(this.consumer).then(() => {
+        setTimeout(() => {
           this.sending = false;
-          console.log(error);
-        });
-    },
-    getAlternateLabel(count) {
-      let plural = "";
-
-      if (count > 1) {
-        plural = "s";
-      }
-
-      return `${count} contract${plural} selected`;
-    },
-    getConsumerPDF(contract_id) {
-      this.sending = true;
-      this.getPDF(contract_id)
-        .then(() => {
-          setTimeout(() => {
-            this.sending = false;
-          }, 1000);
-        })
-        .catch(error => {
-          this.showNotification(
-            "An error has occured while downloading the bill"
-          );
-          console.log(error);
-        });
-    },
-    payConsumerBill(id) {
-      let payload = {
-        contract_id: id
-      };
-
-      this.payBill(payload)
-        .then(() => {
-          this.showNotification("Bill paid sucessfully!");
-        })
-        .catch(error => {
-          this.showNotification("An error has occured while paying the bill");
-          console.log(error);
-        });
+          this.showNotification("Information successfully updated!");
+        }, 2000);
+      });
     },
     showNotification(input) {
       this.message = input;

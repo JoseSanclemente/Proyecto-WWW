@@ -3,7 +3,7 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img src="https://vuematerial.io/assets/logo-color.png" />
-        <div class="md-title">{{$t("Electricaribe")}}</div>
+        <div class="md-title">Frens Co.</div>
         <div class="md-subtitle">{{$t("Employees")}}</div>
       </div>
 
@@ -23,7 +23,6 @@
             v-if="!$v.form.password.required"
           >{{$t("The password is required")}}</span>
         </md-field>
-
       </form>
 
       <md-card-actions class="actions md-layout md-alignment-center-space-between">
@@ -33,6 +32,7 @@
           @click="validateLoginData"
           :disable="sending"
         >{{$t("Log in")}}</md-button>
+        <md-progress-spinner md-mode="indeterminate" v-if="sending" />
       </md-card-actions>
 
       <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
@@ -52,13 +52,12 @@ export default {
     return {
       form: {
         email: "",
-        password: "",
+        password: ""
       },
       confirmPass: null,
       showSnackBar: false,
       sending: false,
-      message: null,
-      title: null
+      message: null
     };
   },
   validations: {
@@ -89,7 +88,6 @@ export default {
       }
     },
     LoginData() {
-
       //console.log(JSON.stringify(this.form))
       this.sending = true;
       this.sendLoginData(this.form)
@@ -97,12 +95,14 @@ export default {
           setTimeout(() => {
             this.sending = false;
             this.showNotification("Login successful!");
-            this.$router.push('')
+            this.$router.push("");
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
-          this.showNotification("The email or password is incorrect, Check your email then type your password again");
+          this.showNotification(
+            "The email or password is incorrect, Check your email then type your password again"
+          );
           console.log(error);
         });
     },
