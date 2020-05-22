@@ -1,10 +1,10 @@
 <template>
   <div>
     <section>
-      <substation-form></substation-form>
+      <substation-form :modify="substationToModify" v-on:edit-cancelled="addView()"></substation-form>
     </section>
     <section>
-      <substation-table :substations="substations"></substation-table>
+      <substation-table v-on:loadModifyForm="loadModifyForm" v-if="showTable"></substation-table>
     </section>
   </div>
 </template>
@@ -20,6 +20,12 @@ export default {
     SubstationForm,
     SubstationTable
   },
+  data() {
+    return {
+      substationToModify: null,
+      showTable: true,
+    }
+  },
   created() {
     this.listSubstations();
   },
@@ -27,7 +33,16 @@ export default {
     ...mapState("substation", ["substations"])
   },
   methods: {
-    ...mapActions("substation", ["listSubstations"])
+    ...mapActions("substation", ["listSubstations"]),
+    loadModifyForm(payload) {
+      this.substationToModify = payload
+      this.showTable = false
+    },
+
+    addView() {
+      this.substationToModify = null
+      this.showTable = true
+    }
   }
 };
 </script>

@@ -12,6 +12,7 @@ const intercept = payload => {
     },
     url: `${BASE_URL}/${payload.url}`
   };
+  console.log("ℹ️ Axios payload", payload)
   return axios(payload);
 };
 
