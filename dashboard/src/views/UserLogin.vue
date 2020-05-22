@@ -2,8 +2,8 @@
   <div class="centered-container">
     <md-content class="md-elevation-3">
       <div class="title">
-        <img src="https://vuematerial.io/assets/logo-color.png" />
-        <div class="md-title">{{$t("Electricaribe")}}</div>
+        <img src="../assets/logo.png" />
+        <div class="md-title">{{$t("Frens Co.")}}</div>
         <div class="md-subtitle">{{$t("Employees")}}</div>
       </div>
 
@@ -23,16 +23,16 @@
             v-if="!$v.form.password.required"
           >{{$t("The password is required")}}</span>
         </md-field>
-
       </form>
 
       <md-card-actions class="actions md-layout md-alignment-center-space-between">
         <md-button
           type="submit"
-          class="md-raised md-primary"
+          class="md-raised md-accent"
           @click="validateLoginData"
           :disable="sending"
         >{{$t("Log in")}}</md-button>
+        <md-progress-spinner md-mode="indeterminate" v-if="sending" />
       </md-card-actions>
 
       <md-snackbar :md-active.sync="showSnackBar">{{ $t(message) }}</md-snackbar>
@@ -52,7 +52,7 @@ export default {
     return {
       form: {
         email: "",
-        password: "",
+        password: ""
       },
       confirmPass: null,
       showSnackBar: false,
@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("user",["sendLoginData"]),
+    ...mapActions("user", ["sendLoginData"]),
 
     showNotification(input) {
       this.message = input;
@@ -94,28 +94,27 @@ export default {
         .then(Response => {
           setTimeout(() => {
             this.sending = false;
-            this.showNotification("Login successful!");
-            let tipo = Response.data.type;
-            console.log(Response.data.type);
-            switch(tipo){
+            let type = Response.data.type;
+            switch (type) {
               case "operator":
-                this.$router.push('/operator/dashboard');
+                this.$router.push("/operator/payment");
                 break;
               case "admin":
-                this.$router.push('/admin/users');
+                this.$router.push("/admin/users");
                 break;
               case "manager":
-                this.$router.push('/manager/dashboard');
+                this.$router.push("/manager/reports");
                 break;
             }
           }, 2000);
         })
         .catch(error => {
           this.sending = false;
-          this.showNotification("The email or password is incorrect, Check your email then type your password again");
+          this.showNotification(
+            "The email or password is incorrect, Check your email then type your password again"
+          );
           console.log(error);
-        })
-
+        });
     },
     validateLoginData() {
       this.$v.$touch();
@@ -125,12 +124,11 @@ export default {
     }
   },
   computed: {
-    ...mapState("user",[])
+    ...mapState("user", [])
   },
   watch: {},
   mounted() {},
-  created() {
-  }
+  created() {}
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <md-app>
-      <md-app-toolbar class="md-primary" md-elevation="0">
+      <md-app-toolbar class="md-accent" md-elevation="0">
         <span class="md-title">{{$t(title)}}</span>
       </md-app-toolbar>
 
@@ -44,18 +44,29 @@
             </md-list-item>
           </router-link>
 
+          <router-link to="/employee/login">
+            <md-list-item>
+              <md-icon>exit_to_app</md-icon>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
+            </md-list-item>
+          </router-link>
+
           <md-list-item>
             <md-field>
               <label>{{$t("Language")}}</label>
               <md-select v-model="$i18n.locale">
-                <md-option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang.code">{{ lang.name }}</md-option>
+                <md-option
+                  v-for="(lang, i) in langs"
+                  :key="`Lang${i}`"
+                  :value="lang.code"
+                >{{ lang.name }}</md-option>
               </md-select>
             </md-field>
           </md-list-item>
         </md-list>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <router-view />
       </md-app-content>
     </md-app>
@@ -69,9 +80,9 @@ export default {
     menuVisible: false,
     title: "User Management",
     langs: [
-      {name: 'English', code: 'en'},
-      {name: 'Español', code:'es'},
-      {name: 'Português', code:'pt'}
+      { name: "English", code: "en" },
+      { name: "Español", code: "es" },
+      { name: "Português", code: "pt" }
     ]
   }),
   methods: {
@@ -107,6 +118,10 @@ export default {
 .md-app {
   height: 100vh;
   border: 1px solid rgba(#000, 0.12);
+}
+
+.content {
+  background-color: #333333;
 }
 
 /* Demo purposes only */

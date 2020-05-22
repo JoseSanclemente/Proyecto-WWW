@@ -23,24 +23,33 @@
             </md-list-item>
           </router-link>
 
-          <router-link to="/login">
+          <router-link to="/employee/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
               <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
+          <md-list-item>
+            <md-field>
+              <label>{{$t("Language")}}</label>
+              <md-select v-model="$i18n.locale">
+                <md-option
+                  v-for="(lang, i) in langs"
+                  :key="`Lang${i}`"
+                  :value="lang.code"
+                >{{ lang.name }}</md-option>
+              </md-select>
+            </md-field>
+          </md-list-item>
         </md-list>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <md-table v-model="searched" md-card md-fixed-header>
           <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
             <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
-              <md-input
-                placeholder="Search by email"
-                v-model="searchedUser"
-                @input="searchOnTable"
-              />
+              <label>{{$t("Search by email")}}</label>
+              <md-input v-model="searchedUser" @input="searchOnTable" />
             </md-field>
           </md-table-toolbar>
 
@@ -62,7 +71,12 @@ import { getStatusLabel, getRoleLabel } from "@/helpers/helpers.js";
 export default {
   name: "user-table",
   data: () => ({
-    searchedUser: null
+    searchedUser: null,
+    langs: [
+      { name: "English", code: "en" },
+      { name: "Español", code: "es" },
+      { name: "Português", code: "pt" }
+    ]
   }),
   computed: {
     ...mapState("user", ["searched"])
@@ -90,6 +104,10 @@ export default {
 .md-app {
   height: 100vh;
   border: 1px solid rgba(#000, 0.12);
+}
+
+.content {
+  background-color: #333333;
 }
 
 .chart {

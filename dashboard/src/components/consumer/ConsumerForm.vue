@@ -96,7 +96,7 @@
 
         <md-card-actions>
           <md-button @click.prevent="close">{{$t("Close")}}</md-button>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
+          <md-button type="submit" class="md-accent md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
 

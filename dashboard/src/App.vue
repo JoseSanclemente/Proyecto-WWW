@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style src="./assets/styles/main.scss" lang="scss">
 .App {
   font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;

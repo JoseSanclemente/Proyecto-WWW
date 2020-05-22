@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-app md-waterfall md-mode="fixed">
-      <md-app-toolbar class="md-primary">
+      <md-app-toolbar class="md-accent">
         <span class="md-title">Contracts</span>
       </md-app-toolbar>
 
@@ -9,14 +9,14 @@
         <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
         <md-list>
-          <router-link to="/consumer/contracts">
+          <router-link :to="{ name: 'consumer-contracts', params: {id: consumer_id } }">
             <md-list-item>
               <md-icon>description</md-icon>
               <span class="md-list-item-text">Contracts</span>
             </md-list-item>
           </router-link>
 
-          <router-link to="/consumer/profile">
+          <router-link :to="{ name: 'consumer-profile', params: {id: consumer_id } }">
             <md-list-item>
               <md-icon>account_circle</md-icon>
               <span class="md-list-item-text">Profile</span>
@@ -26,13 +26,26 @@
           <router-link to="/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
-              <span class="md-list-item-text">Sign out</span>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
         </md-list>
+
+        <md-list-item>
+          <md-field>
+            <label>{{$t("Language")}}</label>
+            <md-select v-model="$i18n.locale">
+              <md-option
+                v-for="(lang, i) in langs"
+                :key="`Lang${i}`"
+                :value="lang.code"
+              >{{ lang.name }}</md-option>
+            </md-select>
+          </md-field>
+        </md-list-item>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="content">
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-table
@@ -75,21 +88,28 @@ export default {
   name: "Operator",
   data() {
     return {
-      consumer_id: "2222222",
-      contract_id: null,
+      consumer_id: null,
       sending: false,
       showSnackBar: false,
-      message: null
+      message: null,
+      langs: [
+        { name: "English", code: "en" },
+        { name: "Español", code: "es" },
+        { name: "Português", code: "pt" }
+      ]
     };
   },
   computed: {
-    ...mapState("consumer", ["contracts"])
+    ...mapState("consumer", ["contracts", "loggedConsumer"])
+  },
+  created() {
+    this.consumer_id = this.loggedConsumer[0].id;
   },
   beforeMount() {
     this.getConsumerContracts();
   },
   methods: {
-    ...mapActions("consumer", ["getPDF", "listContracts", "payBill"]),
+    ...mapActions("consumer", ["getPDF", "listContracts"]),
     getConsumerContracts() {
       this.sending = true;
 
@@ -103,15 +123,6 @@ export default {
           this.sending = false;
           console.log(error);
         });
-    },
-    getAlternateLabel(count) {
-      let plural = "";
-
-      if (count > 1) {
-        plural = "s";
-      }
-
-      return `${count} contract${plural} selected`;
     },
     getConsumerPDF(contract_id) {
       this.sending = true;
@@ -131,20 +142,6 @@ export default {
           console.log(error);
         });
     },
-    payConsumerBill(id) {
-      let payload = {
-        contract_id: id
-      };
-
-      this.payBill(payload)
-        .then(() => {
-          this.showNotification("Bill paid sucessfully!");
-        })
-        .catch(error => {
-          this.showNotification("An error has occured while paying the bill");
-          console.log(error);
-        });
-    },
     showNotification(input) {
       this.message = input;
       this.showSnackBar = true;
@@ -154,7 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-background {
+.content {
   background-color: #333333;
 }
 

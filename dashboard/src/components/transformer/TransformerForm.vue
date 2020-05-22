@@ -34,7 +34,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary md-raised" :disabled="sending">{{$t("Add")}}</md-button>
+          <md-button type="submit" class="md-accent md-raised" :disabled="sending">{{$t("Add")}}</md-button>
         </md-card-actions>
       </md-card>
 

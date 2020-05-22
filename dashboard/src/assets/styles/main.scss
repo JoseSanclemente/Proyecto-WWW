@@ -1,0 +1,16 @@
+@import "~vue-material/dist/theme/engine";
+
+@include md-register-theme("default", (
+  primary: #F2B56B, // The primary color of your application #5A56CC
+  accent: #5A56CC, // The accent or secondary color #F2B56B
+  theme: dark // This can be dark or light
+));
+
+@import "~vue-material/dist/theme/all";
+
+.App {
+  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}

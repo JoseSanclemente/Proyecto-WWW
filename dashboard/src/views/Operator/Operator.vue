@@ -2,39 +2,52 @@
   <div>
     <md-app md-waterfall md-mode="fixed">
       <md-app-toolbar class="md-primary">
-        <span class="md-title">Bill payment</span>
+        <span class="md-title">{{$t("Bill Payment")}}</span>
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+        <md-toolbar class="md-transparent" md-elevation="0">{{$t("Navigation")}}</md-toolbar>
 
         <md-list>
           <router-link to="/operator/payment">
             <md-list-item>
               <md-icon>description</md-icon>
-              <span class="md-list-item-text">Bill Payment</span>
+              <span class="md-list-item-text">{{$t("Bill Payment")}}</span>
             </md-list-item>
           </router-link>
 
           <router-link to="/operator/consumers">
             <md-list-item>
               <md-icon>account_circle</md-icon>
-              <span class="md-list-item-text">Consumers</span>
+              <span class="md-list-item-text">{{$t("Consumers")}}</span>
             </md-list-item>
           </router-link>
 
-          <router-link to="/login">
+          <router-link to="/employee/login">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
-              <span class="md-list-item-text">Sign out</span>
+              <span class="md-list-item-text">{{$t("Sign out")}}</span>
             </md-list-item>
           </router-link>
+
+          <md-list-item>
+            <md-field>
+              <label>{{$t("Language")}}</label>
+              <md-select v-model="$i18n.locale">
+                <md-option
+                  v-for="(lang, i) in langs"
+                  :key="`Lang${i}`"
+                  :value="lang.code"
+                >{{ lang.name }}</md-option>
+              </md-select>
+            </md-field>
+          </md-list-item>
         </md-list>
       </md-app-drawer>
 
       <md-app-content>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
-        <h1 class="md-title">Search consumer</h1>
+        <h1 class="md-title">{{$t("Search consumer")}}</h1>
 
         <div class="md-layout-item md-size-40">
           <md-field>
@@ -91,7 +104,12 @@ export default {
       contract_id: "123456",
       sending: false,
       showSnackBar: false,
-      message: null
+      message: null,
+      langs: [
+        { name: "English", code: "en" },
+        { name: "Español", code: "es" },
+        { name: "Português", code: "pt" }
+      ]
     };
   },
   computed: {
