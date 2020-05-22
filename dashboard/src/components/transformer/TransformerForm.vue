@@ -8,7 +8,7 @@
 
         <md-card-content>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50 md-small-size-50">
+            <div class="md-layout-item md-size-50 md-small-size-50" v-if="!showCancel">
               <md-field :class="getValidationClass('substation_id')">
                 <label for="substation_id">{{$t("Select substation")}}</label>
                 <md-select v-model="transformerForm.substation_id" md-dense :disabled="sending">
@@ -21,13 +21,20 @@
               </md-field>
             </div>
 
+            <div class="md-layout-item md-size-50">
+              <md-field>
+                <label for>{{$t("Name")}}</label>
+                <md-input v-model="transformerForm.name" />
+              </md-field>
+            </div>
+
             <div class="md-layout md-gutter" v-show="showCancel">
               <div class="md-layout-item md-size-50 md-small-size-50">
                 <md-field :class="getValidationClass('active')">
                   <label for="deleted">{{$t("Active")}}</label>
                   <md-select v-model="transformerForm.deleted" md-dense :disabled="sending">
                     <md-option
-                      value=false
+                            value=false
                     >{{ $t("Yes") }}</md-option>
                     <md-option
                             value=true
@@ -36,15 +43,8 @@
                 </md-field>
               </div>
             </div>
-
-            <div class="md-layout-item md-size-50">
-              <md-field>
-                <label for>{{$t("Name")}}</label>
-                <md-input v-model="transformerForm.name" />
-              </md-field>
-            </div>
           </div>
-          <map-component mapType="transformer" :showAddressInput="true" @latlng="setLatLng" :transformers="transformerMap"></map-component>
+          <map-component mapType="transformer" :showAddressInput="!showCancel" @latlng="setLatLng" :transformers="transformerMap"></map-component>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -169,8 +169,6 @@ export default {
             this.clearForm();
             this.showNotification("The transform was successfully added!");
             this.listSubstations()
-            this.showMap = false
-            this.showMap = true
           }, 2000);
         })
         .catch(error => {

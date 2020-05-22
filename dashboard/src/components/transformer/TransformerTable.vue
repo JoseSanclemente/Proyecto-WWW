@@ -1,21 +1,25 @@
 <template>
   <div>
     <md-empty-state
-      v-if="transformers == null || transformers.length == 0"
+      v-if="searchedTransformers == null || searchedTransformers.length == 0"
       class="md-primary"
       md-icon="remove_circle_outline"
       md-label="There is nothing here yet"
       md-description="Transformers added will be showed here."
     ></md-empty-state>
     <md-table
-      v-if="transformers != null && transformers.length > 0"
-      v-model="transformers"
+      v-if="searchedTransformers != null && searchedTransformers.length > 0"
+      v-model="searchedTransformers"
       md-card
       @md-selected="onSelect"
     >
-      <md-table-toolbar>
+      <md-table-toolbar class="md-primary" slot="md-table-alternate-header">
         <span class="md-title">{{$t("Transformers")}}</span>
+        <md-field md-clearable class="md-layout-item md-size-30 md-toolbar-section-end">
+          <md-input placeholder="Search by name" v-model="searchedTransformer" @input="searchOnTable" />
+        </md-field>
       </md-table-toolbar>
+
       <md-table-row
         slot="md-table-row"
         slot-scope="{ item }"
@@ -35,22 +39,27 @@
 
 <script>
 import { getStatusLabel } from "@/helpers/helpers.js";
-import { mapState } from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "transformer-table",
   computed: {
-    ...mapState("substation", ["transformers"])
+    ...mapState("substation", ["searchedTransformers"])
   },
   data: () => ({
     modalOpen: false,
     showSnackBar: false,
     message: "",
-    selected: []
+    selected: [],
+    searchedTransformer: null
   }),
   methods: {
+    ...mapMutations("substation", ["searchTransformer"]),
     onSelect(items) {
       this.selected = items;
+    },
+    searchOnTable() {
+      this.searchTransformer(this.searchedTransformer);
     },
     getAlternateLabel(count) {
       let plural = "";
@@ -68,20 +77,6 @@ export default {
       this.message = input;
       this.showSnackBar = true;
     },
-    changeUserStatus() {
-      for (let i = 0; i < this.selected.length; i++) {
-        let item = this.selected[i];
-        item.deleted = !item.deleted;
-        this.updateUser(item)
-          .then(() => {
-            this.listUsers();
-            this.showNotification("Transformers updated successfully!");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    }
   }
 };
 </script>
