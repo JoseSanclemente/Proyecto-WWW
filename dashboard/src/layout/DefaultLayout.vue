@@ -16,12 +16,12 @@
             </md-list-item>
           </router-link>
 
-          <router-link to="/admin/consumer">
+          <!--router-link to="/admin/consumer">
             <md-list-item @click="changeTitle('consumer')">
               <md-icon>account_box</md-icon>
               <span class="md-list-item-text">{{$t("Consumer")}}</span>
             </md-list-item>
-          </router-link>
+          </router-link-->
 
           <router-link to="/admin/transformers">
             <md-list-item @click="changeTitle('trans')">
