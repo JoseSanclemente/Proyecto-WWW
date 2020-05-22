@@ -113,6 +113,7 @@ export default {
             this.sending = false;
             this.showNotification("Login successful!");
             this.$router.push('/consumer/contracts');
+            this.$router.replace({ name: "consumer-contracts", params: {id:this.form.id}})
           }, 2000);
         })
         .catch(error => {

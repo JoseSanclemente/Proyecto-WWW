@@ -18,11 +18,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "employees" */ '../views/UserLogin.vue'),
   },
   {
-    path: "/consumer/contracts",
+    name: "consumer-contracts",
+    path: "/consumer/contracts/:id",
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Contracts.vue'),
   },
   {
-    path: "/consumer/profile",
+
+    path: "/consumer/profile/",
     component: () => import(/* webpackChunkName: "contracts" */ '../views/Consumer/Profile.vue'),
   },
   {
